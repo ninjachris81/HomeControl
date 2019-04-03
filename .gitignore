@@ -1,0 +1,4 @@
+/WifiRelayESP/credentials.h
+/HomeControl_Core/*.user
+/HomeControl_RPI/*.user
+/build-*
