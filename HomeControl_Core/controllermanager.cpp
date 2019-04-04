@@ -1,9 +1,9 @@
 #include "controllermanager.h"
-#include "heatingcontroller.h"
+#include "tempcontroller.h"
 
 ControllerManager::ControllerManager(AppConfiguration *appConfig, QObject *parent) : QObject(parent), m_appConfig(appConfig)
 {
-    ControllerBase* c = new HeatingController(m_appConfig);
+    ControllerBase* c = new TempController(m_appConfig);
     m_controllers.insert(c->metaObject()->className(), c);
 }
 
@@ -12,4 +12,8 @@ void ControllerManager::init() {
         qDebug() << "Init" << c->getName();
         c->init();
     }
+}
+
+void ControllerManager::registerController(ControllerBase *controller) {
+    m_controllers.insert(controller->getName(), controller);
 }

@@ -4,22 +4,22 @@
 #include <QObject>
 #include "controllerbase.h"
 
-class HeatingController : public ControllerBase
+class TempController : public ControllerBase
 {
     Q_OBJECT
 public:
-    explicit HeatingController(AppConfiguration *appConfig, QObject *parent = nullptr);
+    explicit TempController(AppConfiguration *appConfig, QObject *parent = nullptr);
 
     QString getName();
 
-    QMqttTopicFilter getTopicFilter();
+    QStringList getTopicPath();
 
 protected:
     void onInit();
 
     void onMqttConnected();
 
-    void onValueChanged(QString topic, QVariant value);
+    void onValueChanged(int index, QVariant value);
 
 signals:
 

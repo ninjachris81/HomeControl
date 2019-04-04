@@ -20,10 +20,12 @@ DEPENDPATH+=../shared
 
 SOURCES += \
         main.cpp \
-    heatingcontroller.cpp \
     controllerbase.cpp \
     appconfiguration.cpp \
-    controllermanager.cpp
+    controllermanager.cpp \
+    errorcontroller.cpp \
+    relaiscontroller.cpp \
+    tempcontroller.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -32,7 +34,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     ../shared/constants.h \
-    heatingcontroller.h \
     controllerbase.h \
     appconfiguration.h \
-    controllermanager.h
+    controllermanager.h \
+    errorcontroller.h \
+    relaiscontroller.h \
+    tempcontroller.h

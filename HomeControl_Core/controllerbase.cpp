@@ -11,10 +11,6 @@ AppConfiguration* ControllerBase::getConfig() {
     return m_appConfig;
 }
 
-QMqttTopicFilter ControllerBase::getTopicFilter() {
-    return QMqttTopicFilter();
-}
-
 void ControllerBase::init() {
     qDebug() << Q_FUNC_INFO;
 
@@ -31,19 +27,45 @@ void ControllerBase::init() {
 void ControllerBase::_onMqttConnected() {
     qDebug() << Q_FUNC_INFO;
 
-    QMqttTopicFilter filter = getTopicFilter();
+    m_topicPath = getTopicPath();
+    m_topicName = m_topicPath.last();
+
+    QStringList fullPath = buildPath(m_topicPath, MQTT_MODE_VAL, true);
+
+    QMqttTopicFilter filter = QMqttTopicFilter(fullPath.join(MQTT_PATH_SEP));
     if (filter.isValid()) {
         qDebug() << "Subscribing to" << filter.filter();
         QMqttSubscription* sub = m_mqttClient.subscribe(filter);
         connect(sub, &QMqttSubscription::messageReceived, this, &ControllerBase::_onMqttMessageReceived);
     }
 
-    // connect to own
-    QMqttSubscription* bc_sub = m_mqttClient.subscribe(QMqttTopicFilter(MQTT_PATH_BC_REQ));
+    // connect to bc
+    QMqttSubscription* bc_sub = m_mqttClient.subscribe(QMqttTopicFilter(MQTT_PATH_BC));
     connect(bc_sub, &QMqttSubscription::messageReceived, this, &ControllerBase::_onMqttMessageReceived);
 
     onMqttConnected();
 }
+
+QStringList ControllerBase::buildPath(QStringList paths, MQTT_MODE mode, bool addWildcard) {
+    if (paths.first()!=MQTT_BASE_PATH) paths.prepend(MQTT_BASE_PATH);
+    switch(mode) {
+    case MQTT_MODE_VAL:
+        paths.append(MQTT_VAL);
+        break;
+    case MQTT_MODE_SET:
+        paths.append(MQTT_SET);
+        break;
+    }
+
+    if (addWildcard) paths.append(MQTT_WILDCARD);
+    return paths;
+}
+
+QStringList ControllerBase::cleanPath(QStringList paths) {
+    if (paths.first()==MQTT_BASE_PATH) paths.removeFirst();
+    return paths;
+}
+
 
 void ControllerBase::onInit() {
     qDebug() << Q_FUNC_INFO;
@@ -53,108 +75,119 @@ void ControllerBase::onMqttConnected() {
     qDebug() << Q_FUNC_INFO;
 }
 
-void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
-    QString topicName = msg.topic().name();
+void ControllerBase::publish(int index) {
+    m_mqttClient.publish(QMqttTopicName(buildPath(m_topicPath << QString::number(index)).join(MQTT_PATH_SEP)), getPayload(m_values.at(index)));
+}
 
-    if (topicName==MQTT_PATH_BC_REQ) {
-        for (QString key : m_valueMap.keys()) {
-            m_mqttClient.publish(QMqttTopicName(key), getPayload(key, m_valueMap.value(key)));
+
+void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
+    qDebug() << Q_FUNC_INFO << msg.topic() << msg.payload();
+
+    QStringList topicPath = cleanPath(msg.topic().levels());
+    QString topicName = topicPath.at(topicPath.count()-2);
+    int index = topicPath.last().toInt();
+
+    if (topicPath.first()==MQTT_PATH_BC) {
+        if (topicName==MQTT_BC_CMD_BC_ALL || topicName==m_topicName) {
+            for (int i=0;i<m_values.count();i++) {
+                publish(i);
+            }
         }
     } else {
-        if (msg.payload().count()>0) {
+        if (msg.payload().count()>=MQTT_MIN_MSG_SIZE) {
             switch(msg.payload().at(0)) {
             case MQTT_ID_DOUBLE: {
                 double d = QByteArray(msg.payload().mid(1)).toDouble();
-                if (m_valueMap.contains(topicName)) {
-                    m_valueMap.insert(topicName, d);
-                    onValueChanged(topicName, d);
+                if (m_values.count()>index) {
+                    m_values[index] = d;
+                    onValueChanged(index, d);
                 } else {
-                    onMqttDoubleReceived(topicName, d);
+                    onUnmappedMqttDoubleReceived(topicPath, d);
                 }
                 break;
             }
             case MQTT_ID_INTEGER: {
                 int i = QByteArray(msg.payload().mid(1)).toInt();
-                if (m_valueMap.contains(topicName)) {
-                    m_valueMap.insert(topicName, i);
-                    onValueChanged(topicName, i);
+                if (m_values.count()>index) {
+                    m_values[index] = i;
+                    onValueChanged(index, i);
                 } else {
-                    onMqttDoubleReceived(topicName, i);
+                    onUnmappedMqttDoubleReceived(topicPath, i);
                 }
                 break;
             }
             case MQTT_ID_STRING: {
                 QString s = QString(QByteArray((msg.payload().mid(1))));
-                if (m_valueMap.contains(topicName)) {
-                    m_valueMap.insert(topicName, s);
-                    onValueChanged(topicName, s);
+                if (m_values.count()>index) {
+                    m_values[index] = s;
+                    onValueChanged(index, s);
                 } else {
-                    onMqttStringReceived(topicName, s);
+                    onUnmappedMqttStringReceived(topicPath, s);
                 }
                 break;
             }
             case MQTT_ID_BOOL: {
                 bool b = QByteArray(msg.payload().mid(1)).toInt()==1;
-                if (m_valueMap.contains(topicName)) {
-                    m_valueMap.insert(topicName, b);
-                    onValueChanged(topicName, b);
+                if (m_values.count()>index) {
+                    m_values[index] = b;
+                    onValueChanged(index, b);
                 } else {
-                    onMqttBoolReceived(topicName, b);
+                    onUnmappedMqttBoolReceived(topicPath, b);
                 }
                 break;
             }
             default:
-                onMqttUnknownMessageReceived(topicName, msg.payload());
+                onMqttUnknownMessageReceived(topicPath, msg.payload());
             }
         } else {
-            onMqttUnknownMessageReceived(topicName, msg.payload());
+            onMqttUnknownMessageReceived(topicPath, msg.payload());
         }
     }
 }
 
-QByteArray ControllerBase::getPayload(QString topic, QVariant value) {
+QByteArray ControllerBase::getPayload(QVariant value) {
     QByteArray returnData;
 
-    if (topic.endsWith(MQTT_ID_DOUBLE)) {
+    if (value.type()==QVariant::Double) {
         returnData.append(MQTT_ID_DOUBLE);
         returnData.append(QByteArray::number(value.toDouble()));
-    } else if (topic.endsWith(MQTT_ID_INTEGER)) {
+    } else if (value.type()==QVariant::Int) {
         returnData.append(MQTT_ID_INTEGER);
         returnData.append(QByteArray::number(value.toInt()));
-    } else if (topic.endsWith(MQTT_ID_STRING)) {
+    } else if (value.type()==QVariant::String) {
         returnData.append(MQTT_ID_STRING);
         returnData.append(value.toString());
-    } else if (topic.endsWith(MQTT_ID_BOOL)) {
+    } else if (value.type()==QVariant::Bool) {
         returnData.append(MQTT_ID_BOOL);
         returnData.append(value.toBool());
     } else {
-        qWarning() << "Cannot serialize" << topic;
+        qWarning() << "Cannot serialize" << value.typeName();
     }
 
     return returnData;
 }
 
-void ControllerBase::onMqttUnknownMessageReceived(QString topic, QByteArray data) {
-    qDebug() << Q_FUNC_INFO << topic << data;
+void ControllerBase::onMqttUnknownMessageReceived(QStringList topicPath, QByteArray data) {
+    qWarning() << Q_FUNC_INFO << topicPath << data;
 }
 
-void ControllerBase::onMqttDoubleReceived(QString topic, double value) {
-    qDebug() << Q_FUNC_INFO << topic << value;
+void ControllerBase::onUnmappedMqttDoubleReceived(QStringList topicPath, double value) {
+    qWarning() << Q_FUNC_INFO << topicPath << value;
 }
 
-void ControllerBase::onMqttIntReceived(QString topic, int value) {
-    qDebug() << Q_FUNC_INFO << topic << value;
+void ControllerBase::onUnmappedMqttIntReceived(QStringList topicPath, int value) {
+    qWarning() << Q_FUNC_INFO << topicPath << value;
 }
 
-void ControllerBase::onMqttStringReceived(QString topic, QString value) {
-    qDebug() << Q_FUNC_INFO << topic << value;
+void ControllerBase::onUnmappedMqttStringReceived(QStringList topicPath, QString value) {
+    qWarning() << Q_FUNC_INFO << topicPath << value;
 }
 
-void ControllerBase::onMqttBoolReceived(QString topic, bool value) {
-    qDebug() << Q_FUNC_INFO << topic << value;
+void ControllerBase::onUnmappedMqttBoolReceived(QStringList topicPath, bool value) {
+    qWarning() << Q_FUNC_INFO << topicPath << value;
 }
 
-void ControllerBase::onValueChanged(QString topic, QVariant value) {
-    qDebug() << Q_FUNC_INFO << topic << value;
+void ControllerBase::onValueChanged(int index, QVariant value) {
+    qDebug() << Q_FUNC_INFO << index << value;
 }
 

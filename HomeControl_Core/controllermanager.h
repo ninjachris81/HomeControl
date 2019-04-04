@@ -14,6 +14,8 @@ public:
 
     void init();
 
+    void registerController(ControllerBase *controller);
+
 private:
     QMap<QString, ControllerBase*> m_controllers;
     AppConfiguration* m_appConfig;
