@@ -3,6 +3,7 @@
 
 DataBridge::DataBridge(AppConfiguration *appConfig, QObject *parent) : QObject(parent), m_appConfig(appConfig)
 {
+    connect(&m_controllerManager, &ControllerManager::mqttConnected, this, &DataBridge::onMqttConnected);
 
     m_controllerManager.registerController(&m_tempController);
     m_controllerManager.registerController(&m_errorController);
@@ -12,6 +13,10 @@ DataBridge::DataBridge(AppConfiguration *appConfig, QObject *parent) : QObject(p
     m_errorListModelController = new ErrorControllerListModel(&m_errorController);
 }
 
+void DataBridge::onMqttConnected() {
+    qDebug() << "Sending broadcast all";
+    m_controllerManager.publishBC(ControllerManager::MQTT_BC_ALL);
+}
 
 ControllerListModel* DataBridge::tempListModelController() {
     return m_tempListModelController;

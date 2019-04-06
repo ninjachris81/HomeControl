@@ -31,6 +31,9 @@ private:
     ControllerListModel *m_tempListModelController;
     ErrorControllerListModel *m_errorListModelController;
 
+private slots:
+    void onMqttConnected();
+
 signals:
     void tempControllerChanged();
     void errorControllerChanged();

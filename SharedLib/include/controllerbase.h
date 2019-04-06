@@ -5,16 +5,12 @@
 #include <QMqttClient>
 #include "appconfiguration.h"
 
+class ControllerManager;        // fwd dcl
+
 class ControllerBase : public QObject
 {
     Q_OBJECT
 public:
-    enum MQTT_MODE {
-        MQTT_MODE_NONE,
-        MQTT_MODE_VAL,
-        MQTT_MODE_SET
-    };
-
     explicit ControllerBase(QObject *parent = nullptr);
 
     virtual QString getName() = 0;
@@ -25,7 +21,7 @@ public:
 
     virtual QVariant::Type getValueType(int index = -1) = 0;
 
-    void init(AppConfiguration* appConfig);
+    void init(ControllerManager* parent, AppConfiguration* appConfig, QMqttClient *mqttClient);
 
     AppConfiguration* getConfig();
 
@@ -43,15 +39,12 @@ protected:
     QList<QVariant> m_values;
     QStringList m_topicPath;
     QStringList m_labels;
+    ControllerManager* m_parent;
 
     QString m_topicName;
 
-    static QStringList buildPath(QStringList paths, MQTT_MODE mode = MQTT_MODE_NONE, bool addWildcard = false);
-    static QStringList cleanPath(QStringList paths);
-
     virtual void onInit();
 
-    virtual void onMqttConnected();
     virtual void onMqttUnknownMessageReceived(QStringList topicPath, QByteArray data);
 
     virtual void onUnmappedMqttDoubleReceived(QStringList topicPath, double value);
@@ -61,12 +54,12 @@ protected:
 
     virtual void onValueChanged(int index, QVariant value);
 
-    static QByteArray getPayload(QVariant value);
-
 private:
     AppConfiguration* m_appConfig;
+    QMqttClient *m_mqttClient;
 
-    QMqttClient m_mqttClient;
+    QMqttSubscription* m_topicSub;
+    QMqttSubscription* m_bcSub;
 
 signals:
     void valueChanged(int index, QVariant value);
@@ -74,7 +67,9 @@ signals:
 public slots:
 
 private slots:
-    void _onMqttConnected();
+    void onMqttConnected();
+    void onMqttDisconnected();
+
     void _onMqttMessageReceived(QMqttMessage msg);
 
 };

@@ -1,26 +1,64 @@
 #ifndef CONTROLLERMANAGER_H
 #define CONTROLLERMANAGER_H
 
+
 #include <QObject>
 #include <QMap>
 #include "controllerbase.h"
 #include "appconfiguration.h"
+//#include "constants.h"
 
 class ControllerManager : public QObject
 {
     Q_OBJECT
 public:
+    enum MQTT_MODE {
+        MQTT_MODE_NONE,
+        MQTT_MODE_VAL,
+        MQTT_MODE_SET
+    };
+
+    enum MQTT_BROADCAST_TYPE {
+        MQTT_BC_ALL,
+        MQTT_BC_TEMPS,
+        MQTT_BC_RELAYS
+    };
+
     explicit ControllerManager(QObject *parent = nullptr);
 
     void init(AppConfiguration* appConfig);
 
     void registerController(ControllerBase *controller);
 
+    ControllerBase* getController(QString name);
+
+    static QString getBroadcastValue(MQTT_BROADCAST_TYPE type);
+
+    void publishBC(MQTT_BROADCAST_TYPE type);
+
+    static QStringList buildPath(QStringList paths, MQTT_MODE mode = MQTT_MODE_NONE, bool addWildcard = false);
+    static QStringList cleanPath(QStringList paths);
+
+    static QByteArray getPayload(QVariant value);
+
+    void publish(QStringList path, QVariant value);
+
 private:
     QMap<QString, ControllerBase*> m_controllers;
     AppConfiguration* m_appConfig;
 
+    QMqttClient m_mqttClient;
+
+    void _onMqttConnected();
+    void _onMqttDisconnected();
+
+private slots:
+    void _onMqttStateChanged(QMqttClient::ClientState state);
+    void _onMqttError(QMqttClient::ClientError error);
+
 signals:
+    void mqttConnected();
+    void mqttDisconnected();
 
 public slots:
 };

@@ -12,18 +12,18 @@
 #define MQTT_SET "set"
 
 // BROADCASTS
-#define MQTT_PATH_BC "bcr"
+#define MQTT_PATH_BC "bc"
 #define MQTT_BC_CMD_BC_ALL "all"
-
-// TEMPERATURES
-#define MQTT_PATH_TEMPERATURES "temps"
-#define MQTT_PATH_TEMPERATURES_INSIDE 0
-#define TEMPERATURES_LABEL_INSIDE "Inside Temp"
 
 // ERRORS
 #define MQTT_PATH_ERRORS "errors"
 #define MQTT_PATH_ERRORS_RELAYS 0
 #define ERRORS_LABEL_RELAYS "Relays"
+
+// TEMPERATURES
+#define MQTT_PATH_TEMPERATURES "temps"
+#define MQTT_PATH_TEMPERATURES_INSIDE 0
+#define TEMPERATURES_LABEL_INSIDE "Inside Temp"
 
 // RELAYS
 #define MQTT_PATH_RELAYS "relays"
