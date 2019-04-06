@@ -7,12 +7,9 @@ Page {
     width: 1024
     height: 600
 
-    title: qsTr("Heating")
+    title: qsTr("Errors")
 
     header: Label {
-        id: label
-        width: 600
-        height: 47
         text: root.title
         font.pixelSize: Qt.application.font.pixelSize * 2
         padding: 10
@@ -24,7 +21,7 @@ Page {
         delegate: Item {
             x: 5
             width: 80
-            height: 40
+            height: 100
             Row {
                 id: row1
                 spacing: 10
@@ -34,13 +31,16 @@ Page {
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                Text {
-                    text: value
-                    font.bold: true
-                    anchors.verticalCenter: parent.verticalCenter
+                Column {
+                    Repeater {
+                        model: value
+                        Text {
+                            text: modelData
+                        }
+                    }
                 }
             }
         }
-        model: DataBridge.tempController
+        model: DataBridge.errorController
     }
 }

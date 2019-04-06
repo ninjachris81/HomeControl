@@ -16,8 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    databridge.cpp \
-    wifirelais.cpp
+    databridge.cpp
 
 RESOURCES += qml.qrc
 
@@ -34,5 +33,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     databridge.h \
-    wifirelais.h \
-    ../shared/constants.h
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SharedLib-Desktop_Qt_5_12_0_MSVC2017_64bit2-Debug/release/ -lSharedLib
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SharedLib-Desktop_Qt_5_12_0_MSVC2017_64bit2-Debug/debug/ -lSharedLib
+else:unix: LIBS += -L$$PWD/../build-SharedLib-Desktop_Qt_5_12_0_MSVC2017_64bit2-Debug/ -lSharedLib
+
+INCLUDEPATH += $$PWD/../SharedLib/include
+DEPENDPATH += $$PWD/../SharedLib

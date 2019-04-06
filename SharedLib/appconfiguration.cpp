@@ -1,4 +1,4 @@
-#include "appconfiguration.h"
+#include "include/appconfiguration.h"
 #include <QDebug>
 #include <QFile>
 

@@ -15,21 +15,35 @@ public:
         MQTT_MODE_SET
     };
 
-    explicit ControllerBase(AppConfiguration* appConfig, QObject *parent = nullptr);
+    explicit ControllerBase(QObject *parent = nullptr);
 
     virtual QString getName() = 0;
 
     virtual QStringList getTopicPath() = 0;
 
-    void init();
+    virtual QStringList getLabelList() = 0;
+
+    virtual QVariant::Type getValueType(int index = -1) = 0;
+
+    void init(AppConfiguration* appConfig);
 
     AppConfiguration* getConfig();
 
     void publish(int index);
 
+    QList<QVariant> getValues();
+
+    void setValue(int index, QVariant value);
+
+    QString getLabel(int index);
+
+    void clearValue(int index);
+
 protected:
     QList<QVariant> m_values;
     QStringList m_topicPath;
+    QStringList m_labels;
+
     QString m_topicName;
 
     static QStringList buildPath(QStringList paths, MQTT_MODE mode = MQTT_MODE_NONE, bool addWildcard = false);
@@ -55,6 +69,7 @@ private:
     QMqttClient m_mqttClient;
 
 signals:
+    void valueChanged(int index, QVariant value);
 
 public slots:
 

@@ -1,24 +1,22 @@
 #include "databridge.h"
 #include <QDebug>
 
-DataBridge::DataBridge(QObject *parent) : QObject(parent)
+DataBridge::DataBridge(AppConfiguration *appConfig, QObject *parent) : QObject(parent), m_appConfig(appConfig)
 {
-    mqttClient.setHostname("rpi-adsb.fritz.box");
-    mqttClient.setPort(1883);
-    mqttClient.connectToHost();
 
-    connect(&mqttClient, &QMqttClient::connected, this, &DataBridge::onConnected);
+    m_controllerManager.registerController(&m_tempController);
+    m_controllerManager.registerController(&m_errorController);
+    m_controllerManager.init(appConfig);
+
+    m_tempListModelController = new ControllerListModel(&m_tempController);
+    m_errorListModelController = new ErrorControllerListModel(&m_errorController);
 }
 
-void DataBridge::onConnected() {
-    qDebug() << Q_FUNC_INFO << mqttClient.state();
 
-    sub = mqttClient.subscribe(QMqttTopicFilter ("test/feeds/photocell"));
-    connect(sub, &QMqttSubscription::messageReceived, this, &DataBridge::onMessageReceived);
+ControllerListModel* DataBridge::tempListModelController() {
+    return m_tempListModelController;
 }
 
-void DataBridge::onMessageReceived(const QMqttMessage &msg) {
-    qDebug() << Q_FUNC_INFO;
-
-    qDebug() << msg.payload();
+ErrorControllerListModel *DataBridge::errorListModelController() {
+    return m_errorListModelController;
 }

@@ -6,11 +6,15 @@
 class RelaisController : public ControllerBase
 {
 public:
-    RelaisController(AppConfiguration *appConfig, QObject *parent = nullptr);
+    RelaisController(QObject *parent = nullptr);
 
     QString getName();
 
     QStringList getTopicPath();
+
+    QStringList getLabelList();
+
+    QVariant::Type getValueType(int index = -1);
 
 protected:
     void onInit();

@@ -1,7 +1,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include "appconfiguration.h"
 #include "databridge.h"
+#include <QTimer>
+
 
 int main(int argc, char *argv[])
 {
@@ -11,7 +14,9 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    DataBridge dataBridge;
+    AppConfiguration appConfig;
+
+    DataBridge dataBridge(&appConfig);
 
     QQmlApplicationEngine engine;
 

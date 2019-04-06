@@ -13,16 +13,16 @@ int main(int argc, char *argv[])
 
     ControllerManager controllerManager(&appConfig);
 
-    TempController heatingController(&appConfig);
+    TempController heatingController;
     controllerManager.registerController(&heatingController);
 
-    ErrorController errorController(&appConfig);
+    ErrorController errorController;
     controllerManager.registerController(&errorController);
 
-    RelaisController relaisController(&appConfig);
+    RelaisController relaisController;
     controllerManager.registerController(&relaisController);
 
-    controllerManager.init();
+    controllerManager.init(&appConfig);
 
     return a.exec();
 }

@@ -1,7 +1,7 @@
-#include "tempcontroller.h"
+#include "include/tempcontroller.h"
 #include "constants.h"
 
-TempController::TempController(AppConfiguration *appConfig, QObject *parent) : ControllerBase(appConfig, parent)
+TempController::TempController(QObject *parent) : ControllerBase(parent)
 {
 
 }
@@ -12,6 +12,16 @@ QString TempController::getName() {
 
 QStringList TempController::getTopicPath() {
     return QStringList() << MQTT_PATH_TEMPERATURES;
+}
+
+QStringList TempController::getLabelList() {
+    return QStringList() << TEMPERATURES_LABEL_INSIDE;
+}
+
+QVariant::Type TempController::getValueType(int index) {
+    Q_UNUSED(index);
+
+    return QVariant::Double;
 }
 
 void TempController::onInit() {

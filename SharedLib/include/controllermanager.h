@@ -10,9 +10,9 @@ class ControllerManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit ControllerManager(AppConfiguration* appConfig, QObject *parent = nullptr);
+    explicit ControllerManager(QObject *parent = nullptr);
 
-    void init();
+    void init(AppConfiguration* appConfig);
 
     void registerController(ControllerBase *controller);
 

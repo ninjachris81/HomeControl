@@ -7,11 +7,15 @@
 class ErrorController : public ControllerBase
 {
 public:
-    ErrorController(AppConfiguration* appConfig, QObject *parent = nullptr);
+    ErrorController(QObject *parent = nullptr);
 
     QString getName();
 
     QStringList getTopicPath();
+
+    QStringList getLabelList();
+
+    QVariant::Type getValueType(int index = -1);
 
 protected:
     void onInit();

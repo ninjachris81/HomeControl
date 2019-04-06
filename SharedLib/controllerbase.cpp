@@ -1,8 +1,8 @@
-#include "controllerbase.h"
+#include "include/controllerbase.h"
 #include "constants.h"
 #include <QDebug>
 
-ControllerBase::ControllerBase(AppConfiguration *appConfig, QObject *parent) : QObject(parent), m_appConfig(appConfig)
+ControllerBase::ControllerBase(QObject *parent) : QObject(parent)
 {
     connect(&m_mqttClient, &QMqttClient::connected, this, &ControllerBase::_onMqttConnected);
 }
@@ -11,8 +11,12 @@ AppConfiguration* ControllerBase::getConfig() {
     return m_appConfig;
 }
 
-void ControllerBase::init() {
+void ControllerBase::init(AppConfiguration *appConfig) {
     qDebug() << Q_FUNC_INFO;
+
+    m_labels = getLabelList();
+
+    m_appConfig = appConfig;
 
     m_mqttClient.setHostname(m_appConfig->getString(AppConfiguration::MQTT_HOST, "localhost"));
     m_mqttClient.setPort(m_appConfig->getInt(AppConfiguration::MQTT_PORT, 1883));
@@ -22,6 +26,59 @@ void ControllerBase::init() {
     m_mqttClient.connectToHost();
 
     onInit();
+}
+
+QString ControllerBase::getLabel(int index) {
+    if (index<m_labels.count()) {
+        return m_labels.at(index);
+    } else {
+        return "Item " + QString::number(index);
+    }
+}
+
+void ControllerBase::clearValue(int index) {
+    switch(getValueType(index)) {
+    case QVariant::Int:
+        m_values[index] = 0;
+        break;
+    case QVariant::Double:
+        m_values[index] = (double)0.0;
+        break;
+    case QVariant::Bool:
+        m_values[index] = false;
+        break;
+    case QVariant::String:
+        m_values[index] = "";
+        break;
+    case QVariant::StringList:
+        m_values[index] = QStringList();
+        break;
+    }
+}
+
+QList<QVariant> ControllerBase::getValues() {
+    return m_values;
+}
+
+void ControllerBase::setValue(int index, QVariant value) {
+    qDebug() << Q_FUNC_INFO << index << value;
+
+    switch(getValueType(index)) {
+    case QVariant::Int:
+    case QVariant::Double:
+    case QVariant::Bool:
+    case QVariant::String:
+        m_values[index] = value;
+        break;
+    case QVariant::StringList:
+        QStringList list = m_values[index].toStringList();
+        list.append(value.toString());
+        m_values[index] = list;
+        break;
+    }
+
+    onValueChanged(index, m_values[index]);
+    Q_EMIT(valueChanged(index, m_values[index]));
 }
 
 void ControllerBase::_onMqttConnected() {
@@ -99,8 +156,7 @@ void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
             case MQTT_ID_DOUBLE: {
                 double d = QByteArray(msg.payload().mid(1)).toDouble();
                 if (m_values.count()>index) {
-                    m_values[index] = d;
-                    onValueChanged(index, d);
+                    setValue(index, d);
                 } else {
                     onUnmappedMqttDoubleReceived(topicPath, d);
                 }
@@ -109,8 +165,7 @@ void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
             case MQTT_ID_INTEGER: {
                 int i = QByteArray(msg.payload().mid(1)).toInt();
                 if (m_values.count()>index) {
-                    m_values[index] = i;
-                    onValueChanged(index, i);
+                    setValue(index, i);
                 } else {
                     onUnmappedMqttDoubleReceived(topicPath, i);
                 }
@@ -119,8 +174,7 @@ void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
             case MQTT_ID_STRING: {
                 QString s = QString(QByteArray((msg.payload().mid(1))));
                 if (m_values.count()>index) {
-                    m_values[index] = s;
-                    onValueChanged(index, s);
+                    setValue(index, s);
                 } else {
                     onUnmappedMqttStringReceived(topicPath, s);
                 }
@@ -129,8 +183,7 @@ void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
             case MQTT_ID_BOOL: {
                 bool b = QByteArray(msg.payload().mid(1)).toInt()==1;
                 if (m_values.count()>index) {
-                    m_values[index] = b;
-                    onValueChanged(index, b);
+                    setValue(index, b);
                 } else {
                     onUnmappedMqttBoolReceived(topicPath, b);
                 }

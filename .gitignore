@@ -2,3 +2,4 @@
 /HomeControl_Core/*.user
 /HomeControl_RPI/*.user
 /build-*
+/SharedLib/*.user

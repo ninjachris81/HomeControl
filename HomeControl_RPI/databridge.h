@@ -2,25 +2,39 @@
 #define DATABRIDGE_H
 
 #include <QObject>
-#include <QtSensors/QSensor>
-#include <QMqttClient>
+#include "controllerlistmodel.h"
+#include "controllermanager.h"
+#include "appconfiguration.h"
+#include "tempcontroller.h"
+#include "errorcontroller.h"
+#include "errorcontrollerlistmodel.h"
 
 class DataBridge : public QObject
 {
     Q_OBJECT
 public:
-    explicit DataBridge(QObject *parent = nullptr);
+    explicit DataBridge(AppConfiguration *appConfig, QObject *parent = nullptr);
+
+    Q_PROPERTY(ControllerListModel* tempController READ tempListModelController NOTIFY tempControllerChanged)
+    Q_PROPERTY(ErrorControllerListModel* errorController READ errorListModelController NOTIFY errorControllerChanged)
+
+    ControllerListModel *tempListModelController();
+    ErrorControllerListModel *errorListModelController();
 
 private:
-    QMap<QString, QSensor*> sensors;
-    QMqttClient mqttClient;
-    QMqttSubscription *sub;
+    AppConfiguration* m_appConfig;
+
+    ControllerManager m_controllerManager;
+    TempController m_tempController;
+    ErrorController m_errorController;
+
+    ControllerListModel *m_tempListModelController;
+    ErrorControllerListModel *m_errorListModelController;
 
 signals:
+    void tempControllerChanged();
+    void errorControllerChanged();
 
-private slots:
-    void onConnected();
-    void onMessageReceived(const QMqttMessage &msg);
 
 public slots:
 };
