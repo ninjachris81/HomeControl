@@ -1,5 +1,5 @@
 #include "include/errorcontroller.h"
-#include "constants.h"
+#include "include/constants_qt.h"
 #include <QDebug>
 
 ErrorController::ErrorController(QObject *parent) : ControllerBase(parent)
@@ -7,7 +7,7 @@ ErrorController::ErrorController(QObject *parent) : ControllerBase(parent)
 }
 
 QString ErrorController::getName() {
-    return "ErrorController";
+    return ErrorController::staticMetaObject.className();
 }
 
 QStringList ErrorController::getTopicPath() {
@@ -15,7 +15,7 @@ QStringList ErrorController::getTopicPath() {
 }
 
 QStringList ErrorController::getLabelList() {
-    return QStringList() << ERRORS_LABEL_RELAYS;
+    CONVERT_LABEL_LIST(ERRORS_LABELS);
 }
 
 QVariant::Type ErrorController::getValueType(int index) {
@@ -25,7 +25,6 @@ QVariant::Type ErrorController::getValueType(int index) {
 }
 
 void ErrorController::onInit() {
-    m_values.append(QStringList());        // MQTT_PATH_ERRORS_RELAYS
 }
 
 void ErrorController::onValueChanged(int index, QVariant value) {

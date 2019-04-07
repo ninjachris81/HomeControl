@@ -1,5 +1,5 @@
 #include "include/relaiscontroller.h"
-#include "constants.h"
+#include "include/constants_qt.h"
 
 RelaisController::RelaisController(QObject *parent) : ControllerBase (parent)
 {
@@ -7,7 +7,7 @@ RelaisController::RelaisController(QObject *parent) : ControllerBase (parent)
 }
 
 QString RelaisController::getName() {
-    return "RelaisController";
+    return RelaisController::staticMetaObject.className();
 }
 
 QStringList RelaisController::getTopicPath() {
@@ -15,7 +15,7 @@ QStringList RelaisController::getTopicPath() {
 }
 
 QStringList RelaisController::getLabelList() {
-    return QStringList() << RELAYS_LABEL_HEAT_PUMP;
+    CONVERT_LABEL_LIST(RELAYS_LABELS);
 }
 
 QVariant::Type RelaisController::getValueType(int index) {
@@ -25,7 +25,6 @@ QVariant::Type RelaisController::getValueType(int index) {
 }
 
 void RelaisController::onInit() {
-    m_values.append(false);     // MQTT_PATH_RELAYS_HEAT_PUMP
 }
 
 void RelaisController::onValueChanged(int index, QVariant value) {

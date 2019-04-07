@@ -7,6 +7,8 @@
 
 class ControllerManager;        // fwd dcl
 
+#define CONVERT_LABEL_LIST(LIST_NAME) QStringList returnList;for(QString t:LIST_NAME){returnList << t;}return returnList;
+
 class ControllerBase : public QObject
 {
     Q_OBJECT
@@ -27,13 +29,17 @@ public:
 
     void publish(int index);
 
-    QList<QVariant> getValues();
+    QList<QVariant> values();
+
+    QVariant value(int index);
 
     void setValue(int index, QVariant value);
 
     QString getLabel(int index);
 
     void clearValue(int index);
+
+    static QVariant parsePayload(QByteArray payload);
 
 protected:
     QList<QVariant> m_values;
@@ -47,10 +53,7 @@ protected:
 
     virtual void onMqttUnknownMessageReceived(QStringList topicPath, QByteArray data);
 
-    virtual void onUnmappedMqttDoubleReceived(QStringList topicPath, double value);
-    virtual void onUnmappedMqttIntReceived(QStringList topicPath, int value);
-    virtual void onUnmappedMqttStringReceived(QStringList topicPath, QString value);
-    virtual void onUnmappedMqttBoolReceived(QStringList topicPath, bool value);
+    virtual void onUnmappedMqttValueReceived(QStringList topicPath, QVariant value);
 
     virtual void onValueChanged(int index, QVariant value);
 

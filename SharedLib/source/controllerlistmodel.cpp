@@ -21,13 +21,13 @@ int ControllerListModel::columnCount(const QModelIndex &parent) const {
 
 int ControllerListModel::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent)
-    return m_controller->getValues().count();
+    return m_controller->values().count();
 }
 
 QVariant ControllerListModel::data(const QModelIndex &index, int role) const {
     if (index.isValid()) {
         if (role==ValueRole) {
-            return m_controller->getValues().at(index.row());
+            return m_controller->values().at(index.row());
         } else if (role==LabelRole) {
             return m_controller->getLabel(index.row());
         } else {

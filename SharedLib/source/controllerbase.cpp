@@ -1,5 +1,5 @@
 #include "include/controllerbase.h"
-#include "constants.h"
+#include "include/constants_qt.h"
 #include "include/controllermanager.h"
 #include <QDebug>
 
@@ -19,6 +19,7 @@ void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig
     m_mqttClient = mqttClient;
 
     m_labels = getLabelList();
+    for(int i=0;i<m_labels.count();i++) m_values.append(QVariant(getValueType(i)));
 
     connect(parent, &ControllerManager::mqttConnected, this, &ControllerBase::onMqttConnected);
     connect(parent, &ControllerManager::mqttDisconnected, this, &ControllerBase::onMqttDisconnected);
@@ -54,7 +55,11 @@ void ControllerBase::clearValue(int index) {
     }
 }
 
-QList<QVariant> ControllerBase::getValues() {
+QVariant ControllerBase::value(int index) {
+    return m_values.at(index);
+}
+
+QList<QVariant> ControllerBase::values() {
     return m_values;
 }
 
@@ -102,8 +107,14 @@ void ControllerBase::onMqttConnected() {
 void ControllerBase::onMqttDisconnected() {
     qDebug() << Q_FUNC_INFO;
 
-    if (m_topicSub!=nullptr) m_topicSub->unsubscribe();
-    if (m_bcSub!=nullptr) m_bcSub->unsubscribe();
+    if (m_topicSub!=nullptr) {
+        m_topicSub->unsubscribe();
+        m_topicSub->disconnect();
+    }
+    if (m_bcSub!=nullptr) {
+        m_bcSub->unsubscribe();
+        m_bcSub->disconnect();
+    }
 }
 
 void ControllerBase::onInit() {
@@ -128,71 +139,38 @@ void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
             }
         }
     } else {
-        if (msg.payload().count()>=MQTT_MIN_MSG_SIZE) {
-            switch(msg.payload().at(0)) {
-            case MQTT_ID_DOUBLE: {
-                double d = QByteArray(msg.payload().mid(1)).toDouble();
-                if (m_values.count()>index) {
-                    setValue(index, d);
-                } else {
-                    onUnmappedMqttDoubleReceived(topicPath, d);
-                }
-                break;
-            }
-            case MQTT_ID_INTEGER: {
-                int i = QByteArray(msg.payload().mid(1)).toInt();
-                if (m_values.count()>index) {
-                    setValue(index, i);
-                } else {
-                    onUnmappedMqttDoubleReceived(topicPath, i);
-                }
-                break;
-            }
-            case MQTT_ID_STRING: {
-                QString s = QString(QByteArray((msg.payload().mid(1))));
-                if (m_values.count()>index) {
-                    setValue(index, s);
-                } else {
-                    onUnmappedMqttStringReceived(topicPath, s);
-                }
-                break;
-            }
-            case MQTT_ID_BOOL: {
-                bool b = QByteArray(msg.payload().mid(1)).toInt()==1;
-                if (m_values.count()>index) {
-                    setValue(index, b);
-                } else {
-                    onUnmappedMqttBoolReceived(topicPath, b);
-                }
-                break;
-            }
-            default:
-                onMqttUnknownMessageReceived(topicPath, msg.payload());
-            }
+        QVariant value = parsePayload(msg.payload());
+
+        if (m_values.count()>index) {
+            setValue(index, value);
         } else {
-            onMqttUnknownMessageReceived(topicPath, msg.payload());
+            onUnmappedMqttValueReceived(topicPath, value);
         }
     }
 }
 
+QVariant ControllerBase::parsePayload(QByteArray payload) {
+    if (payload.count()>=MQTT_MIN_MSG_SIZE) {
+        switch(payload.at(0)) {
+        case MQTT_ID_DOUBLE:
+            return QByteArray(payload.mid(1)).toDouble();
+        case MQTT_ID_INTEGER:
+            return QByteArray(payload.mid(1)).toInt();
+        case MQTT_ID_STRING:
+            return QString(QByteArray((payload.mid(1))));
+        case MQTT_ID_BOOL:
+            return QByteArray(payload.mid(1)).toInt()==1;
+        }
+    }
+
+    return QVariant();
+}
 
 void ControllerBase::onMqttUnknownMessageReceived(QStringList topicPath, QByteArray data) {
     qWarning() << Q_FUNC_INFO << topicPath << data;
 }
 
-void ControllerBase::onUnmappedMqttDoubleReceived(QStringList topicPath, double value) {
-    qWarning() << Q_FUNC_INFO << topicPath << value;
-}
-
-void ControllerBase::onUnmappedMqttIntReceived(QStringList topicPath, int value) {
-    qWarning() << Q_FUNC_INFO << topicPath << value;
-}
-
-void ControllerBase::onUnmappedMqttStringReceived(QStringList topicPath, QString value) {
-    qWarning() << Q_FUNC_INFO << topicPath << value;
-}
-
-void ControllerBase::onUnmappedMqttBoolReceived(QStringList topicPath, bool value) {
+void ControllerBase::onUnmappedMqttValueReceived(QStringList topicPath, QVariant value) {
     qWarning() << Q_FUNC_INFO << topicPath << value;
 }
 

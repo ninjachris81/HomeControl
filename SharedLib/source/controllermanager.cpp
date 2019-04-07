@@ -1,5 +1,5 @@
 #include "include/controllermanager.h"
-#include "constants.h"
+#include "include/constants_qt.h"
 #include <QDebug>
 #include <QTimer>
 
@@ -47,6 +47,9 @@ ControllerBase* ControllerManager::getController(QString name) {
 void ControllerManager::_onMqttConnected() {
     qDebug() << Q_FUNC_INFO;
 
+    m_cmdSub = m_mqttClient.subscribe(QMqttTopicFilter(buildPath(QStringList() << MQTT_PATH_CMD).join(MQTT_PATH_SEP)));
+    connect(m_cmdSub, &QMqttSubscription::messageReceived, this, &ControllerManager::_onMqttCmdReceived);
+
     Q_EMIT(mqttConnected());
 }
 
@@ -54,6 +57,9 @@ void ControllerManager::_onMqttDisconnected() {
     qDebug() << Q_FUNC_INFO;
 
     Q_EMIT(mqttDisconnected());
+
+    m_cmdSub->unsubscribe();
+    m_cmdSub->disconnect();
 
     // reconnect
     QTimer::singleShot(1000, [=]() {
@@ -63,12 +69,19 @@ void ControllerManager::_onMqttDisconnected() {
     } );
 }
 
+void ControllerManager::_onMqttCmdReceived(QMqttMessage msg) {
+    qDebug() << Q_FUNC_INFO << msg.topic() << msg.payload();
+
+    MQTT_CMDS cmd = static_cast<MQTT_CMDS>(ControllerBase::parsePayload(msg.payload()).toInt());
+    Q_EMIT(mqttCmdReceived(cmd));
+}
+
 QString ControllerManager::getBroadcastValue(MQTT_BROADCAST_TYPE type) {
     switch(type) {
     case ControllerManager::MQTT_BC_ALL:
         return MQTT_BC_CMD_BC_ALL;
     case ControllerManager::MQTT_BC_TEMPS:
-        return MQTT_PATH_TEMPERATURES;
+        return MQTT_PATH_TEMPS;
     case ControllerManager::MQTT_BC_RELAYS:
         return MQTT_PATH_RELAYS;
     }

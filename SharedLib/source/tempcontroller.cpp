@@ -1,5 +1,5 @@
 #include "include/tempcontroller.h"
-#include "constants.h"
+#include "include/constants_qt.h"
 
 TempController::TempController(QObject *parent) : ControllerBase(parent)
 {
@@ -7,15 +7,15 @@ TempController::TempController(QObject *parent) : ControllerBase(parent)
 }
 
 QString TempController::getName() {
-    return "TempController";
+    return TempController::staticMetaObject.className();
 }
 
 QStringList TempController::getTopicPath() {
-    return QStringList() << MQTT_PATH_TEMPERATURES;
+    return QStringList() << MQTT_PATH_TEMPS;
 }
 
 QStringList TempController::getLabelList() {
-    return QStringList() << TEMPERATURES_LABEL_INSIDE;
+    CONVERT_LABEL_LIST(TEMPS_LABELS);
 }
 
 QVariant::Type TempController::getValueType(int index) {
@@ -26,8 +26,6 @@ QVariant::Type TempController::getValueType(int index) {
 
 void TempController::onInit() {
     qDebug() << Q_FUNC_INFO;
-
-    m_values.append(0.0);       // MQTT_PATH_TEMPERATURES_INSIDE
 }
 
 void TempController::onMqttConnected() {
@@ -38,7 +36,7 @@ void TempController::onValueChanged(int index, QVariant value) {
     qDebug() << Q_FUNC_INFO << index << value;
 
     switch(index) {
-    case MQTT_PATH_TEMPERATURES_INSIDE:
+    case MQTT_PATH_TEMPS_HC:
         break;
     }
 }

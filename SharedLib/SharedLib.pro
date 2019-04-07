@@ -27,18 +27,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        sharedlib.cpp \
-        controllerbase.cpp \
-        appconfiguration.cpp \
-        controllermanager.cpp \
-        controllerlistmodel.cpp \
-        errorcontroller.cpp \
-        relaiscontroller.cpp \
-        tempcontroller.cpp \
-        errorcontrollerlistmodel.cpp
+        source/sharedlib.cpp \
+        source/controllerbase.cpp \
+        source/appconfiguration.cpp \
+        source/controllermanager.cpp \
+        source/controllerlistmodel.cpp \
+        source/errorcontroller.cpp \
+        source/relaiscontroller.cpp \
+        source/tempcontroller.cpp \
+        source/errorcontrollerlistmodel.cpp \
+    source/settingscontroller.cpp \
+    source/settingscontroller.cpp \
+    source/logiccontroller.cpp
 
 HEADERS += \
-        sharedlib.h \
+        include/sharedlib.h \
         include/controllerbase.h \
         include/appconfiguration.h \
         include/controllermanager.h \
@@ -46,8 +49,11 @@ HEADERS += \
         include/errorcontroller.h \
         include/relaiscontroller.h \
         include/tempcontroller.h \
-    constants.h \
-    include/errorcontrollerlistmodel.h
+    include/constants.h \
+    include/errorcontrollerlistmodel.h \
+    include/constants_qt.h \
+    include/settingscontroller.h \
+    include/logiccontroller.h
 
 unix {
     target.path = /usr/lib

@@ -4,6 +4,7 @@
 #include "tempcontroller.h"
 #include "errorcontroller.h"
 #include "relaiscontroller.h"
+#include "preheatlogic.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,8 +14,8 @@ int main(int argc, char *argv[])
 
     ControllerManager controllerManager(&appConfig);
 
-    TempController heatingController;
-    controllerManager.registerController(&heatingController);
+    TempController tempController;
+    controllerManager.registerController(&tempController);
 
     ErrorController errorController;
     controllerManager.registerController(&errorController);
@@ -23,6 +24,8 @@ int main(int argc, char *argv[])
     controllerManager.registerController(&relaisController);
 
     controllerManager.init(&appConfig);
+
+    PreheatLogic preheatLogic(&controllerManager);
 
     return a.exec();
 }

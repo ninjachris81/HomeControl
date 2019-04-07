@@ -6,7 +6,7 @@
 #include <QMap>
 #include "controllerbase.h"
 #include "appconfiguration.h"
-//#include "constants.h"
+#include "constants_qt.h"
 
 class ControllerManager : public QObject
 {
@@ -49,6 +49,8 @@ private:
 
     QMqttClient m_mqttClient;
 
+    QMqttSubscription* m_cmdSub;
+
     void _onMqttConnected();
     void _onMqttDisconnected();
 
@@ -56,9 +58,13 @@ private slots:
     void _onMqttStateChanged(QMqttClient::ClientState state);
     void _onMqttError(QMqttClient::ClientError error);
 
+    void _onMqttCmdReceived(QMqttMessage msg);
+
 signals:
     void mqttConnected();
     void mqttDisconnected();
+
+    void mqttCmdReceived(MQTT_CMDS cmd);
 
 public slots:
 };
