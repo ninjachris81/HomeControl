@@ -1,4 +1,5 @@
 #include "TempController.h"
+#include <LogHelper.h>
 
 TempController::TempController() : AbstractIntervalTask(TEMP_INTERVAL_MS) {
   
@@ -8,20 +9,29 @@ TempController::~TempController() {
 }
 
 void TempController::init() {
+  LOG_INIT();
+  
   tempAdapter.init();
+  tempAdapter.addListener(this);
+
+  taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->registerHandler(this);
 }
 
 void TempController::update() {
   tempAdapter.update();
+  if (tempAdapter.getFoundSensors()!=TEMP_COUNT) {
+    taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->sendError("Invalid sensors: " + tempAdapter.getFoundSensors());
+  }
 }
 
 void TempController::onConnected() {
+  isConnected = true;
 }
 
 void TempController::onBroadcast() {
   for (uint8_t i=0;i<TEMP_COUNT;i++) {
     sendTemp(i);
-  }  
+  }
 }
 
 void TempController::onStringReceived(int index, String value) {
@@ -40,8 +50,16 @@ void TempController::onDoubleReceived(int index, double value) {
   // ignore
 }
 
-double TempController::getTemperature(uint8_t index) {
-  
+void TempController::onPropertyValueChange(uint8_t id, float newValue, float oldValue) {
+  if (isConnected) {
+    sendTemp(id);
+  } else {
+    // cannot send
+  }
+}
+
+float TempController::getTemperature(uint8_t index) {
+  return tempAdapter.getTemperature(index);
 }
 
 void TempController::sendTemp(uint8_t index) {

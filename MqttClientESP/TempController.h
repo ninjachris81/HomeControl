@@ -7,10 +7,11 @@
 #include "Pins.h"
 #include "MqttController.h"
 #include "TempAdapterDHT.h"
+#include <Property.h>
 
 #define TEMP_INTERVAL_MS 1000
 
-class TempController : public AbstractIntervalTask, public MqttController::MqttEventCallbackHandler {
+class TempController : public AbstractIntervalTask, public MqttController::MqttEventCallbackHandler, public Property<float>::ValueChangeListener {
 public:
   TempController();
   ~TempController();
@@ -20,6 +21,8 @@ public:
   void update();
   
   void onConnected();
+
+  void onPropertyValueChange(uint8_t id, float newValue, float oldValue);
 
   void onBroadcast();
   String getBroadcastPath() {
@@ -37,7 +40,8 @@ public:
   void sendTemp(uint8_t index);
 
 private:
-  double getTemperature(uint8_t index);
+  float getTemperature(uint8_t index);
+  bool isConnected = false;
 
   TempAdapterDHT tempAdapter;
 };

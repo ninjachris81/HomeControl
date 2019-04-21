@@ -3,7 +3,7 @@
 #include "include/controllermanager.h"
 #include <QDebug>
 
-ControllerBase::ControllerBase(QObject *parent) : QObject(parent), m_topicSub(nullptr), m_bcSub(nullptr)
+ControllerBase::ControllerBase(QObject *parent) : QObject(parent), m_topicValSub(nullptr), m_topicSetSub(nullptr), m_bcSub(nullptr)
 {
 }
 
@@ -14,12 +14,16 @@ AppConfiguration* ControllerBase::getConfig() {
 void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig, QMqttClient *mqttClient) {
     qDebug() << Q_FUNC_INFO;
 
+    m_topicPath = getTopicPath();
+    m_topicName = m_topicPath.last();
+
     m_parent = parent;
     m_appConfig = appConfig;
     m_mqttClient = mqttClient;
 
     m_labels = getLabelList();
     for(int i=0;i<m_labels.count();i++) m_values.append(QVariant(getValueType(i)));
+    qDebug() << Q_FUNC_INFO << m_values;
 
     connect(parent, &ControllerManager::mqttConnected, this, &ControllerBase::onMqttConnected);
     connect(parent, &ControllerManager::mqttDisconnected, this, &ControllerBase::onMqttDisconnected);
@@ -56,65 +60,105 @@ void ControllerBase::clearValue(int index) {
 }
 
 QVariant ControllerBase::value(int index) {
-    return m_values.at(index);
+    if (index<m_values.count()) {
+        return m_values.at(index);
+    } else {
+        qWarning() << "Invalid index" << m_values.count() << index;
+        return QVariant();
+    }
 }
 
 QList<QVariant> ControllerBase::values() {
     return m_values;
 }
 
-void ControllerBase::setValue(int index, QVariant value) {
+void ControllerBase::setValue(int index, QVariant value, bool sendSet) {
     qDebug() << Q_FUNC_INFO << index << value;
 
-    switch(getValueType(index)) {
-    case QVariant::Int:
-    case QVariant::Double:
-    case QVariant::Bool:
-    case QVariant::String:
-        m_values[index] = value;
-        break;
-    case QVariant::StringList:
-        QStringList list = m_values[index].toStringList();
-        list.append(value.toString());
-        m_values[index] = list;
-        break;
-    }
+    if (index<m_values.count()) {
+        //qDebug() << m_values.at(index) << value;
+        if (m_values.at(index).cmp(value)) {
+            //qDebug() << "Same value - ignoring set";
+            return;
+        }
 
-    onValueChanged(index, m_values[index]);
-    Q_EMIT(valueChanged(index, m_values[index]));
+        if (sendSet) {
+            qDebug() << "Publish value" << index << value;
+            m_parent->publish(ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_SET, index), value);
+        } else {
+            switch(getValueType(index)) {
+            case QVariant::Int:
+            case QVariant::Double:
+            case QVariant::Bool:
+            case QVariant::String:
+                m_values[index] = value;
+                break;
+            case QVariant::StringList:
+                QStringList list = m_values[index].toStringList();
+                list.append(value.toString());
+                m_values[index] = list;
+                break;
+            }
+
+            onValueChanged(index, m_values[index]);
+            Q_EMIT(valueChanged(index, m_values[index]));
+        }
+    } else {
+        qWarning() << "Invalid index" << m_values.count() << index;
+    }
 }
 
 void ControllerBase::onMqttConnected() {
     qDebug() << Q_FUNC_INFO;
 
-    m_topicPath = getTopicPath();
-    m_topicName = m_topicPath.last();
-
-    QStringList fullPath = ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_VAL, true);
+    QStringList fullPath = ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_VAL, -1, true);
 
     QMqttTopicFilter filter = QMqttTopicFilter(fullPath.join(MQTT_PATH_SEP));
     if (filter.isValid()) {
         qDebug() << "Subscribing to" << filter.filter();
-        m_topicSub = m_mqttClient->subscribe(filter);
-        connect(m_topicSub, &QMqttSubscription::messageReceived, this, &ControllerBase::_onMqttMessageReceived);
+        m_topicValSub = m_mqttClient->subscribe(filter);
+        connect(m_topicValSub, &QMqttSubscription::messageReceived, this, &ControllerBase::_onMqttMessageReceived);
     }
 
     // connect to bc
-    m_bcSub = m_mqttClient->subscribe(QMqttTopicFilter(MQTT_PATH_BC));
+    QStringList bcPath = ControllerManager::buildPath(QStringList() << MQTT_PATH_BC);
+    m_bcSub = m_mqttClient->subscribe(QMqttTopicFilter(bcPath.join(MQTT_PATH_SEP)));
     connect(m_bcSub, &QMqttSubscription::messageReceived, this, &ControllerBase::_onMqttMessageReceived);
+
+    if (hasSetSupport()) {
+        qDebug() << Q_FUNC_INFO << "Adding set support";
+        QStringList fullPath = ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_SET, -1, true);
+
+        QMqttTopicFilter filter = QMqttTopicFilter(fullPath.join(MQTT_PATH_SEP));
+        if (filter.isValid()) {
+            qDebug() << "Subscribing to" << filter.filter();
+            m_topicSetSub = m_mqttClient->subscribe(filter);
+            connect(m_topicSetSub, &QMqttSubscription::messageReceived, this, &ControllerBase::_onMqttMessageReceived);
+        }
+    }
+
+    onConnectedChanged(true);
 }
 
 void ControllerBase::onMqttDisconnected() {
     qDebug() << Q_FUNC_INFO;
 
-    if (m_topicSub!=nullptr) {
-        m_topicSub->unsubscribe();
-        m_topicSub->disconnect();
+    if (m_topicValSub!=nullptr) {
+        m_topicValSub->unsubscribe();
+        m_topicValSub->disconnect();
     }
+
+    if (m_topicSetSub!=nullptr) {
+        m_topicSetSub->unsubscribe();
+        m_topicSetSub->disconnect();
+    }
+
     if (m_bcSub!=nullptr) {
         m_bcSub->unsubscribe();
         m_bcSub->disconnect();
     }
+
+    onConnectedChanged(false);
 }
 
 void ControllerBase::onInit() {
@@ -122,30 +166,50 @@ void ControllerBase::onInit() {
 }
 
 void ControllerBase::publish(int index) {
-    m_parent->publish(ControllerManager::buildPath(m_topicPath << QString::number(index)), m_values.at(index));
+    qDebug() << Q_FUNC_INFO << index << m_values.at(index);
+
+    if (index<m_values.count()) {
+        m_parent->publish(ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_VAL, index), m_values.at(index));
+    } else {
+        qWarning() << "Invalid index" << m_values.count() << index;
+    }
 }
 
 void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
     qDebug() << Q_FUNC_INFO << msg.topic() << msg.payload();
 
     QStringList topicPath = ControllerManager::cleanPath(msg.topic().levels());
-    QString topicName = topicPath.at(topicPath.count()-2);
+
+    QString topicName = topicPath.at(topicPath.count()-3);
+    QString valSetMode = topicPath.at(topicPath.count()-2);
     int index = topicPath.last().toInt();
 
     if (topicPath.first()==MQTT_PATH_BC) {
         if (topicName==MQTT_BC_CMD_BC_ALL || topicName==m_topicName) {
-            for (int i=0;i<m_values.count();i++) {
-                publish(i);
-            }
+            broadcastValues();
         }
     } else {
         QVariant value = parsePayload(msg.payload());
 
-        if (m_values.count()>index) {
-            setValue(index, value);
+        if (valSetMode==MQTT_SET && hasSetSupport()) {
+            onSetReceived(index, value);
+        } else if (valSetMode==MQTT_SET && !hasSetSupport()) {
+            qWarning() << "Set request received, but no support";
+        } else if (valSetMode==MQTT_VAL) {
+            if (m_values.count()>index) {
+                setValue(index, value);
+            } else {
+                onUnmappedMqttValueReceived(topicPath, value);
+            }
         } else {
-            onUnmappedMqttValueReceived(topicPath, value);
+            qWarning() << "Invalid mode" << valSetMode;
         }
+    }
+}
+
+void ControllerBase::broadcastValues() {
+    for (int i=0;i<m_values.count();i++) {
+        publish(i);
     }
 }
 
@@ -178,3 +242,13 @@ void ControllerBase::onValueChanged(int index, QVariant value) {
     qDebug() << Q_FUNC_INFO << index << value;
 }
 
+void ControllerBase::onConnectedChanged(bool connected) {
+    qDebug() << Q_FUNC_INFO << connected;
+}
+
+void ControllerBase::onSetReceived(int index, QVariant value) {
+    qDebug() << Q_FUNC_INFO << index << value;
+
+    setValue(index, value);
+    publish(index);
+}

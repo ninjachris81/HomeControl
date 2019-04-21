@@ -37,7 +37,6 @@ SOURCES += \
         source/tempcontroller.cpp \
         source/errorcontrollerlistmodel.cpp \
     source/settingscontroller.cpp \
-    source/settingscontroller.cpp \
     source/logiccontroller.cpp
 
 HEADERS += \

@@ -36,7 +36,7 @@ public:
 
     void publishBC(MQTT_BROADCAST_TYPE type);
 
-    static QStringList buildPath(QStringList paths, MQTT_MODE mode = MQTT_MODE_NONE, bool addWildcard = false);
+    static QStringList buildPath(QStringList paths, MQTT_MODE mode = MQTT_MODE_NONE, int index = -1, bool addWildcard = false);
     static QStringList cleanPath(QStringList paths);
 
     static QByteArray getPayload(QVariant value);

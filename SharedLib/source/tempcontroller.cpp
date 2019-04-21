@@ -1,13 +1,15 @@
 #include "include/tempcontroller.h"
 #include "include/constants_qt.h"
 
+QString TempController::CONTROLLER_NAME = QStringLiteral("TempController");
+
 TempController::TempController(QObject *parent) : ControllerBase(parent)
 {
 
 }
 
 QString TempController::getName() {
-    return TempController::staticMetaObject.className();
+    return CONTROLLER_NAME;
 }
 
 QStringList TempController::getTopicPath() {

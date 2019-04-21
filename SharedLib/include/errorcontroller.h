@@ -17,6 +17,8 @@ public:
 
     QVariant::Type getValueType(int index = -1);
 
+    static QString CONTROLLER_NAME;
+
 protected:
     void onInit();
 

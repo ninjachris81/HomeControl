@@ -1,1 +1,1 @@
-#define PIN_DIGITAL_TEMP_SENSORS 2
+

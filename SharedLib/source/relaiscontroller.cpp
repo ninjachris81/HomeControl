@@ -1,13 +1,15 @@
 #include "include/relaiscontroller.h"
 #include "include/constants_qt.h"
 
+QString RelaisController::CONTROLLER_NAME = QStringLiteral("RelaisController");
+
 RelaisController::RelaisController(QObject *parent) : ControllerBase (parent)
 {
 
 }
 
 QString RelaisController::getName() {
-    return RelaisController::staticMetaObject.className();
+    return CONTROLLER_NAME;
 }
 
 QStringList RelaisController::getTopicPath() {

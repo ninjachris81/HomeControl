@@ -15,7 +15,11 @@ class TempAdapterDHT {
 
     void update();
 
-    double getTemperature(uint8_t index);
+    float getTemperature(uint8_t index);
+
+    void addListener(Property<float>::ValueChangeListener *listener);
+
+    uint8_t getFoundSensors();
 
 private:
   uint8_t foundSensors = 0;

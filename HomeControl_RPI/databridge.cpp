@@ -14,8 +14,6 @@ DataBridge::DataBridge(AppConfiguration *appConfig, QObject *parent) : QObject(p
 }
 
 void DataBridge::onMqttConnected() {
-    qDebug() << "Sending broadcast all";
-    m_controllerManager.publishBC(ControllerManager::MQTT_BC_ALL);
 }
 
 ControllerListModel* DataBridge::tempListModelController() {

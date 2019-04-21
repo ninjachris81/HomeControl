@@ -2,12 +2,14 @@
 #include "include/constants_qt.h"
 #include <QDebug>
 
+QString ErrorController::CONTROLLER_NAME = QStringLiteral("ErrorController");
+
 ErrorController::ErrorController(QObject *parent) : ControllerBase(parent)
 {
 }
 
 QString ErrorController::getName() {
-    return ErrorController::staticMetaObject.className();
+    return CONTROLLER_NAME;
 }
 
 QStringList ErrorController::getTopicPath() {

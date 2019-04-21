@@ -50,6 +50,9 @@ void ControllerManager::_onMqttConnected() {
     m_cmdSub = m_mqttClient.subscribe(QMqttTopicFilter(buildPath(QStringList() << MQTT_PATH_CMD).join(MQTT_PATH_SEP)));
     connect(m_cmdSub, &QMqttSubscription::messageReceived, this, &ControllerManager::_onMqttCmdReceived);
 
+    qDebug() << "Sending broadcast all";
+    publishBC(ControllerManager::MQTT_BC_ALL);
+
     Q_EMIT(mqttConnected());
 }
 
@@ -93,6 +96,8 @@ void ControllerManager::publishBC(MQTT_BROADCAST_TYPE type) {
 }
 
 void ControllerManager::publish(QStringList path, QVariant value) {
+    qDebug() << Q_FUNC_INFO << path << value;
+
     if (m_mqttClient.state()==QMqttClient::Connected) {
         m_mqttClient.publish(QMqttTopicName(path.join(MQTT_PATH_SEP)), getPayload(value));
     } else {
@@ -100,7 +105,9 @@ void ControllerManager::publish(QStringList path, QVariant value) {
     }
 }
 
-QStringList ControllerManager::buildPath(QStringList paths, MQTT_MODE mode, bool addWildcard) {
+QStringList ControllerManager::buildPath(QStringList paths, MQTT_MODE mode, int index, bool addWildcard) {
+    //qDebug() << Q_FUNC_INFO << paths;
+
     if (paths.first()!=MQTT_BASE_PATH) paths.prepend(MQTT_BASE_PATH);
     switch(mode) {
     case MQTT_MODE_VAL:
@@ -114,7 +121,11 @@ QStringList ControllerManager::buildPath(QStringList paths, MQTT_MODE mode, bool
         break;
     }
 
-    if (addWildcard) paths.append(MQTT_WILDCARD);
+    if (addWildcard) {
+        paths.append(MQTT_WILDCARD);
+    } else if (index>-1){
+        paths.append(QString::number(index));
+    }
     return paths;
 }
 
@@ -138,10 +149,12 @@ QByteArray ControllerManager::getPayload(QVariant value) {
         returnData.append(value.toString());
     } else if (value.type()==QVariant::Bool) {
         returnData.append(MQTT_ID_BOOL);
-        returnData.append(value.toBool());
+        returnData.append(value.toBool()?"1":"0");
     } else {
         qWarning() << "Cannot serialize" << value.typeName();
     }
+
+    qDebug() << "Payload" << returnData;
 
     return returnData;
 }

@@ -29,11 +29,13 @@ public:
 
     void publish(int index);
 
+    void broadcastValues();
+
     QList<QVariant> values();
 
     QVariant value(int index);
 
-    void setValue(int index, QVariant value);
+    void setValue(int index, QVariant value, bool sendSet = false);
 
     QString getLabel(int index);
 
@@ -49,11 +51,19 @@ protected:
 
     QString m_topicName;
 
+    virtual bool hasSetSupport() {
+        return false;
+    }
+
     virtual void onInit();
 
     virtual void onMqttUnknownMessageReceived(QStringList topicPath, QByteArray data);
 
     virtual void onUnmappedMqttValueReceived(QStringList topicPath, QVariant value);
+
+    virtual void onConnectedChanged(bool connected);
+
+    virtual void onSetReceived(int index, QVariant value);
 
     virtual void onValueChanged(int index, QVariant value);
 
@@ -61,7 +71,8 @@ private:
     AppConfiguration* m_appConfig;
     QMqttClient *m_mqttClient;
 
-    QMqttSubscription* m_topicSub;
+    QMqttSubscription* m_topicValSub;
+    QMqttSubscription* m_topicSetSub;
     QMqttSubscription* m_bcSub;
 
 signals:

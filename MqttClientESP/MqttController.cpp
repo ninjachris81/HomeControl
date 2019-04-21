@@ -39,14 +39,18 @@ void MqttController::onBroadcastReceivedStatic(const int endpoint, const int ind
 }
 
 void MqttController::onBroadcastReceived(const int endpoint, const int index, const String &message) {
-  if (message==MQTT_BC_CMD_BC_ALL) {
-    for (uint8_t i=0;i<callbackHandlerCount;i++) callbackHandlers[i]->onBroadcast();  
-  } else {
-    for (uint8_t i=0;i<callbackHandlerCount;i++) {
-      if (message==callbackHandlers[i]->getBroadcastPath()) {
-        callbackHandlers[i]->onBroadcast();  
+  if (message.charAt(0)==MQTT_ID_STRING) {
+    if (message.substring(1)==MQTT_BC_CMD_BC_ALL) {
+      for (uint8_t i=0;i<callbackHandlerCount;i++) callbackHandlers[i]->onBroadcast();  
+    } else {
+      for (uint8_t i=0;i<callbackHandlerCount;i++) {
+        if (message.substring(1)==callbackHandlers[i]->getBroadcastPath()) {
+          callbackHandlers[i]->onBroadcast();  
+        }
       }
     }
+  } else {
+    sendError(F("Invalid broadcast type"));
   }
 }
 
@@ -87,25 +91,37 @@ void MqttController::registerHandler(MqttEventCallbackHandler* handler) {
 }
 
 void MqttController::subscribePath(const int endpoint, const int index, String path) {
-  mqttClient->subscribe(endpoint, index, path, &MqttController::onMessageReceivedStatic);
+  if (mqttClient->isConnected()) {
+    mqttClient->subscribe(endpoint, index, path, &MqttController::onMessageReceivedStatic);
+  }
 }
 
 void MqttController::sendError(String errorDesc) {
-  mqttClient->publish(BUILD_PATH(MQTT_PATH_ERRORS + String(MQTT_PATH_SEP) + MQTT_VAL + String(MQTT_PATH_SEP) + String(MQTT_PATH_ERRORS_RELAYS)), "s" + errorDesc);
+  if (mqttClient->isConnected()) {
+    mqttClient->publish(BUILD_PATH(MQTT_PATH_ERRORS + String(MQTT_PATH_SEP) + MQTT_VAL + String(MQTT_PATH_SEP) + String(MQTT_PATH_ERRORS_RELAYS)), "s" + errorDesc);
+  }
 }
 
 void MqttController::sendMessage(String path, String payload) {
-  mqttClient->publish(path, "s" + payload);
+  if (mqttClient->isConnected()) {
+    mqttClient->publish(path, "s" + payload);
+  }
 }
 
 void MqttController::sendMessage(String path, bool payload) {
-  mqttClient->publish(path, payload ? "b1" : "b0");
+  if (mqttClient->isConnected()) {
+    mqttClient->publish(path, payload ? "b1" : "b0");
+  }
 }
 
 void MqttController::sendMessage(String path, int payload) {
-  mqttClient->publish(path, "i" + payload);
+  if (mqttClient->isConnected()) {
+    mqttClient->publish(path, "i" + payload);
+  }
 }
 
 void MqttController::sendMessage(String path, double payload) {
-  mqttClient->publish(path, "d" + String(payload));
+  if (mqttClient->isConnected()) {
+    mqttClient->publish(path, "d" + String(payload));
+  }
 }
