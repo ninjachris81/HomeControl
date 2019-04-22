@@ -29,15 +29,15 @@ ApplicationWindow {
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
 
-        Page1Form {
+        Page1 {
             id: page1
         }
 
-        Page2Form {
+        Page2 {
             id: page2
         }
 
-        Page3Form {
+        Page3 {
             id: page3
         }
     }

@@ -1,10 +1,13 @@
-#include "include/controllerbase.h"
+#include "include/controller/controllerbase.h"
+#include "include/controller/controllermanager.h"
 #include "include/constants_qt.h"
-#include "include/controllermanager.h"
 #include <QDebug>
 
 ControllerBase::ControllerBase(QObject *parent) : QObject(parent), m_topicValSub(nullptr), m_topicSetSub(nullptr), m_bcSub(nullptr)
 {
+    connect(&m_validityTimer, &QTimer::timeout, this, &ControllerBase::onCheckValidity);
+    m_validityTimer.setInterval(1000);
+    m_validityTimer.start();
 }
 
 AppConfiguration* ControllerBase::getConfig() {
@@ -22,8 +25,10 @@ void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig
     m_mqttClient = mqttClient;
 
     m_labels = getLabelList();
-    for(int i=0;i<m_labels.count();i++) m_values.append(QVariant(getValueType(i)));
-    qDebug() << Q_FUNC_INFO << m_values;
+    for(int i=0;i<m_labels.count();i++) {
+        ValueStruct t = {getValueLifetime(i), 0, QVariant(getValueType(i))};
+        m_values.append(t);
+    }
 
     connect(parent, &ControllerManager::mqttConnected, this, &ControllerBase::onMqttConnected);
     connect(parent, &ControllerManager::mqttDisconnected, this, &ControllerBase::onMqttDisconnected);
@@ -42,33 +47,42 @@ QString ControllerBase::getLabel(int index) {
 void ControllerBase::clearValue(int index) {
     switch(getValueType(index)) {
     case QVariant::Int:
-        m_values[index] = 0;
+        m_values[index].value = 0;
         break;
     case QVariant::Double:
-        m_values[index] = (double)0.0;
+        m_values[index].value = (double)0.0;
         break;
     case QVariant::Bool:
-        m_values[index] = false;
+        m_values[index].value = false;
         break;
     case QVariant::String:
-        m_values[index] = "";
+        m_values[index].value = "";
         break;
     case QVariant::StringList:
-        m_values[index] = QStringList();
+        m_values[index].value = QStringList();
         break;
     }
 }
 
 QVariant ControllerBase::value(int index) {
     if (index<m_values.count()) {
-        return m_values.at(index);
+        return m_values.at(index).value;
     } else {
         qWarning() << "Invalid index" << m_values.count() << index;
         return QVariant();
     }
 }
 
-QList<QVariant> ControllerBase::values() {
+bool ControllerBase::valueIsValid(int index) {
+    if (index<m_values.count()) {
+        return m_values[index].isValid();
+    } else {
+        qWarning() << "Invalid index" << m_values.count() << index;
+        return false;
+    }
+}
+
+QList<ControllerBase::ValueStruct> ControllerBase::values() {
     return m_values;
 }
 
@@ -77,8 +91,9 @@ void ControllerBase::setValue(int index, QVariant value, bool sendSet) {
 
     if (index<m_values.count()) {
         //qDebug() << m_values.at(index) << value;
-        if (m_values.at(index).cmp(value)) {
+        if (m_values[index].compareTo(value)) {
             //qDebug() << "Same value - ignoring set";
+            m_values[index].updateValue(value);
             return;
         }
 
@@ -91,17 +106,17 @@ void ControllerBase::setValue(int index, QVariant value, bool sendSet) {
             case QVariant::Double:
             case QVariant::Bool:
             case QVariant::String:
-                m_values[index] = value;
+                m_values[index].updateValue(value);
                 break;
             case QVariant::StringList:
-                QStringList list = m_values[index].toStringList();
+                QStringList list = m_values[index].value.toStringList();
                 list.append(value.toString());
-                m_values[index] = list;
+                m_values[index].updateValue(list);
                 break;
             }
 
-            onValueChanged(index, m_values[index]);
-            Q_EMIT(valueChanged(index, m_values[index]));
+            onValueChanged(index, m_values[index].value);
+            Q_EMIT(valueChanged(index, m_values[index].value));
         }
     } else {
         qWarning() << "Invalid index" << m_values.count() << index;
@@ -166,30 +181,34 @@ void ControllerBase::onInit() {
 }
 
 void ControllerBase::publish(int index) {
-    qDebug() << Q_FUNC_INFO << index << m_values.at(index);
+    qDebug() << Q_FUNC_INFO << index << m_values.at(index).value;
 
     if (index<m_values.count()) {
-        m_parent->publish(ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_VAL, index), m_values.at(index));
+        m_parent->publish(ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_VAL, index), m_values.at(index).value);
     } else {
         qWarning() << "Invalid index" << m_values.count() << index;
     }
+}
+
+void ControllerBase::publishCmd(EnumsDeclarations::MQTT_CMDS cmd) {
+    qDebug() << Q_FUNC_INFO << cmd;
+    m_parent->publishCmd(cmd);
 }
 
 void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
     qDebug() << Q_FUNC_INFO << msg.topic() << msg.payload();
 
     QStringList topicPath = ControllerManager::cleanPath(msg.topic().levels());
-
-    QString topicName = topicPath.at(topicPath.count()-3);
-    QString valSetMode = topicPath.at(topicPath.count()-2);
-    int index = topicPath.last().toInt();
+    QVariant value = parsePayload(msg.payload());
 
     if (topicPath.first()==MQTT_PATH_BC) {
-        if (topicName==MQTT_BC_CMD_BC_ALL || topicName==m_topicName) {
+        if (value==MQTT_BC_CMD_BC_ALL || value==m_topicName) {
             broadcastValues();
         }
     } else {
-        QVariant value = parsePayload(msg.payload());
+        QString topicName = topicPath.at(topicPath.count()-3);
+        QString valSetMode = topicPath.at(topicPath.count()-2);
+        int index = topicPath.last().toInt();
 
         if (valSetMode==MQTT_SET && hasSetSupport()) {
             onSetReceived(index, value);
@@ -209,7 +228,7 @@ void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
 
 void ControllerBase::broadcastValues() {
     for (int i=0;i<m_values.count();i++) {
-        publish(i);
+        if (isValueOwner(i)) publish(i);
     }
 }
 
@@ -251,4 +270,14 @@ void ControllerBase::onSetReceived(int index, QVariant value) {
 
     setValue(index, value);
     publish(index);
+}
+
+void ControllerBase::onCheckValidity() {
+    for (uint8_t i=0;i<m_values.count();i++) {
+        bool oldValid = m_values[i].wasValid;
+
+        if (oldValid!=m_values[i].isValid()) {
+            Q_EMIT(valueValidChanged(i));
+        }
+    }
 }

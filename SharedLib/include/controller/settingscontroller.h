@@ -12,7 +12,9 @@ public:
         SETTINGS_CLIENT
     };
 
-    SettingsController(SETTINGS_MODE mode, QObject *parent = nullptr);
+    SettingsController(QObject *parent = nullptr);
+
+    void setMode(SETTINGS_MODE thisMode);
 
     QString getName();
 
@@ -20,12 +22,16 @@ public:
 
     QStringList getLabelList();
 
-    QVariant::Type getValueType(int index);
+    QVariant::Type getValueType(int index = -1);
+
+    qint64 getValueLifetime(int index = -1);
+
+    bool isValueOwner(int index = -1);
 
     static QString CONTROLLER_NAME;
 
 protected:
-    SETTINGS_MODE m_mode;
+    SETTINGS_MODE m_mode = SETTINGS_SERVER;
 
     bool hasSetSupport() {
         return true;

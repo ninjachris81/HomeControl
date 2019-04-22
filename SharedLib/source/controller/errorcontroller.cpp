@@ -1,4 +1,4 @@
-#include "include/errorcontroller.h"
+#include "include/controller/errorcontroller.h"
 #include "include/constants_qt.h"
 #include <QDebug>
 
@@ -17,13 +17,25 @@ QStringList ErrorController::getTopicPath() {
 }
 
 QStringList ErrorController::getLabelList() {
-    CONVERT_LABEL_LIST(ERRORS_LABELS);
+    CONVERT_LABEL_LIST(EnumsDeclarations::ERRORS_LABELS);
 }
 
 QVariant::Type ErrorController::getValueType(int index) {
     Q_UNUSED(index);
 
     return QVariant::StringList;
+}
+
+bool ErrorController::isValueOwner(int index) {
+    Q_UNUSED(index);
+
+    return true;
+}
+
+qint64 ErrorController::getValueLifetime(int index) {
+    Q_UNUSED(index);
+
+    return LIFETIME_UNLIMITED;
 }
 
 void ErrorController::onInit() {

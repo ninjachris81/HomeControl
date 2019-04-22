@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include "controllermanager.h"
-#include "constants_qt.h"
+#include "../constants_qt.h"
 
 #include <QTimer>
 
@@ -27,7 +27,7 @@ signals:
 public slots:
     virtual void onMaintenance();
 
-    virtual void onCommandReceived(MQTT_CMDS cmd);
+    virtual void onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd);
 };
 
 #endif // LOGICCONTROLLER_H

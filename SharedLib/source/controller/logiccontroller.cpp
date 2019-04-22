@@ -1,4 +1,4 @@
-#include "include/logiccontroller.h"
+#include "include/controller/logiccontroller.h"
 #include <QDebug>
 
 LogicController::LogicController(ControllerManager *controllerManager, QObject *parent) : QObject(parent), m_controllerManager(controllerManager)
@@ -20,6 +20,6 @@ void LogicController::onMaintenance() {
     qDebug() << Q_FUNC_INFO;
 }
 
-void LogicController::onCommandReceived(MQTT_CMDS cmd) {
+void LogicController::onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd) {
     qDebug() << Q_FUNC_INFO;
 }

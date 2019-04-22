@@ -13,11 +13,13 @@
   #define RELAY_COUNT 4
   #define TEMP_COUNT 0
   #define PIN_DIGITAL_TEMP_SENSORS 0
+  #define MQTT_NAME "Relay Board"
 #elif ACTIVE_CONFIG == CONFIG_TEMP_BOARD
   #warning Temp Board Configuration
   #define RELAY_COUNT 0
   #define TEMP_COUNT 1
   #define PIN_DIGITAL_TEMP_SENSORS D3
+  #define MQTT_NAME "Temp Board"
 #endif
 
 #if RELAY_COUNT == 0 && TEMP_COUNT == 0

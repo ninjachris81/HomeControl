@@ -1,9 +1,16 @@
-#include "include/controllerlistmodel.h"
+#include "include/listmodel/controllerlistmodel.h"
 #include <QQmlEngine>
 
 ControllerListModel::ControllerListModel(ControllerBase *controller) : m_controller(controller)
 {
     connect(controller, &ControllerBase::valueChanged, this, &ControllerListModel::onValueChanged);
+    connect(controller, &ControllerBase::valueValidChanged, this, &ControllerListModel::onValueValidChanged);
+}
+
+void ControllerListModel::onValueValidChanged(int index) {
+    QModelIndex itemIndex = this->index(index);
+
+    Q_EMIT(dataChanged(itemIndex, itemIndex));
 }
 
 void ControllerListModel::onValueChanged(int index, QVariant value) {
@@ -27,9 +34,12 @@ int ControllerListModel::rowCount(const QModelIndex &parent) const {
 QVariant ControllerListModel::data(const QModelIndex &index, int role) const {
     if (index.isValid()) {
         if (role==ValueRole) {
-            return m_controller->values().at(index.row());
+            return m_controller->values().at(index.row()).value;
         } else if (role==LabelRole) {
             return m_controller->getLabel(index.row());
+        } else if (role==IsValidRole) {
+            ControllerBase::ValueStruct val = m_controller->values().at(index.row());
+            return val.isValid();
         } else {
             return QVariant();
         }
@@ -44,3 +54,4 @@ QHash<int, QByteArray> ControllerListModel::roleNames() const {
     roles[ValueRole] = "value";
     return roles;
 }
+

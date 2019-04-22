@@ -1,5 +1,5 @@
 QT += quick
-QT += mqtt
+QT += mqtt virtualkeyboard
 
 CONFIG += c++11
 
@@ -18,7 +18,8 @@ SOURCES += \
         main.cpp \
     databridge.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += qml.qrc \
+    qml_components.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

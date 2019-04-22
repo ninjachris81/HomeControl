@@ -1,4 +1,4 @@
-#include "include/controllermanager.h"
+#include "include/controller/controllermanager.h"
 #include "include/constants_qt.h"
 #include <QDebug>
 #include <QTimer>
@@ -75,7 +75,7 @@ void ControllerManager::_onMqttDisconnected() {
 void ControllerManager::_onMqttCmdReceived(QMqttMessage msg) {
     qDebug() << Q_FUNC_INFO << msg.topic() << msg.payload();
 
-    MQTT_CMDS cmd = static_cast<MQTT_CMDS>(ControllerBase::parsePayload(msg.payload()).toInt());
+    EnumsDeclarations::MQTT_CMDS cmd = static_cast<EnumsDeclarations::MQTT_CMDS>(ControllerBase::parsePayload(msg.payload()).toInt());
     Q_EMIT(mqttCmdReceived(cmd));
 }
 
@@ -93,6 +93,10 @@ QString ControllerManager::getBroadcastValue(MQTT_BROADCAST_TYPE type) {
 
 void ControllerManager::publishBC(MQTT_BROADCAST_TYPE type) {
     publish(buildPath(QStringList() << MQTT_PATH_BC), getBroadcastValue(type));
+}
+
+void ControllerManager::publishCmd(EnumsDeclarations::MQTT_CMDS cmd) {
+    publish(buildPath(QStringList() << MQTT_PATH_CMD), (int)cmd);
 }
 
 void ControllerManager::publish(QStringList path, QVariant value) {

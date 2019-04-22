@@ -5,8 +5,8 @@
 #include <QObject>
 #include <QMap>
 #include "controllerbase.h"
-#include "appconfiguration.h"
-#include "constants_qt.h"
+#include "../appconfiguration.h"
+#include "../constants_qt.h"
 
 class ControllerManager : public QObject
 {
@@ -43,6 +43,8 @@ public:
 
     void publish(QStringList path, QVariant value);
 
+    void publishCmd(EnumsDeclarations::MQTT_CMDS cmd);
+
 private:
     QMap<QString, ControllerBase*> m_controllers;
     AppConfiguration* m_appConfig;
@@ -64,7 +66,7 @@ signals:
     void mqttConnected();
     void mqttDisconnected();
 
-    void mqttCmdReceived(MQTT_CMDS cmd);
+    void mqttCmdReceived(EnumsDeclarations::MQTT_CMDS cmd);
 
 public slots:
 };

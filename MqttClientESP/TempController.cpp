@@ -21,11 +21,18 @@ void TempController::update() {
   tempAdapter.update();
   if (tempAdapter.getFoundSensors()!=TEMP_COUNT) {
     taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->sendError("Invalid sensors: " + tempAdapter.getFoundSensors());
+  } else {
+    if (lastBroadcast==0 || millis()>lastBroadcast+TEMP_BC_INTERVAL_BC) {
+      onBroadcast();
+      lastBroadcast = millis();
+    }
   }
 }
 
 void TempController::onConnected() {
   isConnected = true;
+
+  onBroadcast();
 }
 
 void TempController::onBroadcast() {

@@ -1,7 +1,7 @@
 #ifndef RELAYCONTROLLER_H
 #define RELAYCONTROLLER_H
 
-#include <AbstractIdleTask.h>
+#include <AbstractIntervalTask.h>
 #include "MqttController.h"
 #include "constants.h"
 #include "TaskIDs.h"
@@ -9,7 +9,7 @@
 
 #define RELAY_SERIAL_SPEED 115200
 
-class RelayController : public AbstractIdleTask, public MqttController::MqttEventCallbackHandler {
+class RelayController : public AbstractIntervalTask, public MqttController::MqttEventCallbackHandler {
 public:
   RelayController();
   ~RelayController();

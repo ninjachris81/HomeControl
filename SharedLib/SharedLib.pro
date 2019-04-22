@@ -28,31 +28,39 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         source/sharedlib.cpp \
-        source/controllerbase.cpp \
         source/appconfiguration.cpp \
-        source/controllermanager.cpp \
-        source/controllerlistmodel.cpp \
-        source/errorcontroller.cpp \
-        source/relaiscontroller.cpp \
-        source/tempcontroller.cpp \
-        source/errorcontrollerlistmodel.cpp \
-    source/settingscontroller.cpp \
-    source/logiccontroller.cpp
+        source/controller/controllerbase.cpp \
+        source/controller/controllermanager.cpp \
+        source/controller/errorcontroller.cpp \
+        source/controller/relaycontroller.cpp \
+        source/controller/tempcontroller.cpp \
+        source/controller/logiccontroller.cpp \
+        source/controller/settingscontroller.cpp \
+        source/listmodel/controllerlistmodel.cpp \
+        source/listmodel/errorcontrollerlistmodel.cpp \
+        source/listmodel/relaycontrollerlistmodel.cpp \
+        source/listmodel/settingscontrollerlistmodel.cpp \
+        source/wrapper/controllerwrapper.cpp \
+    source/wrapper/settingswrapper.cpp
 
 HEADERS += \
         include/sharedlib.h \
-        include/controllerbase.h \
         include/appconfiguration.h \
-        include/controllermanager.h \
-        include/controllerlistmodel.h \
-        include/errorcontroller.h \
-        include/relaiscontroller.h \
-        include/tempcontroller.h \
-    include/constants.h \
-    include/errorcontrollerlistmodel.h \
-    include/constants_qt.h \
-    include/settingscontroller.h \
-    include/logiccontroller.h
+        include/constants.h \
+        include/constants_qt.h \
+        include/controller/controllerbase.h \
+        include/controller/controllermanager.h \
+        include/controller/errorcontroller.h \
+        include/controller/relaycontroller.h \
+        include/controller/tempcontroller.h \
+        include/controller/settingscontroller.h \
+        include/controller/logiccontroller.h \
+        include/listmodel/controllerlistmodel.h \
+        include/listmodel/errorcontrollerlistmodel.h \
+        include/listmodel/relaycontrollerlistmodel.h \
+        include/listmodel/settingscontrollerlistmodel.h \
+        include/wrapper/controllerwrapper.h \
+    include/wrapper/settingswrapper.h
 
 unix {
     target.path = /usr/lib

@@ -41,6 +41,6 @@ Page {
                 }
             }
         }
-        model: DataBridge.errorController
+        model: DataBridge.errorControllerModel
     }
 }

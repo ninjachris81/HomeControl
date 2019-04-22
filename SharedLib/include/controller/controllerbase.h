@@ -3,7 +3,11 @@
 
 #include <QObject>
 #include <QMqttClient>
-#include "appconfiguration.h"
+#include <QDateTime>
+#include <QTimer>
+
+#include "../appconfiguration.h"
+#include "../constants_qt.h"
 
 class ControllerManager;        // fwd dcl
 
@@ -13,6 +17,34 @@ class ControllerBase : public QObject
 {
     Q_OBJECT
 public:
+
+    struct ValueStruct {
+        qint64 lifeTime = LIFETIME_UNLIMITED;
+        qint64 lastUpdate;
+        QVariant value;
+        bool wasValid = false;
+
+        bool isValid() {
+            if (lifeTime==LIFETIME_UNLIMITED) {
+                wasValid = true;
+            } else if (lastUpdate==0) {
+                wasValid = false;
+            } else {
+                wasValid = QDateTime::currentMSecsSinceEpoch()<lastUpdate+lifeTime;
+            }
+            return wasValid;
+        }
+
+        bool compareTo(QVariant &val) {
+            return value.cmp(val);
+        }
+
+        void updateValue(QVariant val) {
+            value = val;
+            lastUpdate = QDateTime::currentMSecsSinceEpoch();
+        }
+    };
+
     explicit ControllerBase(QObject *parent = nullptr);
 
     virtual QString getName() = 0;
@@ -23,17 +55,25 @@ public:
 
     virtual QVariant::Type getValueType(int index = -1) = 0;
 
+    virtual qint64 getValueLifetime(int index = -1) = 0;
+
+    virtual bool isValueOwner(int index = -1) = 0;
+
     void init(ControllerManager* parent, AppConfiguration* appConfig, QMqttClient *mqttClient);
 
     AppConfiguration* getConfig();
 
     void publish(int index);
 
+    void publishCmd(EnumsDeclarations::MQTT_CMDS cmd);
+
     void broadcastValues();
 
-    QList<QVariant> values();
+    QList<ValueStruct> values();
 
     QVariant value(int index);
+
+    bool valueIsValid(int index);
 
     void setValue(int index, QVariant value, bool sendSet = false);
 
@@ -44,7 +84,7 @@ public:
     static QVariant parsePayload(QByteArray payload);
 
 protected:
-    QList<QVariant> m_values;
+    QList<ValueStruct> m_values;
     QStringList m_topicPath;
     QStringList m_labels;
     ControllerManager* m_parent;
@@ -75,8 +115,11 @@ private:
     QMqttSubscription* m_topicSetSub;
     QMqttSubscription* m_bcSub;
 
+    QTimer m_validityTimer;
+
 signals:
     void valueChanged(int index, QVariant value);
+    void valueValidChanged(int index);
 
 public slots:
 
@@ -85,6 +128,8 @@ private slots:
     void onMqttDisconnected();
 
     void _onMqttMessageReceived(QMqttMessage msg);
+
+    void onCheckValidity();
 
 };
 

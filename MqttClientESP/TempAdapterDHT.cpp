@@ -9,6 +9,7 @@ TempAdapterDHT::TempAdapterDHT() {
 
 void TempAdapterDHT::init() {
   for (uint8_t i=0;i<TEMP_COUNT;i++) {
+    digitalTemps[i].init(10, 0);
     temperatures[i].init(i);
   }
   

@@ -1,4 +1,5 @@
 #include "MqttController.h"
+#include "ESPConfigurations.h"
 
 MqttController* MqttController::instance = NULL;
 
@@ -17,7 +18,12 @@ void MqttController::init() {
     WIFI_SSID,                 // Wifi ssid
     WIFI_PASS,                 // Wifi password
     &MqttController::onConnectionEstablishedStatic,// MQTT connection established callback
-    MQTT_SERVER                    // MQTT broker ip
+    MQTT_SERVER,                    // MQTT broker ip
+    MQTT_PORT,
+    "",
+    "",
+    MQTT_NAME,
+    false
   );
 }
 

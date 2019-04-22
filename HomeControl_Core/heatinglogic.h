@@ -2,11 +2,11 @@
 #define HEATINGLOGIC_H
 
 #include <QObject>
-#include "controllermanager.h"
-#include "logiccontroller.h"
-#include "tempcontroller.h"
-#include "relaiscontroller.h"
-#include "settingscontroller.h"
+#include "controller/controllermanager.h"
+#include "controller/logiccontroller.h"
+#include "controller/tempcontroller.h"
+#include "controller/relaycontroller.h"
+#include "controller/settingscontroller.h"
 
 class HeatingLogic : public LogicController
 {
@@ -17,12 +17,12 @@ public:
 private:
     SettingsController* m_settingsController;
     TempController* m_tempController;
-    RelaisController* m_relaisController;
+    RelayController* m_relayController;
 
 public slots:
     void onMaintenance();
 
-    void onCommandReceived(MQTT_CMDS cmd);
+    void onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd);
 };
 
 #endif // HEATINGLOGIC_H

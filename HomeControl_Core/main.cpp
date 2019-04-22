@@ -1,10 +1,10 @@
 #include <QCoreApplication>
-#include "controllermanager.h"
+#include "controller/controllermanager.h"
 #include "appconfiguration.h"
-#include "tempcontroller.h"
-#include "errorcontroller.h"
-#include "relaiscontroller.h"
-#include "settingscontroller.h"
+#include "controller/tempcontroller.h"
+#include "controller/errorcontroller.h"
+#include "controller/relaycontroller.h"
+#include "controller/settingscontroller.h"
 #include "preheatlogic.h"
 
 int main(int argc, char *argv[])
@@ -21,10 +21,11 @@ int main(int argc, char *argv[])
     ErrorController errorController;
     controllerManager.registerController(&errorController);
 
-    RelaisController relaisController;
-    controllerManager.registerController(&relaisController);
+    RelayController relayController;
+    controllerManager.registerController(&relayController);
 
-    SettingsController settingsController(SettingsController::SETTINGS_SERVER);
+    SettingsController settingsController;
+    settingsController.setMode(SettingsController::SETTINGS_SERVER);
     controllerManager.registerController(&settingsController);
 
     controllerManager.init(&appConfig);

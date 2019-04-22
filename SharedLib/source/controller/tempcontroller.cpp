@@ -1,4 +1,4 @@
-#include "include/tempcontroller.h"
+#include "include/controller/tempcontroller.h"
 #include "include/constants_qt.h"
 
 QString TempController::CONTROLLER_NAME = QStringLiteral("TempController");
@@ -17,13 +17,30 @@ QStringList TempController::getTopicPath() {
 }
 
 QStringList TempController::getLabelList() {
-    CONVERT_LABEL_LIST(TEMPS_LABELS);
+    CONVERT_LABEL_LIST(EnumsDeclarations::TEMPS_LABELS);
 }
 
 QVariant::Type TempController::getValueType(int index) {
     Q_UNUSED(index);
 
     return QVariant::Double;
+}
+
+qint64 TempController::getValueLifetime(int index) {
+    switch (index) {
+        case EnumsDeclarations::TEMPS_HC:
+    case EnumsDeclarations::TEMPS_TANK:
+    case EnumsDeclarations::TEMPS_WATER:
+        return LIFETIME_MID;
+    default:
+        return LIFETIME_UNLIMITED;
+    }
+}
+
+bool TempController::isValueOwner(int index) {
+    Q_UNUSED(index);
+
+    return false;
 }
 
 void TempController::onInit() {

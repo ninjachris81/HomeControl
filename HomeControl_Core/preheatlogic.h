@@ -2,11 +2,12 @@
 #define WATERLOGIC_H
 
 #include <QObject>
-#include "controllermanager.h"
-#include "tempcontroller.h"
-#include "relaiscontroller.h"
-#include "settingscontroller.h"
-#include "logiccontroller.h"
+
+#include "controller/controllermanager.h"
+#include "controller/tempcontroller.h"
+#include "controller/relaycontroller.h"
+#include "controller/settingscontroller.h"
+#include "controller/logiccontroller.h"
 
 class PreheatLogic : public LogicController
 {
@@ -14,10 +15,15 @@ class PreheatLogic : public LogicController
 public:
     explicit PreheatLogic(ControllerManager *controllerManager, QObject *parent = nullptr);
 
+    void startPreheat(qint64 duration);
+
 private:
     SettingsController* m_settingsController;
     TempController* m_tempController;
-    RelaisController* m_relaisController;
+    RelayController* m_relayController;
+
+    qint64 m_lastStartRequest = 0;
+    qint64 m_lastStartDuration = 0;
 
 signals:
 
@@ -26,7 +32,7 @@ private slots:
 public slots:
     void onMaintenance();
 
-    void onCommandReceived(MQTT_CMDS cmd);
+    void onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd);
 };
 
 #endif // WATERLOGIC_H

@@ -2,7 +2,7 @@
 #include "TaskIDs.h"
 #include "TaskManager.h"
 
-RelayController::RelayController() : AbstractIdleTask() {
+RelayController::RelayController() : AbstractIntervalTask(LIFETIME_MID/2) {
   
 }
 
@@ -20,13 +20,15 @@ void RelayController::init() {
 }
 
 void RelayController::update() {
-  
+  onBroadcast();
 }
 
 void RelayController::onConnected() {
   for (uint8_t i=0;i<RELAY_COUNT;i++) {
     taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->subscribePath(RELAY_CONTROLLER, i, BUILD_PATH(MQTT_PATH_RELAYS + String(MQTT_PATH_SEP) + MQTT_SET + String(MQTT_PATH_SEP) + i));
   }
+
+  onBroadcast();
 }
 
 void RelayController::onBroadcast() {

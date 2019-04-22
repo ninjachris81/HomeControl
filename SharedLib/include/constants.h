@@ -46,6 +46,12 @@
 #define MQTT_PATH_SETTINGS_PREHEAT_WATER_TEMP 3
 #define SETTINGS_LABEL_PREHEAT_WATER_TEMP "Preheat Water Temp"
 
+#define MQTT_PATH_SETTINGS_PREHEAT_MODE 4
+#define SETTINGS_LABEL_PREHEAT_MODE "Preheat Mode"
+
+#define MQTT_PATH_SETTINGS_PREHEAT_DURATION 5
+#define SETTINGS_LABEL_PREHEAT_DURATION "Preheat Duration"
+
 // TEMPERATURES
 #define MQTT_PATH_TEMPS "temps"
 
@@ -72,3 +78,9 @@
 #define MQTT_ID_INTEGER 'i'
 #define MQTT_ID_STRING 's'
 #define MQTT_ID_BOOL 'b'
+
+// LIFETIMES
+#define LIFETIME_UNLIMITED 0
+#define LIFETIME_SHORT  10000           // 10 sec
+#define LIFETIME_MID    120000          // 2 min
+#define LIFETIME_LONG   900000          // 10 min

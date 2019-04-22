@@ -2,7 +2,7 @@
 #define CONTROLLERLISTMODEL_H
 
 #include <QAbstractListModel>
-#include "controllerbase.h"
+#include "../controller/controllerbase.h"
 
 class ControllerListModel : public QAbstractListModel
 {
@@ -11,7 +11,8 @@ public:
 
     enum AnimalRoles {
         LabelRole = Qt::UserRole + 1,
-        ValueRole
+        ValueRole,
+        IsValidRole
     };
 
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -22,6 +23,7 @@ public:
 
 private slots:
     void onValueChanged(int index, QVariant value);
+    void onValueValidChanged(int index);
 
 protected:
     ControllerBase* m_controller;

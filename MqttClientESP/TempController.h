@@ -9,7 +9,9 @@
 #include "TempAdapterDHT.h"
 #include <Property.h>
 
-#define TEMP_INTERVAL_MS 1000
+#define TEMP_INTERVAL_MS 3000
+
+#define TEMP_BC_INTERVAL_BC LIFETIME_MID/2
 
 class TempController : public AbstractIntervalTask, public MqttController::MqttEventCallbackHandler, public Property<float>::ValueChangeListener {
 public:
@@ -42,6 +44,8 @@ public:
 private:
   float getTemperature(uint8_t index);
   bool isConnected = false;
+
+  uint64_t lastBroadcast = 0;
 
   TempAdapterDHT tempAdapter;
 };

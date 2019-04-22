@@ -1,12 +1,16 @@
-#include "include/settingscontroller.h"
+#include "include/controller/settingscontroller.h"
 #include "include/constants_qt.h"
 #include <QDebug>
 
 QString SettingsController::CONTROLLER_NAME = QStringLiteral("SettingsController");
 
-SettingsController::SettingsController(SETTINGS_MODE mode, QObject *parent) : ControllerBase(parent), m_mode(mode)
+SettingsController::SettingsController(QObject *parent) : ControllerBase(parent)
 {
 
+}
+
+void SettingsController::setMode(SETTINGS_MODE thisMode) {
+    m_mode = thisMode;
 }
 
 QString SettingsController::getName() {
@@ -18,32 +22,47 @@ QStringList SettingsController::getTopicPath() {
 }
 
 QStringList SettingsController::getLabelList() {
-    CONVERT_LABEL_LIST(SETTINGS_LABELS);
+    CONVERT_LABEL_LIST(EnumsDeclarations::SETTINGS_LABELS);
 }
 
 QVariant::Type SettingsController::getValueType(int index) {
-    MQTT_SETTINGS sett = static_cast<MQTT_SETTINGS>(index);
+    EnumsDeclarations::MQTT_SETTINGS sett = static_cast<EnumsDeclarations::MQTT_SETTINGS>(index);
 
     switch(sett) {
-    case SETTINGS_PREHEAT_FROM:
-    case SETTINGS_PREHEAT_TO:
+    case EnumsDeclarations::SETTINGS_PREHEAT_FROM:
+    case EnumsDeclarations::SETTINGS_PREHEAT_TO:
         return QVariant::Int;
-    case SETTINGS_PREHEAT_HC_TEMP:
-    case SETTINGS_PREHEAT_WATER_TEMP:
+    case EnumsDeclarations::SETTINGS_PREHEAT_HC_TEMP:
+    case EnumsDeclarations::SETTINGS_PREHEAT_WATER_TEMP:
         return QVariant::Double;
+    case EnumsDeclarations::SETTINGS_PREHEAT_MODE:
+    case EnumsDeclarations::SETTINGS_PREHEAT_DURATION:
+        return QVariant::Int;
     }
 
     return QVariant::Invalid;
+}
+
+qint64 SettingsController::getValueLifetime(int index) {
+    return LIFETIME_UNLIMITED;
+}
+
+bool SettingsController::isValueOwner(int index) {
+    Q_UNUSED(index);
+
+    return m_mode==SETTINGS_SERVER;
 }
 
 void SettingsController::onInit() {
     if (m_mode==SETTINGS_SERVER) {
         m_settings = new QSettings("settings.ini", QSettings::IniFormat);
 
-        setValue(SETTINGS_PREHEAT_FROM, getSettingsValue(SETTINGS_PREHEAT_FROM, 7));
-        setValue(SETTINGS_PREHEAT_TO, getSettingsValue(SETTINGS_PREHEAT_TO, 9));
-        setValue(SETTINGS_PREHEAT_HC_TEMP, getSettingsValue(SETTINGS_PREHEAT_HC_TEMP, 26.0));
-        setValue(SETTINGS_PREHEAT_WATER_TEMP, getSettingsValue(SETTINGS_PREHEAT_WATER_TEMP, 24.0));
+        setValue(EnumsDeclarations::SETTINGS_PREHEAT_FROM, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_FROM, 7));
+        setValue(EnumsDeclarations::SETTINGS_PREHEAT_TO, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_TO, 9));
+        setValue(EnumsDeclarations::SETTINGS_PREHEAT_HC_TEMP, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_HC_TEMP, 26.0));
+        setValue(EnumsDeclarations::SETTINGS_PREHEAT_WATER_TEMP, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_WATER_TEMP, 24.0));
+        setValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC));
+        setValue(EnumsDeclarations::SETTINGS_PREHEAT_DURATION, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_DURATION, 6000));
     }
 }
 
@@ -73,7 +92,7 @@ QVariant SettingsController::getSettingsValue(int index, QVariant defaultValue, 
         return val;
     } else {
         qWarning() << "Cannot convert value" << val << getValueType(index);
-        return m_values[index];
+        return m_values[index].value;
     }
 }
 
