@@ -41,7 +41,12 @@ void ControllerManager::_onMqttError(QMqttClient::ClientError error) {
 }
 
 ControllerBase* ControllerManager::getController(QString name) {
-    return m_controllers.value(name);
+    if (m_controllers.contains(name)) {
+        return m_controllers.value(name);
+    } else {
+        qFatal("Controller not found");
+        return nullptr;
+    }
 }
 
 void ControllerManager::_onMqttConnected() {

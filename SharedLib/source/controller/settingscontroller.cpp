@@ -38,6 +38,10 @@ QVariant::Type SettingsController::getValueType(int index) {
     case EnumsDeclarations::SETTINGS_PREHEAT_MODE:
     case EnumsDeclarations::SETTINGS_PREHEAT_DURATION:
         return QVariant::Int;
+    case EnumsDeclarations::SETTINGS_HEATING_TEMP:
+        return QVariant::Double;
+    case EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE:
+        return QVariant::Bool;
     }
 
     return QVariant::Invalid;
@@ -63,6 +67,8 @@ void SettingsController::onInit() {
         setValue(EnumsDeclarations::SETTINGS_PREHEAT_WATER_TEMP, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_WATER_TEMP, 24.0));
         setValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC));
         setValue(EnumsDeclarations::SETTINGS_PREHEAT_DURATION, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_DURATION, 6000));
+        setValue(EnumsDeclarations::SETTINGS_HEATING_TEMP, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_TEMP, 22));
+        setValue(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE, true));
     }
 }
 

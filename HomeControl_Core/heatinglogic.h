@@ -8,6 +8,8 @@
 #include "controller/relaycontroller.h"
 #include "controller/settingscontroller.h"
 
+#define HEATING_TOGGLE_ON_DURATION 60000
+
 class HeatingLogic : public LogicController
 {
     Q_OBJECT
@@ -18,6 +20,8 @@ private:
     SettingsController* m_settingsController;
     TempController* m_tempController;
     RelayController* m_relayController;
+
+    qint64 m_lastHeatOff = 0;
 
 public slots:
     void onMaintenance();

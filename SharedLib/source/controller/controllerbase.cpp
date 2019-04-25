@@ -68,7 +68,7 @@ QVariant ControllerBase::value(int index) {
     if (index<m_values.count()) {
         return m_values.at(index).value;
     } else {
-        qWarning() << "Invalid index" << m_values.count() << index;
+        qWarning() << Q_FUNC_INFO << "Invalid index" << m_values.count() << index;
         return QVariant();
     }
 }
@@ -77,7 +77,7 @@ bool ControllerBase::valueIsValid(int index) {
     if (index<m_values.count()) {
         return m_values[index].isValid();
     } else {
-        qWarning() << "Invalid index" << m_values.count() << index;
+        qWarning() << Q_FUNC_INFO << "Invalid index" << m_values.count() << index;
         return false;
     }
 }

@@ -28,9 +28,10 @@ QVariant::Type TempController::getValueType(int index) {
 
 qint64 TempController::getValueLifetime(int index) {
     switch (index) {
-        case EnumsDeclarations::TEMPS_HC:
+    case EnumsDeclarations::TEMPS_HC:
     case EnumsDeclarations::TEMPS_TANK:
     case EnumsDeclarations::TEMPS_WATER:
+    case EnumsDeclarations::TEMPS_INSIDE:
         return LIFETIME_MID;
     default:
         return LIFETIME_UNLIMITED;

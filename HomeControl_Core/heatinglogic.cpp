@@ -1,20 +1,45 @@
 #include "heatinglogic.h"
+#include <QDateTime>
 
 HeatingLogic::HeatingLogic(ControllerManager *controllerManager, QObject *parent) : LogicController(controllerManager, parent)
 {
-    m_tempController = static_cast<TempController*>(controllerManager->getController(TempController::staticMetaObject.className()));
-    m_relayController = static_cast<RelayController*>(controllerManager->getController(RelayController::staticMetaObject.className()));
-    m_settingsController = static_cast<SettingsController*>(controllerManager->getController(SettingsController::staticMetaObject.className()));
+    m_tempController = static_cast<TempController*>(controllerManager->getController(TempController::CONTROLLER_NAME));
+    m_relayController = static_cast<RelayController*>(controllerManager->getController(RelayController::CONTROLLER_NAME));
+    m_settingsController = static_cast<SettingsController*>(controllerManager->getController(SettingsController::CONTROLLER_NAME));
 
     startMaintenance(5000);
 }
 
 void HeatingLogic::onMaintenance() {
-    int from = m_settingsController->value(MQTT_PATH_SETTINGS_PREHEAT_FROM).toInt();
-    int to = m_settingsController->value(MQTT_PATH_SETTINGS_PREHEAT_TO).toInt();
 
+    if (m_tempController->valueIsValid(EnumsDeclarations::TEMPS_INSIDE)) {
+        float heatingTemp = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_TEMP).toDouble();
+        float insideTemp = m_tempController->value(EnumsDeclarations::TEMPS_INSIDE).toFloat();
+        bool useToggle = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE).toBool();
 
-    //m_tempController->value(TEMPS_HC)
+        if (useToggle) {
+            if (insideTemp<heatingTemp) {
+
+                if (QDateTime::currentMSecsSinceEpoch()> m_lastHeatOff + HEATING_TOGGLE_ON_DURATION) {
+                    // switch off
+                    m_lastHeatOff = QDateTime::currentMSecsSinceEpoch();
+                    m_relayController->setValue(EnumsDeclarations::RELAYS_HEATING_PUMP, false, true);
+                } else {
+                    m_relayController->setValue(EnumsDeclarations::RELAYS_HEATING_PUMP, true, true);
+                }
+
+            } else {
+                m_relayController->setValue(EnumsDeclarations::RELAYS_HEATING_PUMP, false, true);
+                m_lastHeatOff = 0;
+            }
+        } else {
+            m_relayController->setValue(EnumsDeclarations::RELAYS_HEATING_PUMP, insideTemp<heatingTemp, true);
+        }
+
+    } else {
+        qWarning() << "Inside temp is not valid";
+        m_relayController->setValue(EnumsDeclarations::RELAYS_HEATING_PUMP, false, true);
+    }
 }
 
 void HeatingLogic::onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd) {

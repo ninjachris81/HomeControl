@@ -36,6 +36,7 @@ qint64 RelayController::getValueLifetime(int index) {
     switch(index) {
     case EnumsDeclarations::RELAYS_HC_PUMP:
     case EnumsDeclarations::RELAYS_WATER_PUMP:
+    case EnumsDeclarations::RELAYS_HEATING_PUMP:
         return LIFETIME_MID;
     default:
         return LIFETIME_UNLIMITED;

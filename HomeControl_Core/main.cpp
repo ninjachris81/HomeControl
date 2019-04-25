@@ -6,6 +6,7 @@
 #include "controller/relaycontroller.h"
 #include "controller/settingscontroller.h"
 #include "preheatlogic.h"
+#include "heatinglogic.h"
 
 int main(int argc, char *argv[])
 {
@@ -31,6 +32,7 @@ int main(int argc, char *argv[])
     controllerManager.init(&appConfig);
 
     PreheatLogic preheatLogic(&controllerManager);
+    HeatingLogic heatLogic(&controllerManager);
 
     return a.exec();
 }
