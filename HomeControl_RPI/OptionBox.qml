@@ -8,7 +8,7 @@ Item {
     property var options
     property var labels
     property int currentValue: model.data(model.index(modelIndex, 0), 258)
-    property bool allowInput: false
+    property bool allowInput: true
     property var inputHandler
 
     height: options.length * 20

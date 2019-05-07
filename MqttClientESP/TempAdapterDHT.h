@@ -21,6 +21,8 @@ class TempAdapterDHT {
 
     uint8_t getFoundSensors();
 
+  bool sensorsValid();
+
 private:
   uint8_t foundSensors = 0;
   OneWire *oneWire;

@@ -36,7 +36,7 @@ public:
         }
 
         bool compareTo(QVariant &val) {
-            return value.cmp(val);
+            return value==val;
         }
 
         void updateValue(QVariant val) {

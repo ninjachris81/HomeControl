@@ -1,6 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Window 2.11
-import QtQuick.Controls 2.4
+import QtQuick.Controls 2.2
 import QtQuick.VirtualKeyboard 2.2
 
 ApplicationWindow {
@@ -8,22 +8,24 @@ ApplicationWindow {
     visible: true
     width: 1024
     height: 600
-    title: qsTr("Tabs")
+    title: qsTr("Hello World")
 
-    visibility: Qt.platform.os==="linux" ? Window.FullScreen : Window.Windowed
+    visibility: Window.FullScreen
+
+    color: "red"
 
     header: TabBar {
         id: tabBar
-        currentIndex: swipeView.currentIndex
+        currentIndex: 0
 
         TabButton {
-            text: page1.title
+            text: "page1.title"
         }
         TabButton {
-            text: page2.title
+            text: "page2.title"
         }
         TabButton {
-            text: page3.title
+            text: "page3.title"
         }
     }
 
@@ -32,15 +34,15 @@ ApplicationWindow {
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
 
-        Page1 {
+        Item {
             id: page1
         }
 
-        Page2 {
+        Item {
             id: page2
         }
 
-        Page3 {
+        Item {
             id: page3
         }
     }

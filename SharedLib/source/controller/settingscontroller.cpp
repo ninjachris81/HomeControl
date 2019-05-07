@@ -42,12 +42,18 @@ QVariant::Type SettingsController::getValueType(int index) {
         return QVariant::Double;
     case EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE:
         return QVariant::Bool;
+    case EnumsDeclarations::SETTINGS_HEATING_MODE:
+        return QVariant::Int;
+    case EnumsDeclarations::SETTINGS_HEATING_MANUAL_STATE:
+        return QVariant::Bool;
     }
 
     return QVariant::Invalid;
 }
 
 qint64 SettingsController::getValueLifetime(int index) {
+    Q_UNUSED(index);
+
     return LIFETIME_UNLIMITED;
 }
 
@@ -69,6 +75,8 @@ void SettingsController::onInit() {
         setValue(EnumsDeclarations::SETTINGS_PREHEAT_DURATION, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_DURATION, 6000));
         setValue(EnumsDeclarations::SETTINGS_HEATING_TEMP, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_TEMP, 22));
         setValue(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE, true));
+        setValue(EnumsDeclarations::SETTINGS_HEATING_MODE, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC));
+        setValue(EnumsDeclarations::SETTINGS_HEATING_MANUAL_STATE, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MANUAL_STATE, false));
     }
 }
 

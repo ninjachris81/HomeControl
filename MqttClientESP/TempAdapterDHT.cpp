@@ -33,6 +33,10 @@ uint8_t TempAdapterDHT::getFoundSensors() {
   return foundSensors;
 }
 
+bool TempAdapterDHT::sensorsValid() {
+  return foundSensors==TEMP_COUNT;
+}
+
 void TempAdapterDHT::update() {
   bool hadError = false;
 

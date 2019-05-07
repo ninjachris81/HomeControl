@@ -21,5 +21,7 @@ void LogicController::onMaintenance() {
 }
 
 void LogicController::onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd) {
+    Q_UNUSED(cmd);
+
     qDebug() << Q_FUNC_INFO;
 }

@@ -26,7 +26,11 @@ void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig
 
     m_labels = getLabelList();
     for(int i=0;i<m_labels.count();i++) {
-        ValueStruct t = {getValueLifetime(i), 0, QVariant(getValueType(i))};
+        ValueStruct t;
+        t.lifeTime = getValueLifetime(i);
+        t.lastUpdate =0;
+        t.value =  QVariant(getValueType(i));
+        t.wasValid = false;
         m_values.append(t);
     }
 

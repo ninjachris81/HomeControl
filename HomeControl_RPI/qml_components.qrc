@@ -3,5 +3,6 @@
         <file>ValueLabel.qml</file>
         <file>OptionBox.qml</file>
         <file>DebugTracer.qml</file>
+        <file>SwitchButton.qml</file>
     </qresource>
 </RCC>

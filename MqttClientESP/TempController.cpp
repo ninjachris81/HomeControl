@@ -19,8 +19,11 @@ void TempController::init() {
 
 void TempController::update() {
   tempAdapter.update();
-  if (tempAdapter.getFoundSensors()!=TEMP_COUNT) {
+  if (!tempAdapter.sensorsValid()) {
     taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->sendError("Invalid sensors: " + tempAdapter.getFoundSensors());
+
+    LOG_PRINT(F("Invalid sensors "));
+    LOG_PRINTLN(tempAdapter.getFoundSensors());
   } else {
     if (lastBroadcast==0 || millis()>lastBroadcast+TEMP_BC_INTERVAL_BC) {
       onBroadcast();
@@ -70,5 +73,7 @@ float TempController::getTemperature(uint8_t index) {
 }
 
 void TempController::sendTemp(uint8_t index) {
-  taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->sendMessage(BUILD_PATH(MQTT_PATH_TEMPS + String(MQTT_PATH_SEP) + MQTT_VAL + String(MQTT_PATH_SEP) + String(index)), getTemperature(index));
+  if (tempAdapter.sensorsValid()) {
+    taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->sendMessage(BUILD_PATH(MQTT_PATH_TEMPS + String(MQTT_PATH_SEP) + MQTT_VAL + String(MQTT_PATH_SEP) + String(TEMP_OFFSET + index)), getTemperature(index));
+  }
 }
