@@ -24,6 +24,8 @@ public:
   
   void onConnected();
 
+  void initMapping();
+
   void onPropertyValueChange(uint8_t id, float newValue, float oldValue);
 
   void onBroadcast();
@@ -44,10 +46,12 @@ public:
 private:
   float getTemperature(uint8_t index);
   bool isConnected = false;
+  bool mappingInitialized = false;
 
   uint64_t lastBroadcast = 0;
 
   TempAdapterDHT tempAdapter;
+  bool hasValidMapping[TEMP_COUNT];
 };
 
 

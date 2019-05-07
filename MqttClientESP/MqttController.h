@@ -49,6 +49,7 @@ public:
   void subscribePath(const int endpoint, const int index, String path);
 
   void sendError(String errorDesc);
+  void sendError(String errorDesc, int value);
 
   void sendMessage(String path, String payload);
   void sendMessage(String path, bool payload);

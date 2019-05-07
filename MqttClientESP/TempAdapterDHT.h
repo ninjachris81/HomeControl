@@ -7,6 +7,8 @@
 #include <Property.h>
 #include "ESPConfigurations.h"
 
+#define TEMPERATURE_PRECISION 9
+
 class TempAdapterDHT {
   public:
     TempAdapterDHT();
@@ -15,13 +17,23 @@ class TempAdapterDHT {
 
     void update();
 
+    void updateTemperature(uint8_t index);
+
     float getTemperature(uint8_t index);
+
+    void setMapping(uint8_t index, uint8_t *addr);
+
+    bool checkMapping(uint8_t index);
+
+    bool getUnmappedDevices(String &list);
 
     void addListener(Property<float>::ValueChangeListener *listener);
 
     uint8_t getFoundSensors();
 
-  bool sensorsValid();
+    bool sensorsValid();
+
+    static String addressToString(uint8_t *addr);
 
 private:
   uint8_t foundSensors = 0;
@@ -30,6 +42,7 @@ private:
   
   SmoothValue digitalTemps[TEMP_COUNT];
   Property<float> temperatures[TEMP_COUNT];
+  uint8_t addressMappings[TEMP_COUNT][8];
 
 };
 

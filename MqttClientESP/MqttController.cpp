@@ -1,5 +1,6 @@
 #include "MqttController.h"
 #include "ESPConfigurations.h"
+#include <LogHelper.h>
 
 MqttController* MqttController::instance = NULL;
 
@@ -82,12 +83,12 @@ void MqttController::onMessageReceived(const int endpoint, const int index, cons
       case MQTT_ID_STRING:
       break;
       default:
-      sendError(F("Invalid type"));
+      sendError(F("Invalid type"), message.charAt(0));
       break;
     }
     
   } else {
-      sendError(F("Invalid size"));
+      sendError(F("Invalid size"), message.length());
   }
 }
 
@@ -102,32 +103,38 @@ void MqttController::subscribePath(const int endpoint, const int index, String p
   }
 }
 
+void MqttController::sendError(String errorDesc, int value) {
+  errorDesc += " " + String(value);
+  sendError(errorDesc);
+}
+
 void MqttController::sendError(String errorDesc) {
   if (mqttClient->isConnected()) {
-    mqttClient->publish(BUILD_PATH(MQTT_PATH_ERRORS + String(MQTT_PATH_SEP) + MQTT_VAL + String(MQTT_PATH_SEP) + String(MQTT_PATH_ERRORS_RELAYS)), "s" + errorDesc);
+    sendMessage(BUILD_PATH(MQTT_PATH_ERRORS + String(MQTT_PATH_SEP) + MQTT_VAL + String(MQTT_PATH_SEP) + String(MQTT_PATH_ERRORS_RELAYS)), errorDesc);
   }
 }
 
 void MqttController::sendMessage(String path, String payload) {
   if (mqttClient->isConnected()) {
-    mqttClient->publish(path, "s" + payload);
+    payload = String(MQTT_ID_STRING) + payload;
+    mqttClient->publish(path, payload);
   }
 }
 
 void MqttController::sendMessage(String path, bool payload) {
   if (mqttClient->isConnected()) {
-    mqttClient->publish(path, payload ? "b1" : "b0");
+    mqttClient->publish(path, String(MQTT_ID_BOOL) + (payload ? String("1") : String("0")));
   }
 }
 
 void MqttController::sendMessage(String path, int payload) {
   if (mqttClient->isConnected()) {
-    mqttClient->publish(path, "i" + payload);
+    mqttClient->publish(path, String(MQTT_ID_INTEGER) + payload);
   }
 }
 
 void MqttController::sendMessage(String path, double payload) {
   if (mqttClient->isConnected()) {
-    mqttClient->publish(path, "d" + String(payload));
+    mqttClient->publish(path, String(MQTT_ID_DOUBLE) + String(payload));
   }
 }
