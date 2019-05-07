@@ -64,8 +64,22 @@ void TempController::initMapping() {
 
   String unmappedList;
   if (!tempAdapter.getUnmappedDevices(unmappedList)) {
-    unmappedList = String("Unmapped devices: ") + unmappedList;
-    taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->sendError(unmappedList);
+
+    LOG_PRINTLN(unmappedList);
+
+    int i = unmappedList.indexOf(" ");
+    while (i>=0) {
+      String device = unmappedList.substring(0, i);
+      unmappedList = unmappedList.substring(i+1);
+      unmappedList.trim();
+      taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->sendError(String("Unmapped device: ") + device);
+      i = unmappedList.indexOf(" ");
+    }
+
+    if (unmappedList.length()>0) {
+      taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->sendError(String("Unmapped device: ") + unmappedList);
+    }
+    
   }
 
   mappingInitialized = true;

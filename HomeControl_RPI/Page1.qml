@@ -213,28 +213,46 @@ Page {
         ColumnLayout {
             anchors.fill: parent
 
-            OptionBox {
-                id: heatingModeOptionBox
+            RowLayout {
+                OptionBox {
+                    id: heatingModeOptionBox
 
-                model: DataBridge.settingsControllerModel
-                modelIndex: Enums.SETTINGS_HEATING_MODE
-                options: [Enums.SETTING_MODE_AUTOMATIC, Enums.SETTING_MODE_MANUAL]
-                labels: [qsTr("Automatic"), qsTr("Manual")]
-                inputHandler: function(newValue) {
-                    DataBridge.settings.setValue(Enums.SETTINGS_HEATING_MODE, newValue)
+                    Layout.fillWidth: true
+
+                    model: DataBridge.settingsControllerModel
+                    modelIndex: Enums.SETTINGS_HEATING_MODE
+                    options: [Enums.SETTING_MODE_AUTOMATIC, Enums.SETTING_MODE_MANUAL]
+                    labels: [qsTr("Automatic"), qsTr("Manual")]
+                    inputHandler: function(newValue) {
+                        DataBridge.settings.setValue(Enums.SETTINGS_HEATING_MODE, newValue)
+                    }
+                }
+
+                SwitchButton {
+                    Layout.preferredHeight: 40
+                    Layout.fillWidth: true
+
+                    labelText: qsTr("Manual state")
+
+                    model: DataBridge.settingsControllerModel
+                    modelIndex: Enums.SETTINGS_HEATING_MANUAL_STATE
+
+                    visible: heatingModeOptionBox.currentValue===Enums.SETTING_MODE_MANUAL
+                    inputHandler: function(newValue){
+                        DataBridge.settings.setValue(modelIndex, newValue)
+                    }
                 }
             }
 
-            SwitchButton {
+            ValueLabel {
+                id: heatingPumpLabel
+
                 Layout.preferredHeight: 40
+                Layout.fillWidth: true
 
-                model: DataBridge.settingsControllerModel
-                modelIndex: Enums.SETTINGS_HEATING_MANUAL_STATE
-
-                allowInput: heatingModeOptionBox.currentValue===Enums.SETTING_MODE_MANUAL
-                inputHandler: function(newValue){
-                    DataBridge.settings.setValue(modelIndex, newValue)
-                }
+                model: DataBridge.relayControllerModel
+                modelIndex: Enums.RELAYS_HEATING_PUMP
+                unit: ""
             }
 
             RowLayout {

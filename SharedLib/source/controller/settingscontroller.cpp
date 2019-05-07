@@ -72,7 +72,7 @@ void SettingsController::onInit() {
         setValue(EnumsDeclarations::SETTINGS_PREHEAT_HC_TEMP, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_HC_TEMP, 26.0));
         setValue(EnumsDeclarations::SETTINGS_PREHEAT_WATER_TEMP, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_WATER_TEMP, 24.0));
         setValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC));
-        setValue(EnumsDeclarations::SETTINGS_PREHEAT_DURATION, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_DURATION, 6000));
+        setValue(EnumsDeclarations::SETTINGS_PREHEAT_DURATION, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_DURATION, 600));
         setValue(EnumsDeclarations::SETTINGS_HEATING_TEMP, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_TEMP, 22));
         setValue(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE, true));
         setValue(EnumsDeclarations::SETTINGS_HEATING_MODE, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC));

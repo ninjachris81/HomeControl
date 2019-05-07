@@ -3,3 +3,4 @@
 /HomeControl_RPI/*.user
 /build-*
 /SharedLib/*.user
+/MqttClientESP/credentials.h

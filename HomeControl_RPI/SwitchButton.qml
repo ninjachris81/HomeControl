@@ -7,6 +7,7 @@ Item {
 
     property bool allowInput: true
     property var inputHandler
+    property string labelText
 
     Connections {
         target: model
@@ -24,6 +25,8 @@ Item {
         id: mySwitch
         enabled: allowInput
         checked: model.data(model.index(modelIndex, 0), 258)
+
+        text: labelText
 
         onToggled: {
             if (typeof(inputHandler)=="function") inputHandler(checked);
