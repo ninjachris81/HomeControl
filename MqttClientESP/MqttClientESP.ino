@@ -18,6 +18,8 @@ MqttController mqttController;
   TempController tempController;
 #endif
 
+void onConnectionEstablished() {}   // legacy
+
 void setup () 
 {
   taskManager.registerTask(&mqttController);

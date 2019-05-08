@@ -14,6 +14,12 @@ AppConfiguration* ControllerBase::getConfig() {
     return m_appConfig;
 }
 
+bool ControllerBase::isValueOwner(int index) {
+    Q_UNUSED(index);
+
+    return m_mode==VALUE_OWNER_SERVER;
+}
+
 void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig, QMqttClient *mqttClient) {
     qDebug() << Q_FUNC_INFO;
 
@@ -251,6 +257,11 @@ QVariant ControllerBase::parsePayload(QByteArray payload) {
     }
 
     return QVariant();
+}
+
+
+void ControllerBase::setMode(ControllerBase::VALUE_OWNER_MODE thisMode) {
+    m_mode = thisMode;
 }
 
 void ControllerBase::onMqttUnknownMessageReceived(QStringList topicPath, QByteArray data) {

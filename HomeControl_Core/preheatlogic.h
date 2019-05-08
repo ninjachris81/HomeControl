@@ -17,6 +17,8 @@ public:
 
     void startPreheat(qint64 duration);
 
+    void stopPreheat();
+
 private:
     SettingsController* m_settingsController;
     TempController* m_tempController;

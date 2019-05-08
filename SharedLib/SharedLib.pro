@@ -6,6 +6,7 @@
 
 QT += qml
 QT += mqtt
+QT += sql
 
 QT       -= gui
 
@@ -31,17 +32,18 @@ SOURCES += \
         source/appconfiguration.cpp \
         source/controller/controllerbase.cpp \
         source/controller/controllermanager.cpp \
-        source/controller/errorcontroller.cpp \
         source/controller/relaycontroller.cpp \
         source/controller/tempcontroller.cpp \
         source/controller/logiccontroller.cpp \
         source/controller/settingscontroller.cpp \
         source/listmodel/controllerlistmodel.cpp \
-        source/listmodel/errorcontrollerlistmodel.cpp \
         source/listmodel/relaycontrollerlistmodel.cpp \
         source/listmodel/settingscontrollerlistmodel.cpp \
         source/wrapper/controllerwrapper.cpp \
-    source/wrapper/settingswrapper.cpp
+    source/wrapper/settingswrapper.cpp \
+    source/controller/logcontroller.cpp \
+    source/listmodel/logcontrollerlistmodel.cpp \
+    source/sqllistmodel/logsqllistmodel.cpp
 
 HEADERS += \
         include/sharedlib.h \
@@ -50,17 +52,18 @@ HEADERS += \
         include/constants_qt.h \
         include/controller/controllerbase.h \
         include/controller/controllermanager.h \
-        include/controller/errorcontroller.h \
         include/controller/relaycontroller.h \
         include/controller/tempcontroller.h \
         include/controller/settingscontroller.h \
         include/controller/logiccontroller.h \
         include/listmodel/controllerlistmodel.h \
-        include/listmodel/errorcontrollerlistmodel.h \
         include/listmodel/relaycontrollerlistmodel.h \
         include/listmodel/settingscontrollerlistmodel.h \
         include/wrapper/controllerwrapper.h \
-    include/wrapper/settingswrapper.h
+    include/wrapper/settingswrapper.h \
+    include/controller/logcontroller.h \
+    include/listmodel/logcontrollerlistmodel.h \
+    include/sqllistmodel/logsqllistmodel.h
 
 unix {
     target.path = $$[QT_INSTALL_LIBS]

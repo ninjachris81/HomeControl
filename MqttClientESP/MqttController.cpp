@@ -39,6 +39,8 @@ void MqttController::onConnectionEstablishedStatic() {
 void MqttController::onConnectionEstablished() {
   mqttClient->subscribe(-1, -1, BUILD_PATH(MQTT_PATH_BC), &MqttController::onBroadcastReceivedStatic);
   for (uint8_t i=0;i<callbackHandlerCount;i++) callbackHandlers[i]->onConnected();
+
+  sendLog(MQTT_PATH_LOGS_TYPE_STARTUP, MQTT_NAME);
 }
 
 void MqttController::onBroadcastReceivedStatic(const int endpoint, const int index, const String &message) {
@@ -75,13 +77,33 @@ void MqttController::onMessageReceived(const int endpoint, const int index, cons
             break;
           }
         }
-      break;
+        break;
       case MQTT_ID_INTEGER:
-      break;
+        for (uint8_t i=0;i<callbackHandlerCount;i++) {
+          if (callbackHandlers[i]->getID()==endpoint) {
+            callbackHandlers[i]->onIntReceived(index, message.substring(1).toInt());
+            break;
+          }
+        }
+
+        break;
       case MQTT_ID_DOUBLE:
-      break;
+        for (uint8_t i=0;i<callbackHandlerCount;i++) {
+          if (callbackHandlers[i]->getID()==endpoint) {
+            callbackHandlers[i]->onDoubleReceived(index, message.substring(1).toFloat());
+            break;
+          }
+        }
+
+        break;
       case MQTT_ID_STRING:
-      break;
+        for (uint8_t i=0;i<callbackHandlerCount;i++) {
+          if (callbackHandlers[i]->getID()==endpoint) {
+            callbackHandlers[i]->onStringReceived(index, message.substring(1));
+            break;
+          }
+        }
+        break;
       default:
       sendError(F("Invalid type"), message.charAt(0));
       break;
@@ -110,8 +132,19 @@ void MqttController::sendError(String errorDesc, int value) {
 
 void MqttController::sendError(String errorDesc) {
   if (mqttClient->isConnected()) {
-    sendMessage(BUILD_PATH(MQTT_PATH_ERRORS + String(MQTT_PATH_SEP) + MQTT_VAL + String(MQTT_PATH_SEP) + String(MQTT_PATH_ERRORS_RELAYS)), errorDesc);
+    sendLog(MQTT_PATH_LOGS_TYPE_ERROR, errorDesc);
   }
+}
+
+void MqttController::sendLog(uint8_t type, String desc) {
+  if (mqttClient->isConnected()) {
+    sendMessage(BUILD_PATH(MQTT_PATH_LOGS + String(MQTT_PATH_SEP) + MQTT_SET + String(MQTT_PATH_SEP) + String(type)), desc);
+  }
+}
+
+void MqttController::sendLog(uint8_t type, String desc, int value) {
+  desc += " " + String(value);
+  sendLog(type, desc);
 }
 
 void MqttController::sendMessage(String path, String payload) {

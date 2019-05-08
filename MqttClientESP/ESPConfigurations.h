@@ -4,13 +4,13 @@
 #define CONFIG_INSIDE_TEMP_BOARD 2    // ESP
 
 
-#define ACTIVE_CONFIG CONFIG_TEMP_BOARD
+#define ACTIVE_CONFIG CONFIG_INSIDE_TEMP_BOARD
 
 
 
 #if ACTIVE_CONFIG == CONFIG_4_RELAY_BOARD
   #warning Relay Board Configuration
-  #define RELAY_COUNT 4
+  #define RELAY_COUNT 3
   #define TEMP_COUNT 0
   #define PIN_DIGITAL_TEMP_SENSORS 0
   #define MQTT_NAME "Relay Board"
@@ -37,7 +37,7 @@
   #define PIN_DIGITAL_TEMP_SENSORS 2
   #define MQTT_NAME "Inside Temp Board"
   #define TEMP_OFFSET 3
-  #define TEMP_ADDRESS_MAPPING_0 {}
+  #define TEMP_ADDRESS_MAPPING_0 {0x28,0xff,0x5f,0xff,0x66,0x14,0x02,0x46}
   #define TEMP_ADDRESS_MAPPING_1 {}
   #define TEMP_ADDRESS_MAPPING_2 {}
   #define TEMP_ADDRESS_MAPPING_3 {}

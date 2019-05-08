@@ -1,5 +1,6 @@
 QT += quick
 QT += mqtt virtualkeyboard
+QT += sql
 
 CONFIG += c++11
 

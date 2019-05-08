@@ -1,16 +1,14 @@
 #include "include/controller/settingscontroller.h"
 #include "include/constants_qt.h"
 #include <QDebug>
+#include <QHostInfo>
+#include <QHostAddress>
 
 QString SettingsController::CONTROLLER_NAME = QStringLiteral("SettingsController");
 
 SettingsController::SettingsController(QObject *parent) : ControllerBase(parent)
 {
 
-}
-
-void SettingsController::setMode(SETTINGS_MODE thisMode) {
-    m_mode = thisMode;
 }
 
 QString SettingsController::getName() {
@@ -46,6 +44,8 @@ QVariant::Type SettingsController::getValueType(int index) {
         return QVariant::Int;
     case EnumsDeclarations::SETTINGS_HEATING_MANUAL_STATE:
         return QVariant::Bool;
+    case EnumsDeclarations::SETTINGS_CORE_HOST:
+        return QVariant::String;
     }
 
     return QVariant::Invalid;
@@ -57,14 +57,8 @@ qint64 SettingsController::getValueLifetime(int index) {
     return LIFETIME_UNLIMITED;
 }
 
-bool SettingsController::isValueOwner(int index) {
-    Q_UNUSED(index);
-
-    return m_mode==SETTINGS_SERVER;
-}
-
 void SettingsController::onInit() {
-    if (m_mode==SETTINGS_SERVER) {
+    if (m_mode==VALUE_OWNER_SERVER) {
         m_settings = new QSettings("settings.ini", QSettings::IniFormat);
 
         setValue(EnumsDeclarations::SETTINGS_PREHEAT_FROM, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_FROM, 7));
@@ -77,13 +71,16 @@ void SettingsController::onInit() {
         setValue(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE, true));
         setValue(EnumsDeclarations::SETTINGS_HEATING_MODE, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC));
         setValue(EnumsDeclarations::SETTINGS_HEATING_MANUAL_STATE, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MANUAL_STATE, false));
+
+        // publish hostname
+        setValue(EnumsDeclarations::SETTINGS_CORE_HOST, QHostInfo::localHostName());
     }
 }
 
 void SettingsController::onValueChanged(int index, QVariant value) {
     qWarning() << Q_FUNC_INFO << index << value;
 
-    if (m_mode==SETTINGS_SERVER) {
+    if (m_mode==VALUE_OWNER_SERVER) {
         m_settings->setValue(getSettingsKey(index), value);
     }
 }
@@ -113,7 +110,7 @@ QVariant SettingsController::getSettingsValue(int index, QVariant defaultValue, 
 void SettingsController::onConnectedChanged(bool connected) {
     qDebug() << Q_FUNC_INFO << connected;
 
-    if (m_mode==SETTINGS_SERVER) {
+    if (m_mode==VALUE_OWNER_SERVER) {
         if (connected) {
             broadcastValues();
         }

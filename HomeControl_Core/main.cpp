@@ -2,7 +2,7 @@
 #include "controller/controllermanager.h"
 #include "appconfiguration.h"
 #include "controller/tempcontroller.h"
-#include "controller/errorcontroller.h"
+#include "controller/logcontroller.h"
 #include "controller/relaycontroller.h"
 #include "controller/settingscontroller.h"
 #include "preheatlogic.h"
@@ -19,14 +19,15 @@ int main(int argc, char *argv[])
     TempController tempController;
     controllerManager.registerController(&tempController);
 
-    ErrorController errorController;
-    controllerManager.registerController(&errorController);
+    LogController logController;
+    logController.setMode(ControllerBase::VALUE_OWNER_SERVER);
+    controllerManager.registerController(&logController);
 
     RelayController relayController;
     controllerManager.registerController(&relayController);
 
     SettingsController settingsController;
-    settingsController.setMode(SettingsController::SETTINGS_SERVER);
+    settingsController.setMode(ControllerBase::VALUE_OWNER_SERVER);
     controllerManager.registerController(&settingsController);
 
     controllerManager.init(&appConfig);

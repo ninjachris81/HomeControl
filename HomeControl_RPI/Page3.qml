@@ -7,7 +7,7 @@ Page {
     width: 1024
     height: 600
 
-    title: qsTr("Errors")
+    title: qsTr("Logs")
 
     header: Label {
         text: root.title
@@ -41,6 +41,6 @@ Page {
                 }
             }
         }
-        model: DataBridge.errorControllerModel
+        model: DataBridge.logControllerModel
     }
 }

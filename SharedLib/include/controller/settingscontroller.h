@@ -7,14 +7,7 @@
 class SettingsController : public ControllerBase
 {
 public:
-    enum SETTINGS_MODE {
-        SETTINGS_SERVER,
-        SETTINGS_CLIENT
-    };
-
     SettingsController(QObject *parent = nullptr);
-
-    void setMode(SETTINGS_MODE thisMode);
 
     QString getName();
 
@@ -26,13 +19,9 @@ public:
 
     qint64 getValueLifetime(int index = -1);
 
-    bool isValueOwner(int index = -1);
-
     static QString CONTROLLER_NAME;
 
 protected:
-    SETTINGS_MODE m_mode = SETTINGS_SERVER;
-
     bool hasSetSupport() {
         return true;
     }

@@ -12,14 +12,15 @@ Page {
 
     title: qsTr("Heating")
 
+    /*
     header: Label {
         id: label
         width: 600
         height: 47
         text: root.title
-        font.pixelSize: Qt.application.font.pixelSize * 2
+        //font.pixelSize: Qt.application.font.pixelSize * 2
         padding: 10
-    }
+    }*/
 
     GroupBox {
         id: groupBox
@@ -32,12 +33,23 @@ Page {
         ColumnLayout {
             anchors.fill: parent
 
-            Button {
-                text: qsTr("Start preheat")
+            RowLayout {
+                Button {
+                    text: qsTr("Start preheat")
 
-                onClicked: {
-                    console.log("Start preheat")
-                    DataBridge.settings.sendCmd(Enums.MQTT_CMD_START_PREHEAT)
+                    onClicked: {
+                        console.log("Start preheat " + Enums.CMD_START_PREHEAT)
+                        DataBridge.settings.sendCmd(Enums.CMD_START_PREHEAT)
+                    }
+                }
+
+                Button {
+                    text: qsTr("Stop preheat")
+
+                    onClicked: {
+                        console.log("Stop preheat " + Enums.CMD_STOP_PREHEAT)
+                        DataBridge.settings.sendCmd(Enums.CMD_STOP_PREHEAT)
+                    }
                 }
             }
 

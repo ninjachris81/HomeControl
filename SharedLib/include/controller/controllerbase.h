@@ -17,6 +17,11 @@ class ControllerBase : public QObject
 {
     Q_OBJECT
 public:
+    enum VALUE_OWNER_MODE {
+        VALUE_OWNER_SERVER,
+        VALUE_OWNER_CLIENT,
+        VALUE_OWNER_DEFAULT = VALUE_OWNER_CLIENT
+    };
 
     struct ValueStruct {
         qint64 lifeTime = LIFETIME_UNLIMITED;
@@ -57,7 +62,9 @@ public:
 
     virtual qint64 getValueLifetime(int index = -1) = 0;
 
-    virtual bool isValueOwner(int index = -1) = 0;
+    virtual bool isValueOwner(int index = -1);
+
+    virtual void broadcastValues();
 
     void init(ControllerManager* parent, AppConfiguration* appConfig, QMqttClient *mqttClient);
 
@@ -66,8 +73,6 @@ public:
     void publish(int index);
 
     void publishCmd(EnumsDeclarations::MQTT_CMDS cmd);
-
-    void broadcastValues();
 
     QList<ValueStruct> values();
 
@@ -83,7 +88,10 @@ public:
 
     static QVariant parsePayload(QByteArray payload);
 
+    void setMode(VALUE_OWNER_MODE thisMode);
+
 protected:
+    VALUE_OWNER_MODE m_mode = VALUE_OWNER_DEFAULT;
     QList<ValueStruct> m_values;
     QStringList m_topicPath;
     QStringList m_labels;

@@ -95,12 +95,22 @@ void PreheatLogic::startPreheat(qint64 duration) {
     m_settingsController->setValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, EnumsDeclarations::SETTING_MODE_MANUAL, true);
 }
 
+void PreheatLogic::stopPreheat() {
+    qDebug() << Q_FUNC_INFO;
+    m_lastStartRequest = 0;
+    m_lastStartDuration = 0;
+    m_settingsController->setValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC, true);
+}
+
 void PreheatLogic::onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd) {
     qDebug() << Q_FUNC_INFO << cmd;
 
     switch(cmd) {
-    case EnumsDeclarations::START_PREHEAT:
+    case EnumsDeclarations::CMD_START_PREHEAT:
         startPreheat(m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_DURATION).toInt());
+        break;
+    case EnumsDeclarations::CMD_STOP_PREHEAT:
+        stopPreheat();
         break;
     }
 }

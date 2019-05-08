@@ -51,10 +51,17 @@ public:
   void sendError(String errorDesc);
   void sendError(String errorDesc, int value);
 
+  void sendLog(uint8_t type, String desc);
+  void sendLog(uint8_t type, String desc, int value);
+
   void sendMessage(String path, String payload);
   void sendMessage(String path, bool payload);
   void sendMessage(String path, int payload);
   void sendMessage(String path, double payload);
+
+  bool isConnected() {
+    return mqttClient->isConnected();
+  }
 
 private:
   static MqttController* instance;

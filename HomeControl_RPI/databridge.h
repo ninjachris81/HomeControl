@@ -6,8 +6,8 @@
 #include "controller/controllermanager.h"
 #include "appconfiguration.h"
 #include "controller/tempcontroller.h"
-#include "controller/errorcontroller.h"
-#include "listmodel/errorcontrollerlistmodel.h"
+#include "controller/logcontroller.h"
+#include "listmodel/logcontrollerlistmodel.h"
 #include "controller/relaycontroller.h"
 #include "listmodel/relaycontrollerlistmodel.h"
 #include "controller/settingscontroller.h"
@@ -22,14 +22,14 @@ public:
     explicit DataBridge(AppConfiguration *appConfig, QObject *parent = nullptr);
 
     Q_PROPERTY(ControllerListModel* tempControllerModel READ tempListModelController NOTIFY tempControllerModelChanged)
-    Q_PROPERTY(ErrorControllerListModel* errorControllerModel READ errorListModelController NOTIFY errorControllerModelChanged)
+    Q_PROPERTY(LogControllerListModel* logControllerModel READ logListModelController NOTIFY logControllerModelChanged)
     Q_PROPERTY(RelayControllerListModel* relayControllerModel READ relayListModelController NOTIFY relayControllerModelChanged)
     Q_PROPERTY(SettingsControllerListModel* settingsControllerModel READ settingsListModelController NOTIFY settingsControllerModelChanged)
 
     Q_PROPERTY(SettingsWrapper* settings READ settingsControllerWrapper NOTIFY settingsControllerChanged)
 
     ControllerListModel *tempListModelController();
-    ErrorControllerListModel *errorListModelController();
+    LogControllerListModel *logListModelController();
     RelayControllerListModel *relayListModelController();
     SettingsControllerListModel *settingsListModelController();
 
@@ -40,12 +40,12 @@ private:
 
     ControllerManager m_controllerManager;
     TempController m_tempController;
-    ErrorController m_errorController;
+    LogController m_logController;
     RelayController m_relayController;
     SettingsController m_settingsController;
 
     ControllerListModel *m_tempListModelController;
-    ErrorControllerListModel *m_errorListModelController;
+    LogControllerListModel *m_logListModelController;
     RelayControllerListModel *m_relayListModelController;
     SettingsControllerListModel *m_settingsListModelController;
 
@@ -56,7 +56,7 @@ private slots:
 
 signals:
     void tempControllerModelChanged();
-    void errorControllerModelChanged();
+    void logControllerModelChanged();
     void relayControllerModelChanged();
     void settingsControllerModelChanged();
 
