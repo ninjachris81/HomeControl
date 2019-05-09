@@ -43,7 +43,9 @@ SOURCES += \
     source/wrapper/settingswrapper.cpp \
     source/controller/logcontroller.cpp \
     source/listmodel/logcontrollerlistmodel.cpp \
-    source/sqllistmodel/logsqllistmodel.cpp
+    source/sqllistmodel/logsqllistmodel.cpp \
+    source/utils/qsqldatabasewrapper.cpp \
+    source/sqllistmodel/sqlquerymodel.cpp
 
 HEADERS += \
         include/sharedlib.h \
@@ -63,7 +65,9 @@ HEADERS += \
     include/wrapper/settingswrapper.h \
     include/controller/logcontroller.h \
     include/listmodel/logcontrollerlistmodel.h \
-    include/sqllistmodel/logsqllistmodel.h
+    include/sqllistmodel/logsqllistmodel.h \
+    include/utils/qsqldatabasewrapper.h \
+    include/sqllistmodel/sqlquerymodel.h
 
 unix {
     target.path = $$[QT_INSTALL_LIBS]

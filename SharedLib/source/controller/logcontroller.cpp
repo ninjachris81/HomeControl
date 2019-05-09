@@ -15,6 +15,7 @@
 
 QString LogController::CONTROLLER_NAME = QStringLiteral("LogController");
 QString LogController::DB_TABLE_LOGS = QStringLiteral("logs");
+QString LogController::DB_CONN_LOGS = QStringLiteral("HC_LOGS");
 
 LogController::LogController(QObject *parent) : ControllerBase(parent)
 {
@@ -56,7 +57,7 @@ qint64 LogController::getValueLifetime(int index) {
 
 void LogController::onInit() {
     if (m_mode==ControllerBase::VALUE_OWNER_SERVER) {
-        m_db = QSqlDatabase::addDatabase("QSQLITE" , "HC_LOGS");
+        m_db = QSqlDatabase::addDatabase("QSQLITE" , DB_CONN_LOGS);
         m_db.setDatabaseName("hc_logs.db");
         if (m_db.open()) {
             checkTables();
@@ -73,6 +74,14 @@ void LogController::onInit() {
     } else {
         SettingsController* settingsController = static_cast<SettingsController*>(m_parent->getController(SettingsController::CONTROLLER_NAME));
         connect(settingsController, &SettingsController::valueChanged, this, &LogController::onSettingsValueChanged);
+
+        m_db = QSqlDatabase::addDatabase("QSQLITE" , DB_CONN_LOGS);
+        m_db.setDatabaseName(":memory:");
+        if (m_db.open()) {
+            checkTables();
+        } else {
+            qWarning() << "Failed to open mem database" << m_db.lastError().text();
+        }
     }
 }
 
@@ -100,9 +109,11 @@ void LogController::onSettingsValueChanged(int index, QVariant value) {
     qDebug() << Q_FUNC_INFO << index << value;
 
     if (index==EnumsDeclarations::SETTINGS_CORE_HOST) {
+        /*
+         * TODO
         if (m_db.isOpen()) {
             m_db.close();
-        }
+        }*/
 
         retrieveLog(value.toString());
     }
@@ -111,33 +122,24 @@ void LogController::onSettingsValueChanged(int index, QVariant value) {
 void LogController::retrieveLog(QString host) {
     qDebug() << Q_FUNC_INFO << host;
 
-    m_db = QSqlDatabase::addDatabase("QSQLITE" , "HC_LOGS");
-    m_db.setDatabaseName(":memory:");
+    QTcpSocket socket;
+    socket.connectToHost(host, LOG_PORT);
+    if (socket.waitForConnected(2000)) {
+        socket.waitForReadyRead(2000);
+        QByteArray buffer = socket.readAll();
+        socket.close();
 
-    if (m_db.open()) {
-        checkTables();
+        QJsonDocument doc = QJsonDocument::fromBinaryData(buffer);
+        QJsonArray arr = doc.array();
 
-        QTcpSocket socket;
-        socket.connectToHost(host, LOG_PORT);
-        if (socket.waitForConnected(2000)) {
-            socket.waitForReadyRead(2000);
-            QByteArray buffer = socket.readAll();
-            socket.close();
+        qDebug() << arr;
 
-            QJsonDocument doc = QJsonDocument::fromBinaryData(buffer);
-            QJsonArray arr = doc.array();
-
-            qDebug() << arr;
-
-            for (int i=0;i<arr.count();i++) {
-                QJsonArray data = arr.at(i).toArray();
-                insertRecord(QDateTime::fromString(data.at(0).toString()), data.at(1).toInt(), data.at(2).toString());
-            }
-        } else {
-            qWarning() << "Timeout connecting to" << host;
+        for (int i=0;i<arr.count();i++) {
+            QJsonArray data = arr.at(i).toArray();
+            insertRecord(QDateTime::fromString(data.at(0).toString()), data.at(1).toInt(), data.at(2).toString());
         }
     } else {
-        qWarning() << "Failed to open mem database" << m_db.lastError().text();
+        qWarning() << "Timeout connecting to" << host;
     }
 }
 
@@ -181,7 +183,7 @@ void LogController::onSetReceived(int index, QVariant value) {
 }
 
 bool LogController::insertRecord(QDateTime date, int type, QString msg) {
-    qDebug() << date << type << msg;
+    qDebug() << Q_FUNC_INFO << m_db <<date << type << msg;
 
     QSqlQuery query(m_db);
     query.prepare("INSERT INTO " + DB_TABLE_LOGS + " (date, type, msg) VALUES (:date, :type, :msg)");

@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.4
+import QtQuick.Controls 1.4
 
 Page {
     id: root
@@ -15,32 +16,26 @@ Page {
         padding: 10
     }
 
-    ListView {
-        id: listView
+    TableView {
+        id: tableView
         anchors.fill: parent
-        delegate: Item {
-            x: 5
-            width: 80
-            height: 100
-            Row {
-                id: row1
-                spacing: 10
-                Text {
-                    text: label
-                    font.bold: true
-                    anchors.verticalCenter: parent.verticalCenter
-                }
 
-                Column {
-                    Repeater {
-                        model: value
-                        Text {
-                            text: modelData
-                        }
-                    }
-                }
-            }
+        TableViewColumn {
+            role: "col_date"
+            title: "Date"
+            width: 200
         }
-        model: DataBridge.logControllerModel
+        TableViewColumn {
+            role: "col_type"
+            title: "Type"
+            width: 150
+        }
+        TableViewColumn {
+            role: "col_msg"
+            title: "Message"
+            width: 400
+        }
+
+        model: DataBridge.logListModel
     }
 }

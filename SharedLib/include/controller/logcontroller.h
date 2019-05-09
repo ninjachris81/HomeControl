@@ -7,6 +7,8 @@
 
 #include "controllerbase.h"
 
+#include "../utils/qsqldatabasewrapper.h"
+
 #define LOG_PORT 8888
 
 class LogController : public ControllerBase
@@ -36,6 +38,8 @@ public:
     void retrieveLog(QString host);
 
     static QString CONTROLLER_NAME;
+
+    static QString DB_CONN_LOGS;
 
     static QString DB_TABLE_LOGS;
 

@@ -18,6 +18,8 @@ DataBridge::DataBridge(AppConfiguration *appConfig, QObject *parent) : QObject(p
 
     m_settingsControllerWrapper = new SettingsWrapper(&m_settingsController);
 
+    m_logListModel = new LogSqlListModel(&m_logController, QSqlDatabase::database(LogController::DB_CONN_LOGS));
+
     ControllerWrapper::registerTypes();
 }
 
@@ -42,4 +44,8 @@ SettingsControllerListModel *DataBridge::settingsListModelController() {
 
 SettingsWrapper *DataBridge::settingsControllerWrapper() {
     return m_settingsControllerWrapper;
+}
+
+LogSqlListModel *DataBridge::logListModel() {
+    return m_logListModel;
 }

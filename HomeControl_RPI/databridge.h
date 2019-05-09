@@ -12,6 +12,7 @@
 #include "listmodel/relaycontrollerlistmodel.h"
 #include "controller/settingscontroller.h"
 #include "listmodel/settingscontrollerlistmodel.h"
+#include "sqllistmodel/logsqllistmodel.h"
 
 #include "wrapper/settingswrapper.h"
 
@@ -27,6 +28,7 @@ public:
     Q_PROPERTY(SettingsControllerListModel* settingsControllerModel READ settingsListModelController NOTIFY settingsControllerModelChanged)
 
     Q_PROPERTY(SettingsWrapper* settings READ settingsControllerWrapper NOTIFY settingsControllerChanged)
+    Q_PROPERTY(LogSqlListModel* logListModel READ logListModel NOTIFY logListModelChanged)
 
     ControllerListModel *tempListModelController();
     LogControllerListModel *logListModelController();
@@ -34,6 +36,8 @@ public:
     SettingsControllerListModel *settingsListModelController();
 
     SettingsWrapper *settingsControllerWrapper();
+
+    LogSqlListModel *logListModel();
 
 private:
     AppConfiguration* m_appConfig;
@@ -51,6 +55,8 @@ private:
 
     SettingsWrapper *m_settingsControllerWrapper;
 
+    LogSqlListModel *m_logListModel;
+
 private slots:
     void onMqttConnected();
 
@@ -61,6 +67,8 @@ signals:
     void settingsControllerModelChanged();
 
     void settingsControllerChanged();
+
+    void logListModelChanged();
 
 
 public slots:
