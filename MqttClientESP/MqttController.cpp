@@ -23,7 +23,7 @@ void MqttController::init() {
     MQTT_PORT,
     "",
     "",
-    MQTT_NAME,
+    DEVICE_NAME,
     false
   );
 }
@@ -40,7 +40,7 @@ void MqttController::onConnectionEstablished() {
   mqttClient->subscribe(-1, -1, BUILD_PATH(MQTT_PATH_BC), &MqttController::onBroadcastReceivedStatic);
   for (uint8_t i=0;i<callbackHandlerCount;i++) callbackHandlers[i]->onConnected();
 
-  sendLog(MQTT_PATH_LOGS_TYPE_STARTUP, MQTT_NAME);
+  sendLog(MQTT_PATH_LOGS_TYPE_STARTUP, "");
 }
 
 void MqttController::onBroadcastReceivedStatic(const int endpoint, const int index, const String &message) {
@@ -138,6 +138,7 @@ void MqttController::sendError(String errorDesc) {
 
 void MqttController::sendLog(uint8_t type, String desc) {
   if (mqttClient->isConnected()) {
+    desc += String(DEVICE_NAME) + String(MQTT_LOG_SOURCE_DIV) + desc;
     sendMessage(BUILD_PATH(MQTT_PATH_LOGS + String(MQTT_PATH_SEP) + MQTT_SET + String(MQTT_PATH_SEP) + String(type)), desc);
   }
 }

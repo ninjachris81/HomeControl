@@ -12,10 +12,17 @@ class LogSqlListModel : public SqlQueryModel {
 Q_OBJECT
 
 public:
-    explicit LogSqlListModel(QObject *parent, QSqlDatabase db);
+    explicit LogSqlListModel(LogController* logController, QSqlDatabase db);
+
+    Q_INVOKABLE void setTypeFilter(int filter);
+
+protected slots:
+    void onLogChanged();
 
 protected:
     LogController* m_logController;
+
+    QVariant resolveData(int colIndex, QVariant value) const;
 
     void _setQuery();
 };

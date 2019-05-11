@@ -19,7 +19,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     preheatlogic.cpp \
-    heatinglogic.cpp
+    heatinglogic.cpp \
+    thingspeaklogger.cpp
 
 
 # Default rules for deployment.
@@ -29,7 +30,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     preheatlogic.h \
-    heatinglogic.h
+    heatinglogic.h \
+    thingspeaklogger.h
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SharedLib-Desktop_Qt_5_12_0_MSVC2017_64bit2-Debug/release/ -lSharedLib

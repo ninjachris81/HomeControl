@@ -7,13 +7,13 @@
 #include "Pins.h"
 #include "MqttController.h"
 #include "TempAdapterDHT.h"
-#include <Property.h>
+#include <FloatProperty.h>
 
 #define TEMP_INTERVAL_MS 3000
 
 #define TEMP_BC_INTERVAL_BC LIFETIME_MID/2
 
-class TempController : public AbstractIntervalTask, public MqttController::MqttEventCallbackHandler, public Property<float>::ValueChangeListener {
+class TempController : public AbstractIntervalTask, public MqttController::MqttEventCallbackHandler, public FloatProperty::ValueChangeListener {
 public:
   TempController();
   ~TempController();

@@ -5,8 +5,10 @@
 #include "controller/logcontroller.h"
 #include "controller/relaycontroller.h"
 #include "controller/settingscontroller.h"
+
 #include "preheatlogic.h"
 #include "heatinglogic.h"
+#include "thingspeaklogger.h"
 
 int main(int argc, char *argv[])
 {
@@ -34,6 +36,9 @@ int main(int argc, char *argv[])
 
     PreheatLogic preheatLogic(&controllerManager);
     HeatingLogic heatLogic(&controllerManager);
+    ThingSpeakLogger thingspeakLogger(&controllerManager, &appConfig);
+
+    logController.addLog(EnumsDeclarations::LOGS_TYPE_STARTUP, DEV_ID_SERVER);
 
     return a.exec();
 }

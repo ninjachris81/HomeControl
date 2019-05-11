@@ -22,25 +22,40 @@ QString AppConfiguration::keyToString(ConfigurationKey key) {
 }
 
 QVariant AppConfiguration::getValue(ConfigurationKey key, QVariant defaultValue) {
-    if (m_settings->contains(keyToString(key))) {
-        return m_settings->value(keyToString(key));
-    } else {
-        return defaultValue;
-    }
+    return getValue(keyToString(key), defaultValue);
 }
 
 QString AppConfiguration::getString(ConfigurationKey key, QString defaultValue) {
-    if (m_settings->contains(keyToString(key))) {
-        return m_settings->value(keyToString(key)).toString();
+    return getString(keyToString(key), defaultValue);
+}
+
+int AppConfiguration::getInt(ConfigurationKey key, int defaultValue) {
+    return getInt(keyToString(key), defaultValue);
+}
+
+QVariant AppConfiguration::getValue(QString key, QVariant defaultValue) {
+    if (m_settings->contains(key)) {
+        return m_settings->value(key);
     } else {
+        m_settings->setValue(key, defaultValue);
         return defaultValue;
     }
 }
 
-int AppConfiguration::getInt(ConfigurationKey key, int defaultValue) {
-    if (m_settings->contains(keyToString(key))) {
-        return m_settings->value(keyToString(key)).toInt();
+QString AppConfiguration::getString(QString key, QString defaultValue) {
+    if (m_settings->contains(key)) {
+        return m_settings->value(key).toString();
     } else {
+        m_settings->setValue(key, defaultValue);
+        return defaultValue;
+    }
+}
+
+int AppConfiguration::getInt(QString key, int defaultValue) {
+    if (m_settings->contains(key)) {
+        return m_settings->value(key).toInt();
+    } else {
+        m_settings->setValue(key, defaultValue);
         return defaultValue;
     }
 }

@@ -6,9 +6,13 @@
 #include <QtGlobal>
 #include "../constants_qt.h"
 
+#include "../controller/settingscontroller.h"
+
 class SettingsWrapper : public ControllerWrapper {
+    Q_OBJECT
+
 public:
-    SettingsWrapper(ControllerBase* controller);
+    SettingsWrapper(SettingsController* controller);
 };
 
 Q_DECLARE_METATYPE( SettingsWrapper* );

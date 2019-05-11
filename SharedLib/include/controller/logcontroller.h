@@ -13,13 +13,10 @@
 
 class LogController : public ControllerBase
 {
+    Q_OBJECT
+
 public:
     LogController(QObject *parent = nullptr);
-
-    enum LOGS_MODE {
-        LOGS_SERVER,
-        LOGS_CLIENT
-    };
 
     QString getName();
 
@@ -35,7 +32,9 @@ public:
 
     void broadcastValues();
 
-    void retrieveLog(QString host);
+    void refreshLog();
+
+    void addLog(EnumsDeclarations::MQTT_LOGS type, QString source, QString msg = "");
 
     static QString CONTROLLER_NAME;
 
@@ -61,10 +60,19 @@ protected:
 
     bool checkTables();
 
+    void retrieveLog();
+
+    void onCmdReceived(EnumsDeclarations::MQTT_CMDS cmd);
+
+    void clearLog(int typeFilter = -1);
+
 protected slots:
     void onNewConnection();
 
     void onSettingsValueChanged(int index, QVariant value);
+
+signals:
+    void logDataChanged();
 
 };
 

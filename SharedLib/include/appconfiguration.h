@@ -24,6 +24,12 @@ public:
 
     int getInt(ConfigurationKey key, int defaultValue);
 
+    QVariant getValue(QString key, QVariant defaultValue);
+
+    QString getString(QString key, QString defaultValue);
+
+    int getInt(QString key, int defaultValue);
+
 private:
     QSettings* m_settings;
 

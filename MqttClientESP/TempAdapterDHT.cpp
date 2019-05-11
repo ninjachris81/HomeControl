@@ -11,12 +11,13 @@ void TempAdapterDHT::init() {
   for (uint8_t i=0;i<TEMP_COUNT;i++) {
     digitalTemps[i].init(10, 0);
     temperatures[i].init(i);
+    temperatures[i].setTolerance(TEMPERATURE_TOLERANCE);
     memset(addressMappings[i], 0, 8);
   }
   
   sensors->begin();
   sensors->setWaitForConversion(false);
-  sensors->setResolution(TEMPERATURE_PRECISION);
+  sensors->setResolution(TEMPERATURE_RESOLUTION);
   sensors->requestTemperatures();
 
   foundSensors = sensors->getDeviceCount();
@@ -87,7 +88,7 @@ float TempAdapterDHT::getTemperature(uint8_t index) {
   return temperatures[index].getValue();
 }
 
-void TempAdapterDHT::addListener(Property<float>::ValueChangeListener *listener) {
+void TempAdapterDHT::addListener(FloatProperty::ValueChangeListener *listener) {
   for (uint8_t i=0;i<TEMP_COUNT;i++) temperatures[i].registerValueChangeListener(listener);
 }
 

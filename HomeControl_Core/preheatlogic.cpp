@@ -2,21 +2,28 @@
 #include <QDebug>
 #include <QDateTime>
 
-PreheatLogic::PreheatLogic(ControllerManager *controllerManager, QObject *parent) : LogicController(controllerManager, parent)
+PreheatLogic::PreheatLogic(ControllerManager *controllerManager, QObject *parent) : LogicController(controllerManager, PREHEAT_LOGIC_INTERVAL, parent)
 {
     m_tempController = static_cast<TempController*>(controllerManager->getController(TempController::CONTROLLER_NAME));
     m_relayController = static_cast<RelayController*>(controllerManager->getController(RelayController::CONTROLLER_NAME));
     m_settingsController = static_cast<SettingsController*>(controllerManager->getController(SettingsController::CONTROLLER_NAME));
+    m_logController = static_cast<LogController*>(controllerManager->getController(LogController::CONTROLLER_NAME));
 
     Q_ASSERT(m_tempController);
     Q_ASSERT(m_relayController);
     Q_ASSERT(m_settingsController);
-
-    startMaintenance(1000);
+    Q_ASSERT(m_logController);
 }
 
+void PreheatLogic::startMaintenance() {
+    // reset to automatic by default
+    m_settingsController->setValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC, true);
+    LogicController::startMaintenance();
+}
+
+
 void PreheatLogic::onMaintenance() {
-    //qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO;
 
     int from = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_FROM).toInt();
     int to = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_TO).toInt();
@@ -67,8 +74,6 @@ void PreheatLogic::onMaintenance() {
 
 
     case EnumsDeclarations::SETTING_MODE_MANUAL:
-        qDebug() << QDateTime::currentSecsSinceEpoch() - (m_lastStartDuration + m_lastStartRequest);
-
         if (m_lastStartRequest>0 && m_lastStartDuration>0 && QDateTime::currentSecsSinceEpoch() < m_lastStartRequest + m_lastStartDuration) {
             m_relayController->setValue(EnumsDeclarations::RELAYS_HC_PUMP, true, true);
             m_relayController->setValue(EnumsDeclarations::RELAYS_WATER_PUMP, true, true);
@@ -93,6 +98,8 @@ void PreheatLogic::startPreheat(qint64 duration) {
     m_lastStartDuration = duration;
 
     m_settingsController->setValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, EnumsDeclarations::SETTING_MODE_MANUAL, true);
+
+    m_logController->addLog(EnumsDeclarations::LOGS_TYPE_INFO, DEV_ID_SERVER, tr("Started preheat"));
 }
 
 void PreheatLogic::stopPreheat() {
@@ -100,6 +107,8 @@ void PreheatLogic::stopPreheat() {
     m_lastStartRequest = 0;
     m_lastStartDuration = 0;
     m_settingsController->setValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC, true);
+
+    m_logController->addLog(EnumsDeclarations::LOGS_TYPE_INFO, DEV_ID_SERVER, tr("Stopped preheat"));
 }
 
 void PreheatLogic::onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd) {
@@ -111,6 +120,8 @@ void PreheatLogic::onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd) {
         break;
     case EnumsDeclarations::CMD_STOP_PREHEAT:
         stopPreheat();
+        break;
+    default:
         break;
     }
 }

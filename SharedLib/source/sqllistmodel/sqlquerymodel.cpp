@@ -5,7 +5,7 @@
 #include <QSqlError>
 #include <QModelIndex>
 
-SqlQueryModel::SqlQueryModel(QObject *parent, QSqlDatabase db) :
+SqlQueryModel::SqlQueryModel(QSqlDatabase db, QObject *parent) :
     QSqlTableModel(parent, db)
 {
 }
@@ -46,11 +46,16 @@ QVariant SqlQueryModel::data(const QModelIndex &index, int role) const
     else {
         int columnIdx = role - Qt::UserRole - 1;
         QModelIndex modelIndex = this->index(index.row(), columnIdx);
-        value = QSqlQueryModel::data(modelIndex, Qt::DisplayRole);
+        value = resolveData(columnIdx, QSqlQueryModel::data(modelIndex, Qt::DisplayRole));
     }
     return value;
 }
 
+QVariant SqlQueryModel::resolveData(int colIndex, QVariant value) const {
+    Q_UNUSED(colIndex);
+
+    return value;
+}
 /*
 QVariant SqlQueryModel::data ( const QModelIndex & index, int role ) const
 {

@@ -9,12 +9,15 @@ class SqlQueryModel : public QSqlTableModel
     Q_OBJECT
 
 public:
-    explicit SqlQueryModel(QObject *parent, QSqlDatabase db);
+    explicit SqlQueryModel(QSqlDatabase db, QObject *parent=nullptr);
 
     void updateTable(const QString &tableName);
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     QHash<int, QByteArray> roleNames() const {	return m_roleNames;	}
+
+protected:
+    virtual QVariant resolveData(int colIndex, QVariant value) const;
 
 private:
     void generateRoleNames();

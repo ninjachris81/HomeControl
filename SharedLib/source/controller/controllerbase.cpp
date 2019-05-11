@@ -42,6 +42,7 @@ void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig
 
     connect(parent, &ControllerManager::mqttConnected, this, &ControllerBase::onMqttConnected);
     connect(parent, &ControllerManager::mqttDisconnected, this, &ControllerBase::onMqttDisconnected);
+    connect(parent, &ControllerManager::mqttCmdReceived, this, &ControllerBase::_onCmdReceived);
 
     onInit();
 }
@@ -96,15 +97,17 @@ QList<ControllerBase::ValueStruct> ControllerBase::values() {
     return m_values;
 }
 
-void ControllerBase::setValue(int index, QVariant value, bool sendSet) {
+void ControllerBase::setValue(int index, QVariant value, bool sendSet, bool ignoreCompare) {
     qDebug() << Q_FUNC_INFO << index << value;
 
     if (index<m_values.count()) {
         //qDebug() << m_values.at(index) << value;
-        if (m_values[index].compareTo(value)) {
-            //qDebug() << "Same value - ignoring set";
-            m_values[index].updateValue(value);
-            return;
+        if (!ignoreCompare) {
+            if (m_values[index].compareTo(value)) {
+                //qDebug() << "Same value - ignoring set";
+                m_values[index].updateValue(value);
+                return;
+            }
         }
 
         if (sendSet) {
@@ -295,4 +298,14 @@ void ControllerBase::onCheckValidity() {
             Q_EMIT(valueValidChanged(i));
         }
     }
+}
+
+void ControllerBase::_onCmdReceived(EnumsDeclarations::MQTT_CMDS cmd) {
+    onCmdReceived(cmd);
+}
+
+void ControllerBase::onCmdReceived(EnumsDeclarations::MQTT_CMDS cmd) {
+    Q_UNUSED(cmd);
+
+    // DO NOTHING
 }

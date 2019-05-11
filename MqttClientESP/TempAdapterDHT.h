@@ -4,10 +4,12 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <SmoothValue.h>
-#include <Property.h>
+#include <FloatProperty.h>
 #include "ESPConfigurations.h"
 
-#define TEMPERATURE_PRECISION 9
+#define TEMPERATURE_RESOLUTION 9
+
+#define TEMPERATURE_TOLERANCE 0.1
 
 class TempAdapterDHT {
   public:
@@ -27,7 +29,7 @@ class TempAdapterDHT {
 
     bool getUnmappedDevices(String &list);
 
-    void addListener(Property<float>::ValueChangeListener *listener);
+    void addListener(FloatProperty::ValueChangeListener *listener);
 
     uint8_t getFoundSensors();
 
@@ -41,7 +43,7 @@ private:
   DallasTemperature* sensors;
   
   SmoothValue digitalTemps[TEMP_COUNT];
-  Property<float> temperatures[TEMP_COUNT];
+  FloatProperty temperatures[TEMP_COUNT];
   uint8_t addressMappings[TEMP_COUNT][8];
 
 };

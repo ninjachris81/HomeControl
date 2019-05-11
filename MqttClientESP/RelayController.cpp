@@ -49,6 +49,8 @@ void RelayController::setState(uint8_t index, bool value) {
   
   Serial.write(relayData, sizeof(relayData));
 
+  taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->sendLog(MQTT_PATH_LOGS_TYPE_INFO, String("Switch ") + String(index), value);
+
   sendState(index);
 }
 

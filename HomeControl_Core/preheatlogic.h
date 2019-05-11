@@ -8,6 +8,9 @@
 #include "controller/relaycontroller.h"
 #include "controller/settingscontroller.h"
 #include "controller/logiccontroller.h"
+#include "controller/logcontroller.h"
+
+#define PREHEAT_LOGIC_INTERVAL 1000
 
 class PreheatLogic : public LogicController
 {
@@ -19,10 +22,14 @@ public:
 
     void stopPreheat();
 
+protected:
+    void startMaintenance();
+
 private:
     SettingsController* m_settingsController;
     TempController* m_tempController;
     RelayController* m_relayController;
+    LogController* m_logController;
 
     qint64 m_lastStartRequest = 0;
     qint64 m_lastStartDuration = 0;

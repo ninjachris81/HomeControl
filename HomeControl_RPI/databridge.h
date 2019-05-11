@@ -15,6 +15,7 @@
 #include "sqllistmodel/logsqllistmodel.h"
 
 #include "wrapper/settingswrapper.h"
+#include "wrapper/logwrapper.h"
 
 class DataBridge : public QObject
 {
@@ -28,6 +29,8 @@ public:
     Q_PROPERTY(SettingsControllerListModel* settingsControllerModel READ settingsListModelController NOTIFY settingsControllerModelChanged)
 
     Q_PROPERTY(SettingsWrapper* settings READ settingsControllerWrapper NOTIFY settingsControllerChanged)
+    Q_PROPERTY(LogWrapper* logs READ logControllerWrapper NOTIFY logControllerChanged)
+
     Q_PROPERTY(LogSqlListModel* logListModel READ logListModel NOTIFY logListModelChanged)
 
     ControllerListModel *tempListModelController();
@@ -36,6 +39,7 @@ public:
     SettingsControllerListModel *settingsListModelController();
 
     SettingsWrapper *settingsControllerWrapper();
+    LogWrapper *logControllerWrapper();
 
     LogSqlListModel *logListModel();
 
@@ -54,6 +58,7 @@ private:
     SettingsControllerListModel *m_settingsListModelController;
 
     SettingsWrapper *m_settingsControllerWrapper;
+    LogWrapper *m_logControllerWrapper;
 
     LogSqlListModel *m_logListModel;
 
@@ -67,6 +72,7 @@ signals:
     void settingsControllerModelChanged();
 
     void settingsControllerChanged();
+    void logControllerChanged();
 
     void logListModelChanged();
 

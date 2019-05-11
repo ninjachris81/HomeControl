@@ -17,6 +17,7 @@ DataBridge::DataBridge(AppConfiguration *appConfig, QObject *parent) : QObject(p
     m_settingsListModelController = new SettingsControllerListModel(&m_settingsController);
 
     m_settingsControllerWrapper = new SettingsWrapper(&m_settingsController);
+    m_logControllerWrapper = new LogWrapper(&m_logController);
 
     m_logListModel = new LogSqlListModel(&m_logController, QSqlDatabase::database(LogController::DB_CONN_LOGS));
 
@@ -24,6 +25,7 @@ DataBridge::DataBridge(AppConfiguration *appConfig, QObject *parent) : QObject(p
 }
 
 void DataBridge::onMqttConnected() {
+    m_logController.addLog(EnumsDeclarations::LOGS_TYPE_STARTUP, DEV_ID_TERMINAL);
 }
 
 ControllerListModel* DataBridge::tempListModelController() {
@@ -44,6 +46,10 @@ SettingsControllerListModel *DataBridge::settingsListModelController() {
 
 SettingsWrapper *DataBridge::settingsControllerWrapper() {
     return m_settingsControllerWrapper;
+}
+
+LogWrapper *DataBridge::logControllerWrapper() {
+    return m_logControllerWrapper;
 }
 
 LogSqlListModel *DataBridge::logListModel() {

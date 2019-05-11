@@ -1,13 +1,17 @@
 #include "heatinglogic.h"
 #include <QDateTime>
 
-HeatingLogic::HeatingLogic(ControllerManager *controllerManager, QObject *parent) : LogicController(controllerManager, parent)
+HeatingLogic::HeatingLogic(ControllerManager *controllerManager, QObject *parent) : LogicController(controllerManager, HEATING_LOGIC_INTERVAL, parent)
 {
     m_tempController = static_cast<TempController*>(controllerManager->getController(TempController::CONTROLLER_NAME));
     m_relayController = static_cast<RelayController*>(controllerManager->getController(RelayController::CONTROLLER_NAME));
     m_settingsController = static_cast<SettingsController*>(controllerManager->getController(SettingsController::CONTROLLER_NAME));
+}
 
-    startMaintenance(5000);
+void HeatingLogic::startMaintenance() {
+    // reset to automatic by default
+    m_settingsController->setValue(EnumsDeclarations::SETTINGS_HEATING_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC, true);
+    LogicController::startMaintenance();
 }
 
 void HeatingLogic::onMaintenance() {

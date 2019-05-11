@@ -1,15 +1,20 @@
 #include "include/controller/logiccontroller.h"
 #include <QDebug>
 
-LogicController::LogicController(ControllerManager *controllerManager, QObject *parent) : QObject(parent), m_controllerManager(controllerManager)
+LogicController::LogicController(ControllerManager *controllerManager, uint16_t interval, QObject *parent) : QObject(parent), m_interval(interval), m_controllerManager(controllerManager)
 {
     connect(&m_maintenanceTimer, &QTimer::timeout, this, &LogicController::onMaintenance);
 
     connect(m_controllerManager, &ControllerManager::mqttCmdReceived, this, &LogicController::onCommandReceived);
+    connect(m_controllerManager, &ControllerManager::mqttConnected, this, &LogicController::onConnected);
 }
 
-void LogicController::startMaintenance(uint16_t interval) {
-    m_maintenanceTimer.start(interval);
+void LogicController::onConnected() {
+    startMaintenance();
+}
+
+void LogicController::startMaintenance() {
+    m_maintenanceTimer.start(m_interval);
 }
 
 void LogicController::stopMaintenance() {

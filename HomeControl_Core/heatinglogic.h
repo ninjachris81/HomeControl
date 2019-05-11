@@ -9,6 +9,7 @@
 #include "controller/settingscontroller.h"
 
 #define HEATING_TOGGLE_ON_DURATION 60000
+#define HEATING_LOGIC_INTERVAL 5000
 
 class HeatingLogic : public LogicController
 {
@@ -22,6 +23,9 @@ private:
     RelayController* m_relayController;
 
     qint64 m_lastHeatOff = 0;
+
+protected:
+    void startMaintenance();
 
 public slots:
     void onMaintenance();

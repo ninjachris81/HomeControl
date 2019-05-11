@@ -11,16 +11,17 @@ class LogicController : public QObject
 {
     Q_OBJECT
 public:
-    explicit LogicController(ControllerManager *controllerManager, QObject *parent = nullptr);
+    explicit LogicController(ControllerManager *controllerManager, uint16_t interval = 0, QObject *parent = nullptr);
 
 private:
     QTimer m_maintenanceTimer;
 
 protected:
+    uint16_t m_interval;
     ControllerManager* m_controllerManager;
 
-    void startMaintenance(uint16_t interval);
-    void stopMaintenance();
+    virtual void startMaintenance();
+    virtual void stopMaintenance();
 
 signals:
 
@@ -28,6 +29,8 @@ public slots:
     virtual void onMaintenance();
 
     virtual void onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd);
+
+    virtual void onConnected();
 };
 
 #endif // LOGICCONTROLLER_H

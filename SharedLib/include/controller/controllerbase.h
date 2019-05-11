@@ -80,7 +80,7 @@ public:
 
     bool valueIsValid(int index);
 
-    void setValue(int index, QVariant value, bool sendSet = false);
+    void setValue(int index, QVariant value, bool sendSet = false, bool ignoreCompare = false);
 
     QString getLabel(int index);
 
@@ -115,6 +115,10 @@ protected:
 
     virtual void onValueChanged(int index, QVariant value);
 
+    virtual void onCmdReceived(EnumsDeclarations::MQTT_CMDS cmd);
+
+protected slots:
+
 private:
     AppConfiguration* m_appConfig;
     QMqttClient *m_mqttClient;
@@ -134,6 +138,8 @@ public slots:
 private slots:
     void onMqttConnected();
     void onMqttDisconnected();
+
+    void _onCmdReceived(EnumsDeclarations::MQTT_CMDS cmd);
 
     void _onMqttMessageReceived(QMqttMessage msg);
 

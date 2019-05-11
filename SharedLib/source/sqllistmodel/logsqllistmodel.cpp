@@ -2,8 +2,10 @@
 #include <QDebug>
 #include <QTimer>
 
-LogSqlListModel::LogSqlListModel(QObject *parent, QSqlDatabase db) : SqlQueryModel(parent, db) {
+LogSqlListModel::LogSqlListModel(LogController *logController, QSqlDatabase db) : SqlQueryModel(db), m_logController(logController) {
     qDebug() << db;
+
+    connect(m_logController, &LogController::logDataChanged, this, &LogSqlListModel::onLogChanged);
 
     if (!db.isOpen()) {
         qWarning() << "Database is not open";
@@ -14,12 +16,30 @@ LogSqlListModel::LogSqlListModel(QObject *parent, QSqlDatabase db) : SqlQueryMod
 
 void LogSqlListModel::_setQuery() {
     qDebug() << database();
-
-    QTimer::singleShot(2000, [=]() {
-        updateTable(LogController::DB_TABLE_LOGS);
-        qDebug() << "Row count" << rowCount();
-        qDebug() << "Roles" << roleNames();
-    } );
-
+    updateTable(LogController::DB_TABLE_LOGS);
 }
 
+void LogSqlListModel::onLogChanged() {
+    select();
+}
+
+QVariant LogSqlListModel::resolveData(int colIndex, QVariant value) const {
+    if (colIndex==1) {
+        switch(value.toInt()) {
+        case MQTT_PATH_LOGS_TYPE_INFO: return tr(LOGS_LABEL_INFO);
+        case MQTT_PATH_LOGS_TYPE_ERROR: return tr(LOGS_LABEL_ERROR);
+        case MQTT_PATH_LOGS_TYPE_STARTUP: return tr(LOGS_LABEL_STARTUP);
+        default: return tr("Unknown") + " " + QString::number(value.toInt());
+        }
+    } else {
+        return value;
+    }
+}
+
+void LogSqlListModel::setTypeFilter(int filter) {
+    if (filter==0) {
+        setFilter("");
+    } else {
+        setFilter("type=" + QString::number(filter-1));
+    }
+}

@@ -36,7 +36,7 @@ QStringList LogController::getLabelList() {
 QVariant::Type LogController::getValueType(int index) {
     Q_UNUSED(index);
 
-    return QVariant::StringList;
+    return QVariant::String;
 }
 
 bool LogController::isValueOwner(int index) {
@@ -85,6 +85,46 @@ void LogController::onInit() {
     }
 }
 
+void LogController::onCmdReceived(EnumsDeclarations::MQTT_CMDS cmd) {
+    switch(cmd) {
+    case EnumsDeclarations::CMD_LOG_CLEAR_ALL:
+        clearLog();
+        break;
+    case EnumsDeclarations::CMD_LOG_CLEAR_INFO:
+        clearLog(MQTT_PATH_LOGS_TYPE_INFO);
+        break;
+    case EnumsDeclarations::CMD_LOG_CLEAR_ERROR:
+        clearLog(MQTT_PATH_LOGS_TYPE_ERROR);
+        break;
+    case EnumsDeclarations::CMD_LOG_CLEAR_STARTUP:
+        clearLog(MQTT_PATH_LOGS_TYPE_STARTUP);
+        break;
+    default:
+        break;
+    }
+}
+
+void LogController::clearLog(int typeFilter) {
+    qDebug() << Q_FUNC_INFO << typeFilter;
+
+    if (m_mode==ControllerBase::VALUE_OWNER_SERVER) {
+        QSqlQuery query(m_db);
+
+        if (typeFilter==-1) {
+            if (!query.exec("DELETE FROM " + DB_TABLE_LOGS)) {
+                qWarning() << "Failed to clear table" << query.lastError();
+            }
+        } else {
+            query.prepare("DELETE FROM " + DB_TABLE_LOGS + " WHERE type=:type");
+            query.bindValue(":type", typeFilter);
+
+            if (!query.exec()) {
+                qWarning() << "Failed to clear table" << query.lastError();
+            }
+        }
+    }
+}
+
 bool LogController::checkTables() {
     qDebug() << Q_FUNC_INFO;
 
@@ -109,17 +149,32 @@ void LogController::onSettingsValueChanged(int index, QVariant value) {
     qDebug() << Q_FUNC_INFO << index << value;
 
     if (index==EnumsDeclarations::SETTINGS_CORE_HOST) {
-        /*
-         * TODO
-        if (m_db.isOpen()) {
-            m_db.close();
-        }*/
-
-        retrieveLog(value.toString());
+        refreshLog();
     }
 }
 
-void LogController::retrieveLog(QString host) {
+void LogController::refreshLog() {
+    QSqlQuery query("DELETE FROM " + DB_TABLE_LOGS, m_db);
+    if (query.exec()) {
+        retrieveLog();
+    } else {
+        qWarning() << "Unable to truncate table" << query.lastError();
+    }
+}
+
+void LogController::addLog(EnumsDeclarations::MQTT_LOGS type, QString source, QString msg) {
+    qDebug() << Q_FUNC_INFO << type << msg;
+
+    if (m_mode==VALUE_OWNER_SERVER) {
+        insertRecord(QDateTime::currentDateTime(), type, source + MQTT_LOG_SOURCE_DIV + msg);
+        Q_EMIT(logDataChanged());
+    } else {
+        setValue(type, source + MQTT_LOG_SOURCE_DIV + msg, true, true);
+    }
+}
+
+void LogController::retrieveLog() {
+    QString host = static_cast<SettingsController*>(m_parent->getController(SettingsController::CONTROLLER_NAME))->value(EnumsDeclarations::SETTINGS_CORE_HOST).toString();
     qDebug() << Q_FUNC_INFO << host;
 
     QTcpSocket socket;
@@ -138,6 +193,8 @@ void LogController::retrieveLog(QString host) {
             QJsonArray data = arr.at(i).toArray();
             insertRecord(QDateTime::fromString(data.at(0).toString()), data.at(1).toInt(), data.at(2).toString());
         }
+
+        Q_EMIT(logDataChanged());
     } else {
         qWarning() << "Timeout connecting to" << host;
     }
