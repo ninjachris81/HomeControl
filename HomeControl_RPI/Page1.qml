@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.3
 
 import hc 1.0
 
+import "."
+
 Page {
     id: root
 
@@ -35,6 +37,10 @@ Page {
 
             RowLayout {
                 Button {
+                    Layout.preferredHeight: Style.buttonHeight
+
+                    font.pointSize: Style.fontPointSize
+
                     text: qsTr("Start preheat")
 
                     onClicked: {
@@ -44,6 +50,10 @@ Page {
                 }
 
                 Button {
+                    Layout.preferredHeight: Style.buttonHeight
+
+                    font.pointSize: Style.fontPointSize
+
                     text: qsTr("Stop preheat")
 
                     onClicked: {

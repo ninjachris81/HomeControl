@@ -1,9 +1,11 @@
 import QtQuick 2.9
-import QtQuick.Controls 2.4
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.4 as C2
+import QtQuick.Controls 1.4 as C1
 import QtQuick.Layouts 1.3
 
-Page {
+import "."
+
+C2.Page {
     id: root
 
     width: 1024
@@ -18,13 +20,15 @@ Page {
 
         RowLayout {
             Layout.fillWidth: true
-            Layout.preferredHeight: 30
+            Layout.preferredHeight: Style.buttonHeight
 
-            ComboBox {
+            C2.ComboBox {
                 id: logFilter
 
-                Layout.preferredHeight: 30
+                Layout.preferredHeight: Style.buttonHeight
                 Layout.preferredWidth: 200
+
+                font.pointSize: Style.fontPointSize
 
                 currentIndex: 0
                 model: [qsTr("All"), qsTr("Info"), qsTr("Error"), qsTr("Startup")]
@@ -34,9 +38,11 @@ Page {
                 }
             }
 
-            Button {
-                Layout.preferredHeight: 30
+            C2.Button {
+                Layout.preferredHeight: Style.buttonHeight
                 Layout.preferredWidth: 100
+
+                font.pointSize: Style.fontPointSize
 
                 text: qsTr("Refresh")
 
@@ -45,9 +51,11 @@ Page {
                 }
             }
 
-            Button {
-                Layout.preferredHeight: 30
+            C2.Button {
+                Layout.preferredHeight: Style.buttonHeight
                 Layout.preferredWidth: 100
+
+                font.pointSize: Style.fontPointSize
 
                 text: qsTr("Clear")
 
@@ -57,23 +65,23 @@ Page {
             }
         }
 
-        TableView {
+        C1.TableView {
             id: tableView
 
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            TableViewColumn {
+            C1.TableViewColumn {
                 role: "col_date"
                 title: "Date"
                 width: 200
             }
-            TableViewColumn {
+            C1.TableViewColumn {
                 role: "col_type"
                 title: "Type"
                 width: 150
             }
-            TableViewColumn {
+            C1.TableViewColumn {
                 role: "col_msg"
                 title: "Message"
                 width: 400

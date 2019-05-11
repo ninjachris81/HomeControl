@@ -136,7 +136,7 @@ bool LogController::checkTables() {
         qDebug() << "Creating new table" << DB_TABLE_LOGS;
 
         QSqlQuery query(m_db);
-        if (query.exec("CREATE TABLE " + DB_TABLE_LOGS + " (\"date\" DATETIME NOT NULL, \"type\" TINYINT NOT NULL, \"msg\" TEXT)")) {
+        if (query.exec("CREATE TABLE " + DB_TABLE_LOGS + " (\"date\" UNSIGNED BIG INT NOT NULL, \"type\" TINYINT NOT NULL, \"msg\" TEXT)")) {
             qDebug() << "Created new table" << DB_TABLE_LOGS;
         } else {
             qWarning() << "Failed to create new table" << query.lastError().text();
@@ -181,8 +181,8 @@ void LogController::retrieveLog() {
 
     QTcpSocket socket;
     socket.connectToHost(host, LOG_PORT);
-    if (socket.waitForConnected(2000)) {
-        socket.waitForReadyRead(2000);
+    if (socket.waitForConnected(5000)) {
+        socket.waitForReadyRead(5000);
         QByteArray buffer = socket.readAll();
         socket.close();
 
@@ -193,7 +193,7 @@ void LogController::retrieveLog() {
 
         for (int i=0;i<arr.count();i++) {
             QJsonArray data = arr.at(i).toArray();
-            insertRecord(QDateTime::fromString(data.at(0).toString()), data.at(1).toInt(), data.at(2).toString());
+            insertRecord(QDateTime::fromSecsSinceEpoch(data.at(0).toInt()), data.at(1).toInt(), data.at(2).toString());
         }
 
         Q_EMIT(logDataChanged());
@@ -213,7 +213,7 @@ void LogController::onNewConnection() {
     while (query.next()) {
         QJsonArray data;
 
-        data.append(QJsonValue(query.value("date").toDateTime().toString()));
+        data.append(QJsonValue(query.value("date").toLongLong()));
         data.append(QJsonValue(query.value("type").toInt()));
         data.append(QJsonValue(query.value("msg").toString()));
 
@@ -246,7 +246,7 @@ bool LogController::insertRecord(QDateTime date, int type, QString msg) {
 
     QSqlQuery query(m_db);
     query.prepare("INSERT INTO " + DB_TABLE_LOGS + " (date, type, msg) VALUES (:date, :type, :msg)");
-    query.bindValue(":date", date);
+    query.bindValue(":date", date.toSecsSinceEpoch());
     query.bindValue(":type", type);
     query.bindValue(":msg", msg);
 

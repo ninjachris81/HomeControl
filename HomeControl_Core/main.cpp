@@ -38,7 +38,9 @@ int main(int argc, char *argv[])
     HeatingLogic heatLogic(&controllerManager);
     ThingSpeakLogger thingspeakLogger(&controllerManager, &appConfig);
 
-    logController.addLog(EnumsDeclarations::LOGS_TYPE_STARTUP, DEV_ID_SERVER);
+    QObject::connect(&controllerManager, &ControllerManager::mqttConnected, [&logController]() {
+        logController.addLog(EnumsDeclarations::LOGS_TYPE_STARTUP, DEV_ID_SERVER);
+      });
 
     return a.exec();
 }

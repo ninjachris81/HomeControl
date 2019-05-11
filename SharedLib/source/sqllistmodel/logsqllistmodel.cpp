@@ -24,14 +24,17 @@ void LogSqlListModel::onLogChanged() {
 }
 
 QVariant LogSqlListModel::resolveData(int colIndex, QVariant value) const {
-    if (colIndex==1) {
+    switch(colIndex) {
+    case 0:
+        return QDateTime::fromSecsSinceEpoch(value.toLongLong()).toString();
+    case 1:
         switch(value.toInt()) {
         case MQTT_PATH_LOGS_TYPE_INFO: return tr(LOGS_LABEL_INFO);
         case MQTT_PATH_LOGS_TYPE_ERROR: return tr(LOGS_LABEL_ERROR);
         case MQTT_PATH_LOGS_TYPE_STARTUP: return tr(LOGS_LABEL_STARTUP);
         default: return tr("Unknown") + " " + QString::number(value.toInt());
         }
-    } else {
+    default:
         return value;
     }
 }

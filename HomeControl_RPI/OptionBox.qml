@@ -2,6 +2,8 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.4
 
+import "."
+
 Item {
     property var model
     property int modelIndex
@@ -35,7 +37,7 @@ Item {
                 text: labels[index]
                 checked: currentValue===index
 
-                font.pointSize: 12
+                font.pointSize: Style.fontPointSize
 
                 onToggled: {
                     if (typeof(inputHandler)=="function") inputHandler(myValue);
