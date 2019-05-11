@@ -20,10 +20,12 @@ QStringList RelayController::getLabelList() {
     CONVERT_LABEL_LIST(EnumsDeclarations::RELAYS_LABELS);
 }
 
-QVariant::Type RelayController::getValueType(int index) {
-    Q_UNUSED(index);
-
+QVariant::Type RelayController::getDefaultValueType() {
     return QVariant::Bool;
+}
+
+QString RelayController::getEnumName() {
+    return "MQTT_RELAYS";
 }
 
 bool RelayController::isValueOwner(int index) {

@@ -23,32 +23,22 @@ QStringList SettingsController::getLabelList() {
     CONVERT_LABEL_LIST(EnumsDeclarations::SETTINGS_LABELS);
 }
 
-QVariant::Type SettingsController::getValueType(int index) {
-    EnumsDeclarations::MQTT_SETTINGS sett = static_cast<EnumsDeclarations::MQTT_SETTINGS>(index);
+QList<QVariant::Type> SettingsController::getValueTypes() {
+    QList<QVariant::Type> returnList;
 
-    switch(sett) {
-    case EnumsDeclarations::SETTINGS_PREHEAT_FROM:
-    case EnumsDeclarations::SETTINGS_PREHEAT_TO:
-        return QVariant::Int;
-    case EnumsDeclarations::SETTINGS_PREHEAT_HC_TEMP:
-    case EnumsDeclarations::SETTINGS_PREHEAT_WATER_TEMP:
-        return QVariant::Double;
-    case EnumsDeclarations::SETTINGS_PREHEAT_MODE:
-    case EnumsDeclarations::SETTINGS_PREHEAT_DURATION:
-        return QVariant::Int;
-    case EnumsDeclarations::SETTINGS_HEATING_TEMP:
-        return QVariant::Double;
-    case EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE:
-        return QVariant::Bool;
-    case EnumsDeclarations::SETTINGS_HEATING_MODE:
-        return QVariant::Int;
-    case EnumsDeclarations::SETTINGS_HEATING_MANUAL_STATE:
-        return QVariant::Bool;
-    case EnumsDeclarations::SETTINGS_CORE_HOST:
-        return QVariant::String;
+    for (QVariant::Type type : EnumsDeclarations::SETTINGS_TYPES) {
+        returnList.append(type);
     }
 
-    return QVariant::Invalid;
+    return returnList;
+}
+
+QString SettingsController::getEnumName() {
+    return "MQTT_SETTINGS";
+}
+
+QVariant::Type SettingsController::getDefaultValueType() {
+    return QVariant::String;
 }
 
 qint64 SettingsController::getValueLifetime(int index) {
@@ -74,6 +64,10 @@ void SettingsController::onInit() {
 
         // publish hostname
         setValue(EnumsDeclarations::SETTINGS_CORE_HOST, QHostInfo::localHostName());
+
+        setValue(EnumsDeclarations::SETTINGS_PREHEAT_HC_STANDBY_TEMP, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_HC_STANDBY_TEMP, 26.0));
+        setValue(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_FROM, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_FROM, 9));
+        setValue(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_TO, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_TO, 21));
     }
 }
 

@@ -96,6 +96,36 @@ Page {
                     Layout.fillWidth: true
 
                     model: DataBridge.settingsControllerModel
+                    modelIndex: Enums.SETTINGS_PREHEAT_HC_TEMP
+                    unit: "°"
+                    allowInput: true
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    inputValidator: IntValidator { bottom: 10; top: 50 }
+                    inputHandler: function(thisValue) {
+                        DataBridge.settings.setValue(modelIndex, thisValue);
+                    }
+                }
+
+                ValueLabel {
+                    Layout.preferredHeight: 30
+                    Layout.fillWidth: true
+
+                    model: DataBridge.settingsControllerModel
+                    modelIndex: Enums.SETTINGS_PREHEAT_WATER_TEMP
+                    unit: "°"
+                    allowInput: true
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    inputValidator: IntValidator { bottom: 10; top: 50 }
+                    inputHandler: function(thisValue) {
+                        DataBridge.settings.setValue(modelIndex, thisValue);
+                    }
+                }
+
+                ValueLabel {
+                    Layout.preferredHeight: 30
+                    Layout.fillWidth: true
+
+                    model: DataBridge.settingsControllerModel
                     modelIndex: Enums.SETTINGS_PREHEAT_FROM
                     unit: "h"
                     allowInput: true
@@ -121,12 +151,13 @@ Page {
                     }
                 }
 
+                // next row
                 ValueLabel {
                     Layout.preferredHeight: 30
                     Layout.fillWidth: true
 
                     model: DataBridge.settingsControllerModel
-                    modelIndex: Enums.SETTINGS_PREHEAT_HC_TEMP
+                    modelIndex: Enums.SETTINGS_PREHEAT_HC_STANDBY_TEMP
                     unit: "°"
                     allowInput: true
                     inputMethodHints: Qt.ImhDigitsOnly
@@ -136,20 +167,44 @@ Page {
                     }
                 }
 
+
+                Item{
+                    Layout.preferredHeight: 30
+                    Layout.fillWidth: true
+                }
+
                 ValueLabel {
                     Layout.preferredHeight: 30
                     Layout.fillWidth: true
 
                     model: DataBridge.settingsControllerModel
-                    modelIndex: Enums.SETTINGS_PREHEAT_WATER_TEMP
-                    unit: "°"
+                    modelIndex: Enums.SETTINGS_PREHEAT_STANDBY_FROM
+                    unit: "h"
                     allowInput: true
                     inputMethodHints: Qt.ImhDigitsOnly
-                    inputValidator: IntValidator { bottom: 10; top: 50 }
+                    inputValidator: IntValidator { bottom: 0; top: 23 }
                     inputHandler: function(thisValue) {
                         DataBridge.settings.setValue(modelIndex, thisValue);
                     }
                 }
+
+
+
+                ValueLabel {
+                    Layout.preferredHeight: 30
+                    Layout.fillWidth: true
+
+                    model: DataBridge.settingsControllerModel
+                    modelIndex: Enums.SETTINGS_PREHEAT_STANDBY_TO
+                    unit: "h"
+                    allowInput: true
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    inputValidator: IntValidator { bottom: 0; top: 23 }
+                    inputHandler: function(thisValue) {
+                        DataBridge.settings.setValue(modelIndex, thisValue);
+                    }
+                }
+
 
 
                 // next row

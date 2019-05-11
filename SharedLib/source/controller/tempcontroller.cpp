@@ -20,9 +20,11 @@ QStringList TempController::getLabelList() {
     CONVERT_LABEL_LIST(EnumsDeclarations::TEMPS_LABELS);
 }
 
-QVariant::Type TempController::getValueType(int index) {
-    Q_UNUSED(index);
+QString TempController::getEnumName() {
+    return "MQTT_TEMPS";
+}
 
+QVariant::Type TempController::getDefaultValueType() {
     return QVariant::Double;
 }
 

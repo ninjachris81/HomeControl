@@ -25,70 +25,64 @@ void PreheatLogic::startMaintenance() {
 void PreheatLogic::onMaintenance() {
     qDebug() << Q_FUNC_INFO;
 
-    int from = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_FROM).toInt();
-    int to = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_TO).toInt();
+    int preheatFrom = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_FROM).toInt();
+    int preheatTo = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_TO).toInt();
     int currentHour = QDateTime::currentDateTime().time().hour();
     int mode = static_cast<EnumsDeclarations::SETTINGS_MODES>(m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_MODE).toInt());
+
+    bool hcOn = false;
+    bool waterOn = false;
 
     switch(mode) {
     case EnumsDeclarations::SETTING_MODE_AUTOMATIC:
 
-        if (from <= currentHour && to >= currentHour) {
+        if (preheatFrom <= currentHour && preheatTo >= currentHour) {
             float preheatHc = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_HC_TEMP).toFloat();
             float preheatWater = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_WATER_TEMP).toFloat();
 
             if (m_tempController->valueIsValid(EnumsDeclarations::TEMPS_HC)) {
-                float hcTemp = m_tempController->value(EnumsDeclarations::TEMPS_HC).toDouble();
-
-                if (hcTemp<preheatHc) {
-                    // turn on
-                    m_relayController->setValue(EnumsDeclarations::RELAYS_HC_PUMP, true, true);
-                } else {
-                    m_relayController->setValue(EnumsDeclarations::RELAYS_HC_PUMP, false, true);
-                }
+                hcOn = m_tempController->value(EnumsDeclarations::TEMPS_HC).toDouble()<preheatHc;
             } else {
                 qWarning() << "HC Value is invalid";
-                m_relayController->setValue(EnumsDeclarations::RELAYS_HC_PUMP, false, true);
             }
 
             if (m_tempController->valueIsValid(EnumsDeclarations::TEMPS_WATER)) {
-                float waterTemp = m_tempController->value(EnumsDeclarations::TEMPS_WATER).toDouble();
-
-                if (waterTemp<preheatWater) {
-                    // turn on
-                    m_relayController->setValue(EnumsDeclarations::RELAYS_WATER_PUMP, true, true);
-                } else {
-                    m_relayController->setValue(EnumsDeclarations::RELAYS_WATER_PUMP, false, true);
-                }
+                waterOn = m_tempController->value(EnumsDeclarations::TEMPS_WATER).toDouble()<preheatWater;
             } else {
                 qWarning() << "Water Value is invalid";
-                m_relayController->setValue(EnumsDeclarations::RELAYS_WATER_PUMP, false, true);
             }
 
         } else {
-            qWarning() << "Not in time frame" << from << to << currentHour;
-            m_relayController->setValue(EnumsDeclarations::RELAYS_HC_PUMP, false, true);
-            m_relayController->setValue(EnumsDeclarations::RELAYS_WATER_PUMP, false, true);
+            int preheatStbFrom = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_FROM).toInt();
+            int preheatStbTo = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_TO).toInt();
+
+            if (preheatStbFrom <= currentHour && preheatStbTo >= currentHour) {
+                if (m_tempController->valueIsValid(EnumsDeclarations::TEMPS_HC)) {
+                    hcOn = m_tempController->value(EnumsDeclarations::TEMPS_HC).toDouble()<m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_HC_STANDBY_TEMP).toFloat();
+                }
+            } else {
+                qDebug() << "Not in time frame" << preheatFrom << preheatTo << currentHour;
+            }
         }
         break;
 
 
     case EnumsDeclarations::SETTING_MODE_MANUAL:
         if (m_lastStartRequest>0 && m_lastStartDuration>0 && QDateTime::currentSecsSinceEpoch() < m_lastStartRequest + m_lastStartDuration) {
-            m_relayController->setValue(EnumsDeclarations::RELAYS_HC_PUMP, true, true);
-            m_relayController->setValue(EnumsDeclarations::RELAYS_WATER_PUMP, true, true);
+            hcOn = true;
+            waterOn = true;
         } else {
             if (m_lastStartRequest>0) {
                 m_lastStartRequest = 0;
                 m_lastStartDuration = 0;
                 m_settingsController->setValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC, true);
             }
-            m_relayController->setValue(EnumsDeclarations::RELAYS_HC_PUMP, false, true);
-            m_relayController->setValue(EnumsDeclarations::RELAYS_WATER_PUMP, false, true);
         }
         break;
     }
 
+    m_relayController->setValue(EnumsDeclarations::RELAYS_HC_PUMP, hcOn, true);
+    m_relayController->setValue(EnumsDeclarations::RELAYS_WATER_PUMP, waterOn, true);
 }
 
 void PreheatLogic::startPreheat(qint64 duration) {

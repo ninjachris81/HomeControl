@@ -33,12 +33,6 @@ QStringList LogController::getLabelList() {
     CONVERT_LABEL_LIST(EnumsDeclarations::LOGS_TYPE_LABELS);
 }
 
-QVariant::Type LogController::getValueType(int index) {
-    Q_UNUSED(index);
-
-    return QVariant::String;
-}
-
 bool LogController::isValueOwner(int index) {
     Q_UNUSED(index);
 
@@ -47,6 +41,14 @@ bool LogController::isValueOwner(int index) {
 
 void LogController::broadcastValues() {
     // do nothing
+}
+
+QVariant::Type LogController::getDefaultValueType() {
+    return QVariant::String;
+}
+
+QString LogController::getEnumName() {
+    return "MQTT_LOGS";
 }
 
 qint64 LogController::getValueLifetime(int index) {

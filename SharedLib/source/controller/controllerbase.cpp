@@ -2,6 +2,8 @@
 #include "include/controller/controllermanager.h"
 #include "include/constants_qt.h"
 #include <QDebug>
+#include <QMetaEnum>
+
 
 ControllerBase::ControllerBase(QObject *parent) : QObject(parent), m_topicValSub(nullptr), m_topicSetSub(nullptr), m_bcSub(nullptr)
 {
@@ -22,6 +24,17 @@ bool ControllerBase::isValueOwner(int index) {
 
 void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig, QMqttClient *mqttClient) {
     qDebug() << Q_FUNC_INFO;
+
+    if (!getEnumName().isEmpty()) {
+        int enumId = EnumsDeclarations::staticMetaObject.indexOfEnumerator(getEnumName().toStdString().c_str());
+        Q_ASSERT(enumId>=0);
+        Q_ASSERT(EnumsDeclarations::staticMetaObject.enumerator(enumId).keyCount()==getLabelList().count());
+    }
+    if (!getValueTypes().isEmpty()) {
+        int enumId = EnumsDeclarations::staticMetaObject.indexOfEnumerator(getEnumName().toStdString().c_str());
+        Q_ASSERT(enumId>=0);
+        Q_ASSERT(EnumsDeclarations::staticMetaObject.enumerator(enumId).keyCount()==getValueTypes().count());
+    }
 
     m_topicPath = getTopicPath();
     m_topicName = m_topicPath.last();
@@ -45,6 +58,33 @@ void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig
     connect(parent, &ControllerManager::mqttCmdReceived, this, &ControllerBase::_onCmdReceived);
 
     onInit();
+}
+
+QList<QVariant::Type> ControllerBase::getValueTypes() {
+    return QList<QVariant::Type>();
+}
+
+QVariant::Type ControllerBase::getDefaultValueType() {
+    return QVariant::String;
+}
+
+QVariant::Type ControllerBase::getValueType(int index) {
+    if (index==-1) {
+        return getDefaultValueType();
+    } else {
+        if (m_TypeCache.isEmpty()) {
+            m_TypeCache = getValueTypes();
+        }
+
+        if (m_TypeCache.isEmpty()) {
+            return getDefaultValueType();
+        } else if (index < m_TypeCache.size()) {
+            return m_TypeCache.at(index);
+        } else {
+            qWarning() << "Invalid value type index" << index;
+            return QVariant::Invalid;
+        }
+    }
 }
 
 QString ControllerBase::getLabel(int index) {

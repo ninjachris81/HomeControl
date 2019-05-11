@@ -15,7 +15,11 @@ public:
 
     QStringList getLabelList();
 
-    QVariant::Type getValueType(int index = -1);
+    QList<QVariant::Type> getValueTypes();
+
+    QString getEnumName();
+
+    QVariant::Type getDefaultValueType();
 
     qint64 getValueLifetime(int index = -1);
 

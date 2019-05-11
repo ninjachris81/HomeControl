@@ -58,9 +58,13 @@ public:
 
     virtual QStringList getLabelList() = 0;
 
-    virtual QVariant::Type getValueType(int index = -1) = 0;
+    virtual QList<QVariant::Type> getValueTypes();
+
+    virtual QVariant::Type getDefaultValueType();
 
     virtual qint64 getValueLifetime(int index = -1) = 0;
+
+    virtual QString getEnumName() = 0;
 
     virtual bool isValueOwner(int index = -1);
 
@@ -80,6 +84,8 @@ public:
 
     bool valueIsValid(int index);
 
+    QVariant::Type getValueType(int index = -1);
+
     void setValue(int index, QVariant value, bool sendSet = false, bool ignoreCompare = false);
 
     QString getLabel(int index);
@@ -96,6 +102,8 @@ protected:
     QStringList m_topicPath;
     QStringList m_labels;
     ControllerManager* m_parent;
+
+    QList<QVariant::Type> m_TypeCache;
 
     QString m_topicName;
 
