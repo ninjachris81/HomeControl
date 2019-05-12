@@ -49,10 +49,8 @@ Page {
                     }
                 }
 
-                Button {
+                HCButton {
                     Layout.preferredHeight: Style.buttonHeight
-
-                    font.pointSize: Style.fontPointSize
 
                     text: qsTr("Stop preheat")
 

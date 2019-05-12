@@ -17,7 +17,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    databridge.cpp
+    databridge.cpp \
+    screensaverfilter.cpp
 
 RESOURCES += qml.qrc \
     qml_components.qrc \
@@ -36,6 +37,7 @@ else: unix:!android: target.path = $$[QT_INSTALL_PREFIX]/opt/$${TARGET}/bin
 
 HEADERS += \
     databridge.h \
+    screensaverfilter.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SharedLib-Desktop_Qt_5_12_0_MSVC2017_64bit2-Debug/release/ -lSharedLib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SharedLib-Desktop_Qt_5_12_0_MSVC2017_64bit2-Debug/debug/ -lSharedLib

@@ -4,7 +4,7 @@
 #include "appconfiguration.h"
 #include "databridge.h"
 #include <QTimer>
-
+#include "screensaverfilter.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +15,9 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     AppConfiguration appConfig;
+
+    ScreenSaverFilter mef(&appConfig);
+    app.installEventFilter(&mef);
 
     DataBridge dataBridge(&appConfig);
 

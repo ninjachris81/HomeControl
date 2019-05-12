@@ -31,7 +31,7 @@ Item {
             id: label
             text: labelText + ":"
 
-            font.pointSize: 12
+            font.pointSize: Style.fontPointSize-2
         }
 
         TextInput {
@@ -44,7 +44,7 @@ Item {
 
             readOnly: !allowInput
 
-            font.pointSize: 12
+            font.pointSize: Style.fontPointSize-2
 
             onAccepted: {
                 if (typeof(inputHandler)=="function") inputHandler(text);
@@ -61,6 +61,8 @@ Item {
             visible: typeof(labelValue)=="boolean"
             enabled: allowInput
             checked: labelValue ? labelValue : false
+
+            font.pointSize: Style.fontPointSize-2
 
             onToggled: {
                 if (typeof(inputHandler)=="function") inputHandler(labelValue);

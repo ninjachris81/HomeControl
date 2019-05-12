@@ -4,5 +4,6 @@
         <file>OptionBox.qml</file>
         <file>DebugTracer.qml</file>
         <file>SwitchButton.qml</file>
+        <file>HCButton.qml</file>
     </qresource>
 </RCC>

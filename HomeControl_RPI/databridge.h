@@ -43,6 +43,8 @@ public:
 
     LogSqlListModel *logListModel();
 
+    Q_INVOKABLE QVariant getAppConfig(QString key, QVariant defaultValue);
+
 private:
     AppConfiguration* m_appConfig;
 

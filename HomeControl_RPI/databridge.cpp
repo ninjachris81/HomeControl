@@ -55,3 +55,7 @@ LogWrapper *DataBridge::logControllerWrapper() {
 LogSqlListModel *DataBridge::logListModel() {
     return m_logListModel;
 }
+
+QVariant DataBridge::getAppConfig(QString key, QVariant defaultValue) {
+    return m_appConfig->getValue(key, defaultValue);
+}
