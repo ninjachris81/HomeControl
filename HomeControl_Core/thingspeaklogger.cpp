@@ -6,14 +6,43 @@
 
 ThingSpeakLogger::ThingSpeakLogger(ControllerManager *controllerManager, AppConfiguration *appConfig, QObject *parent) : LogicController(controllerManager, 0, parent)
 {
+    qDebug() << Q_FUNC_INFO;
+
     m_tempController = static_cast<TempController*>(controllerManager->getController(TempController::CONTROLLER_NAME));
+    m_relayController = static_cast<RelayController*>(controllerManager->getController(RelayController::CONTROLLER_NAME));
 
-    m_apiKey = appConfig->getString("THINGSPEAK_API_KEY", "");
+    m_apiKeyTemp = appConfig->getString("THINGSPEAK_API_KEY_TEMP", "");
+    m_apiKeyRelay = appConfig->getString("THINGSPEAK_API_KEY_RELAY", "");
 
-    if (!m_apiKey.isEmpty()) {
+    if (!m_apiKeyTemp.isEmpty()) {
         connect(m_tempController, &TempController::valueChanged, this, &ThingSpeakLogger::onTempValueChanged);
     } else {
-        qWarning() << "Thingspeak disabled - no API key found";
+        qWarning() << "Thingspeak disabled - no temp API key found";
+    }
+
+    if (!m_apiKeyRelay.isEmpty()) {
+        connect(m_relayController, &RelayController::valueChanged, this, &ThingSpeakLogger::onRelayValueChanged);
+    } else {
+        qWarning() << "Thingspeak disabled - no relay API key found";
+    }
+}
+
+void ThingSpeakLogger::executeRequest(QString query, QString apiKey) {
+    QNetworkRequest req;
+
+    QUrl url;
+    url.setScheme("https");
+    url.setHost("api.thingspeak.com");
+    url.setPath("/update");
+    url.setQuery("api_key=" + apiKey + "&" + query);
+
+    qDebug() << "Requesting" << url;
+
+    req.setUrl(url);
+
+    QNetworkReply *resp = m_nam.get(req);
+    if (resp->error()!=QNetworkReply::NoError) {
+        qWarning() << "Failed to execute request" << resp->errorString();
     }
 }
 
@@ -21,23 +50,15 @@ void ThingSpeakLogger::onTempValueChanged(int index, QVariant value) {
     qDebug() << Q_FUNC_INFO << index << value;
 
     if (m_tempController->valueIsValid(index)) {
-        QNetworkRequest req;
+        executeRequest("field" + QString::number(index + 1) + "=" + value.toString(), m_apiKeyTemp);
+    }
+}
 
-        QUrl url;
+void ThingSpeakLogger::onRelayValueChanged(int index, QVariant value) {
+    qDebug() << Q_FUNC_INFO << index << value;
 
-        url.setScheme("https");
-        url.setHost("api.thingspeak.com");
-        url.setPath("/update");
-        url.setQuery("api_key=" + m_apiKey + "&field" + QString::number(index + 1) + "=" + value.toString());
-
-        qDebug() << "Requesting" << url;
-
-        req.setUrl(url);
-
-        QNetworkReply *resp = m_nam.get(req);
-        if (resp->error()!=QNetworkReply::NoError) {
-            qWarning() << "Failed to execute request" << resp->errorString();
-        }
+    if (m_relayController->valueIsValid(index)) {
+        executeRequest("field" + QString::number(index + 1) + "=" + value.toString(), m_apiKeyRelay);
     }
 }
 
@@ -48,3 +69,5 @@ void ThingSpeakLogger::onMaintenance() {
 void ThingSpeakLogger::onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd) {
     Q_UNUSED(cmd);
 }
+
+

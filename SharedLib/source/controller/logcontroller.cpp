@@ -5,6 +5,7 @@
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QDateTime>
+#include <QThread>
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -182,21 +183,35 @@ void LogController::retrieveLog() {
     QTcpSocket socket;
     socket.connectToHost(host, LOG_PORT);
     if (socket.waitForConnected(5000)) {
-        socket.waitForReadyRead(5000);
-        QByteArray buffer = socket.readAll();
-        socket.close();
+        QThread::msleep(200);
 
-        QJsonDocument doc = QJsonDocument::fromBinaryData(buffer);
-        QJsonArray arr = doc.array();
+        if (socket.waitForReadyRead(5000)) {
 
-        qDebug() << arr;
+            QByteArray buffer = socket.readAll();
+            socket.close();
 
-        for (int i=0;i<arr.count();i++) {
-            QJsonArray data = arr.at(i).toArray();
-            insertRecord(QDateTime::fromSecsSinceEpoch(data.at(0).toInt()), data.at(1).toInt(), data.at(2).toString());
+            if (!buffer.isEmpty()) {
+                QJsonDocument doc = QJsonDocument::fromBinaryData(buffer);
+                if (!doc.isNull() && !doc.isEmpty()) {
+                    QJsonArray arr = doc.array();
+
+                    qDebug() << arr;
+
+                    for (int i=0;i<arr.count();i++) {
+                        QJsonArray data = arr.at(i).toArray();
+                        insertRecord(QDateTime::fromSecsSinceEpoch(data.at(0).toInt()), data.at(1).toInt(), data.at(2).toString());
+                    }
+
+                    Q_EMIT(logDataChanged());
+                } else {
+                    qWarning() << "Doc is empty" << buffer.size();
+                }
+            } else {
+                qWarning() << "Result is empty";
+            }
+        } else {
+            qWarning() << "Timeout reading from" << host;
         }
-
-        Q_EMIT(logDataChanged());
     } else {
         qWarning() << "Timeout connecting to" << host;
     }
