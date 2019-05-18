@@ -18,15 +18,19 @@ ApplicationWindow {
 
         TabButton {
             text: page1.title
+            font.pointSize: Style.fontPointSize
         }
         TabButton {
             text: page2.title
+            font.pointSize: Style.fontPointSize
         }
         TabButton {
             text: page3.title
+            font.pointSize: Style.fontPointSize
         }
         TabButton {
             text: page4.title
+            font.pointSize: Style.fontPointSize
         }
     }
 

@@ -5,11 +5,8 @@ import QtQuick.Layouts 1.3
 
 import "."
 
-C2.Page {
+HCPage {
     id: root
-
-    width: 1024
-    height: 600
 
     title: qsTr("Settings")
 
@@ -27,7 +24,7 @@ C2.Page {
                 height: 30
                 width: listView.width
 
-                SimpleLabel {
+                HCSimpleLabel {
                     labelText: modelData
                     labelValue: DataBridge.appConfigModel[modelData]
                     labelWidth: 300

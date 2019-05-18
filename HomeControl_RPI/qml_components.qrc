@@ -1,10 +1,11 @@
 <RCC>
     <qresource prefix="/">
-        <file>ValueLabel.qml</file>
-        <file>OptionBox.qml</file>
-        <file>DebugTracer.qml</file>
-        <file>SwitchButton.qml</file>
+        <file>HCValueLabel.qml</file>
+        <file>HCOptionBox.qml</file>
+        <file>HCDebugTracer.qml</file>
+        <file>HCSwitchButton.qml</file>
         <file>HCButton.qml</file>
-        <file>SimpleLabel.qml</file>
+        <file>HCSimpleLabel.qml</file>
+        <file>HCPage.qml</file>
     </qresource>
 </RCC>

@@ -5,11 +5,8 @@ import QtQuick.Layouts 1.3
 
 import "."
 
-C2.Page {
+HCPage {
     id: root
-
-    width: 1024
-    height: 600
 
     title: qsTr("Logs")
 
