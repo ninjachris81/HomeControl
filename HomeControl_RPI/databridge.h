@@ -33,6 +33,8 @@ public:
 
     Q_PROPERTY(LogSqlListModel* logListModel READ logListModel NOTIFY logListModelChanged)
 
+    Q_PROPERTY(QVariantMap appConfigModel READ appConfigModel NOTIFY appConfigModelChanged)
+
     ControllerListModel *tempListModelController();
     LogControllerListModel *logListModelController();
     RelayControllerListModel *relayListModelController();
@@ -43,7 +45,10 @@ public:
 
     LogSqlListModel *logListModel();
 
+    QVariantMap appConfigModel();
+
     Q_INVOKABLE QVariant getAppConfig(QString key, QVariant defaultValue);
+    Q_INVOKABLE void setAppConfig(QString key, QVariant value);
 
 private:
     AppConfiguration* m_appConfig;
@@ -77,6 +82,8 @@ signals:
     void logControllerChanged();
 
     void logListModelChanged();
+
+    void appConfigModelChanged();
 
 
 public slots:

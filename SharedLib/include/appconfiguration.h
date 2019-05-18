@@ -30,6 +30,11 @@ public:
 
     int getInt(QString key, int defaultValue);
 
+    QStringList keys();
+
+    void updateValue(ConfigurationKey key, QVariant value);
+    void updateValue(QString key, QVariant value);
+
 private:
     QSettings* m_settings;
 

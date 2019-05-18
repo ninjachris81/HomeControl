@@ -138,7 +138,7 @@ void MqttController::sendError(String errorDesc) {
 
 void MqttController::sendLog(uint8_t type, String desc) {
   if (mqttClient->isConnected()) {
-    desc += String(DEVICE_NAME) + String(MQTT_LOG_SOURCE_DIV) + desc;
+    desc = String(DEVICE_NAME) + String(MQTT_LOG_SOURCE_DIV) + desc;
     sendMessage(BUILD_PATH(MQTT_PATH_LOGS + String(MQTT_PATH_SEP) + MQTT_SET + String(MQTT_PATH_SEP) + String(type)), desc);
   }
 }

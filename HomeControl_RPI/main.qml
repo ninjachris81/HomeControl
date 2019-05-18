@@ -25,6 +25,9 @@ ApplicationWindow {
         TabButton {
             text: page3.title
         }
+        TabButton {
+            text: page4.title
+        }
     }
 
     SwipeView {
@@ -42,6 +45,10 @@ ApplicationWindow {
 
         Page3 {
             id: page3
+        }
+
+        Page4 {
+            id: page4
         }
     }
 

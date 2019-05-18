@@ -77,21 +77,33 @@ Page {
             GridLayout {
                 columns: 4
 
-                Repeater {
-                    id: repeater
-                    model: 3
+                ValueLabel {
+                    Layout.preferredHeight: 30
+                    Layout.fillWidth: true
 
-                    ValueLabel {
-                        id: valueLabel
-
-                        Layout.preferredHeight: 30
-                        Layout.fillWidth: true
-
-                        model: DataBridge.tempControllerModel
-                        modelIndex: index
-                        unit: "°"
-                    }
+                    model: DataBridge.tempControllerModel
+                    modelIndex: Enums.TEMPS_HC
+                    unit: "°"
                 }
+
+                ValueLabel {
+                    Layout.preferredHeight: 30
+                    Layout.fillWidth: true
+
+                    model: DataBridge.tempControllerModel
+                    modelIndex: Enums.TEMPS_WATER
+                    unit: "°"
+                }
+
+                ValueLabel {
+                    Layout.preferredHeight: 30
+                    Layout.fillWidth: true
+
+                    model: DataBridge.tempControllerModel
+                    modelIndex: Enums.TEMPS_TANK
+                    unit: "°"
+                }
+
                 Item {
                     Layout.preferredHeight: 30
                     Layout.fillWidth: true

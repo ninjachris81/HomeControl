@@ -17,6 +17,7 @@ LogSqlListModel::LogSqlListModel(LogController *logController, QSqlDatabase db) 
 void LogSqlListModel::_setQuery() {
     qDebug() << database();
     updateTable(LogController::DB_TABLE_LOGS);
+    setSort(0, Qt::DescendingOrder);
 }
 
 void LogSqlListModel::onLogChanged() {

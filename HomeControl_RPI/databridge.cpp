@@ -56,6 +56,20 @@ LogSqlListModel *DataBridge::logListModel() {
     return m_logListModel;
 }
 
+QVariantMap DataBridge::appConfigModel() {
+    QVariantMap returnList;
+
+    for (QString key : m_appConfig->keys()) {
+        returnList.insert(key, m_appConfig->getValue(key, QVariant()));
+    }
+
+    return returnList;
+}
+
 QVariant DataBridge::getAppConfig(QString key, QVariant defaultValue) {
     return m_appConfig->getValue(key, defaultValue);
+}
+
+void DataBridge::setAppConfig(QString key, QVariant value) {
+    m_appConfig->updateValue(key, value);
 }

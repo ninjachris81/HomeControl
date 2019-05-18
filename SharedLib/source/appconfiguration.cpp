@@ -17,6 +17,26 @@ AppConfiguration::~AppConfiguration() {
     m_settings->sync();
 }
 
+QStringList AppConfiguration::keys() {
+    return m_settings->allKeys();
+}
+
+void AppConfiguration::updateValue(ConfigurationKey key, QVariant value) {
+    updateValue(keyToString(key), value);
+}
+
+void AppConfiguration::updateValue(QString key, QVariant value) {
+    if (m_settings->contains(key)) {
+        if (m_settings->value(key).type()!=value.type()) {
+            if (!value.convert(m_settings->value(key).type())) {
+                qWarning() << "Failed to convert" << value << "to" << m_settings->value(key).type();
+            }
+        }
+    }
+
+    m_settings->setValue(key, value);
+}
+
 QString AppConfiguration::keyToString(ConfigurationKey key) {
     return QVariant::fromValue(key).toString();
 }
