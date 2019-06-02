@@ -14,8 +14,6 @@ MqttController::~MqttController() {
 
 void MqttController::init() {
   WiFi.persistent(false);
-  uint8_t bssid[] = WIFI_BSSID;
-  WiFi.begin(WIFI_SSID, WIFI_PASS, WIFI_CHANNEL, bssid, false);
 
   instance = this;
   

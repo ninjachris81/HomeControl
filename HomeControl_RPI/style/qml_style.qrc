@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/style">
         <file>Style.qml</file>
         <file>qmldir</file>
     </qresource>

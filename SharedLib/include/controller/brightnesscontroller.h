@@ -1,14 +1,14 @@
-#ifndef TEMPCONTROLLER_H
-#define TEMPCONTROLLER_H
+#ifndef BRIGHTNESSCONTROLLER_H
+#define BRIGHTNESSCONTROLLER_H
 
 #include <QObject>
 #include "controllerbase.h"
 
-class TempController : public ControllerBase
+class BrightnessController : public ControllerBase
 {
     Q_OBJECT
 public:
-    explicit TempController(QObject *parent = nullptr);
+    explicit BrightnessController(QObject *parent = nullptr);
 
     QString getName();
 
@@ -39,4 +39,4 @@ public slots:
 
 };
 
-#endif // TEMPCONTROLLER_H
+#endif // BRIGHTNESSCONTROLLER_H

@@ -2,7 +2,7 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.4
 
-import "."
+import "../style"
 
 Item {
     property var model
@@ -29,18 +29,20 @@ Item {
             model: options.length
 
             RadioButton {
+                id: radioButton
+
                 property int myValue: options[index]
 
                 enabled: allowInput
 
                 height: 20
                 text: labels[index]
-                checked: currentValue===index
+                checked: currentValue===options[index]
 
                 font.pointSize: Style.fontPointSize
 
                 onToggled: {
-                    if (typeof(inputHandler)=="function") inputHandler(myValue);
+                    if (typeof(inputHandler)=="function") inputHandler(myValue, index);
                 }
             }
         }

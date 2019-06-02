@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.4
 
+import "../style"
+
 Item {
     property var model
     property var modelIndex

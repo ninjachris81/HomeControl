@@ -5,6 +5,7 @@
 #include "controller/logcontroller.h"
 #include "controller/relaycontroller.h"
 #include "controller/settingscontroller.h"
+#include "controller/brightnesscontroller.h"
 
 #include "preheatlogic.h"
 #include "heatinglogic.h"
@@ -31,6 +32,10 @@ int main(int argc, char *argv[])
     SettingsController settingsController;
     settingsController.setMode(ControllerBase::VALUE_OWNER_SERVER);
     controllerManager.registerController(&settingsController);
+
+    BrightnessController brightnessController;
+    brightnessController.setMode(ControllerBase::VALUE_OWNER_SERVER);
+    controllerManager.registerController(&brightnessController);
 
     controllerManager.init(&appConfig);
 

@@ -26,8 +26,16 @@ void LogSqlListModel::onLogChanged() {
 
 QVariant LogSqlListModel::resolveData(int colIndex, QVariant value) const {
     switch(colIndex) {
-    case 0:
-        return QDateTime::fromSecsSinceEpoch(value.toLongLong()).toString();
+    case 0: {
+        QDateTime d = QDateTime::fromSecsSinceEpoch(value.toLongLong());
+        if (QDateTime::currentDateTime().date().daysTo(d.date())==0) {
+            return tr("Today") + ", " + d.time().toString();
+        } else if (qAbs(QDateTime::currentDateTime().date().daysTo(d.date()))==1) {
+            return tr("Yesterday") + ", " + d.time().toString();
+        } else {
+            return d.toString();
+        }
+    }
     case 1:
         switch(value.toInt()) {
         case MQTT_PATH_LOGS_TYPE_INFO: return tr(LOGS_LABEL_INFO);

@@ -45,7 +45,6 @@ public:
 
 private:
   float getTemperature(uint8_t index);
-  bool isConnected = false;
   bool mappingInitialized = false;
 
   uint64_t lastBroadcast = 0;

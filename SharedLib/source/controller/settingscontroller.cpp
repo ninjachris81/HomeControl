@@ -51,24 +51,31 @@ void SettingsController::onInit() {
     if (m_mode==VALUE_OWNER_SERVER) {
         m_settings = new QSettings("settings.ini", QSettings::IniFormat);
 
-        setValue(EnumsDeclarations::SETTINGS_PREHEAT_FROM, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_FROM, 7));
-        setValue(EnumsDeclarations::SETTINGS_PREHEAT_TO, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_TO, 9));
-        setValue(EnumsDeclarations::SETTINGS_PREHEAT_HC_TEMP, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_HC_TEMP, 26.0));
-        setValue(EnumsDeclarations::SETTINGS_PREHEAT_WATER_TEMP, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_WATER_TEMP, 24.0));
-        setValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC));
-        setValue(EnumsDeclarations::SETTINGS_PREHEAT_DURATION, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_DURATION, 600));
-        setValue(EnumsDeclarations::SETTINGS_HEATING_TEMP, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_TEMP, 22));
-        setValue(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE, true));
-        setValue(EnumsDeclarations::SETTINGS_HEATING_MODE, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC));
-        setValue(EnumsDeclarations::SETTINGS_HEATING_MANUAL_STATE, getSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MANUAL_STATE, false));
+        publishSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_FROM, 7);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_TO, 9);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_HC_TEMP, 26.0);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_WATER_TEMP, 24.0);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_DURATION, 600);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_TEMP, 22);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE, true);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MANUAL_STATE, false);
 
         // publish hostname
         setValue(EnumsDeclarations::SETTINGS_CORE_HOST, QHostInfo::localHostName());
 
-        setValue(EnumsDeclarations::SETTINGS_PREHEAT_HC_STANDBY_TEMP, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_HC_STANDBY_TEMP, 26.0));
-        setValue(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_FROM, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_FROM, 9));
-        setValue(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_TO, getSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_TO, 21));
+        publishSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_HC_STANDBY_TEMP, 26.0);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_FROM, 9);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_TO, 21);
+
+        publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MONTH_FROM, 9);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MONTH_TO, 5);
     }
+}
+
+void SettingsController::publishSettingsValue(EnumsDeclarations::MQTT_SETTINGS key, QVariant defaultValue) {
+    setValue(key, getSettingsValue(key, defaultValue));
 }
 
 void SettingsController::onValueChanged(int index, QVariant value) {

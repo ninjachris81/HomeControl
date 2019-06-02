@@ -86,12 +86,12 @@ void TempController::initMapping() {
 }
 
 void TempController::update() {
-  if (!isConnected) return;
-
   if (!mappingInitialized) initMapping();
   
   tempAdapter.update();
   
+  if (!taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->isConnected()) return;
+
   if (!tempAdapter.sensorsValid()) {
     taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->sendError(F("Invalid sensors:"), tempAdapter.getFoundSensors());
 
@@ -114,8 +114,6 @@ void TempController::update() {
 }
 
 void TempController::onConnected() {
-  isConnected = true;
-
   onBroadcast();
 }
 
@@ -142,11 +140,7 @@ void TempController::onDoubleReceived(int index, double value) {
 }
 
 void TempController::onPropertyValueChange(uint8_t id, float newValue, float oldValue) {
-  if (isConnected) {
-    sendTemp(id);
-  } else {
-    // cannot send
-  }
+  sendTemp(id);
 }
 
 float TempController::getTemperature(uint8_t index) {
@@ -154,6 +148,8 @@ float TempController::getTemperature(uint8_t index) {
 }
 
 void TempController::sendTemp(uint8_t index) {
+  if (!taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->isConnected()) return;
+
   if (tempAdapter.sensorsValid() && hasValidMapping[index]) {
     taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->sendMessage(BUILD_PATH(MQTT_PATH_TEMPS + String(MQTT_PATH_SEP) + MQTT_VAL + String(MQTT_PATH_SEP) + String(TEMP_OFFSET + index)), getTemperature(index));
   } else {

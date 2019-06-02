@@ -30,6 +30,8 @@ protected:
         return true;
     }
 
+    void publishSettingsValue(EnumsDeclarations::MQTT_SETTINGS key, QVariant defaultValue);
+
     void onInit();
 
     void onValueChanged(int index, QVariant value);

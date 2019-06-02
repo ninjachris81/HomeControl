@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/components">
         <file>HCValueLabel.qml</file>
         <file>HCOptionBox.qml</file>
         <file>HCDebugTracer.qml</file>
@@ -7,5 +7,10 @@
         <file>HCButton.qml</file>
         <file>HCSimpleLabel.qml</file>
         <file>HCPage.qml</file>
+        <file>HCOptionBoxMonth.qml</file>
+        <file>HCLabel.qml</file>
+        <file>HCDividerH.qml</file>
+        <file>qmldir</file>
+        <file>HCToastManager.qml</file>
     </qresource>
 </RCC>

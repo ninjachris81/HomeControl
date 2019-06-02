@@ -4,7 +4,8 @@ import QtQuick.Layouts 1.3
 
 import hc 1.0
 
-import "."
+import "style"
+import "components"
 
 HCPage {
     id: root
@@ -23,7 +24,7 @@ HCPage {
             anchors.fill: parent
 
             RowLayout {
-                Button {
+                HCButton {
                     Layout.preferredHeight: Style.buttonHeight
 
                     font.pointSize: Style.fontPointSize
@@ -48,17 +49,28 @@ HCPage {
                 }
             }
 
-            HCOptionBox {
-                id: modeOptionBox
+            HCDividerH {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 2
+            }
 
-                model: DataBridge.settingsControllerModel
-                modelIndex: Enums.SETTINGS_PREHEAT_MODE
-                options: [Enums.SETTING_MODE_AUTOMATIC, Enums.SETTING_MODE_MANUAL]
-                labels: [qsTr("Automatic"), qsTr("Manual")]
-                inputHandler: function(newValue) {
-                    DataBridge.settings.setValue(Enums.SETTINGS_PREHEAT_MODE, newValue)
+            RowLayout {
+                HCLabel {
+                    text: qsTr("Current Mode:")
                 }
-                allowInput: false
+
+                HCOptionBox {
+                    id: modeOptionBox
+
+                    model: DataBridge.settingsControllerModel
+                    modelIndex: Enums.SETTINGS_PREHEAT_MODE
+                    options: [Enums.SETTING_MODE_AUTOMATIC, Enums.SETTING_MODE_MANUAL]
+                    labels: [qsTr("Automatic"), qsTr("Manual")]
+                    inputHandler: function(newValue) {
+                        DataBridge.settings.setValue(Enums.SETTINGS_PREHEAT_MODE, newValue)
+                    }
+                    allowInput: false
+                }
             }
 
             GridLayout {
@@ -71,6 +83,7 @@ HCPage {
                     model: DataBridge.tempControllerModel
                     modelIndex: Enums.TEMPS_HC
                     unit: "°"
+                    formatAsFloat: true
                 }
 
                 HCValueLabel {
@@ -80,6 +93,7 @@ HCPage {
                     model: DataBridge.tempControllerModel
                     modelIndex: Enums.TEMPS_WATER
                     unit: "°"
+                    formatAsFloat: true
                 }
 
                 HCValueLabel {
@@ -89,6 +103,7 @@ HCPage {
                     model: DataBridge.tempControllerModel
                     modelIndex: Enums.TEMPS_TANK
                     unit: "°"
+                    formatAsFloat: true
                 }
 
                 Item {

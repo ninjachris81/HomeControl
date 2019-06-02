@@ -20,7 +20,13 @@ void RelayController::init() {
 }
 
 void RelayController::update() {
-  onBroadcast();
+  if (taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->isConnected()) {
+    onBroadcast();
+  } else {
+    for (uint8_t i=0;i<RELAY_COUNT;i++) {
+      setState(i, false);
+    }
+  }
 }
 
 void RelayController::onConnected() {

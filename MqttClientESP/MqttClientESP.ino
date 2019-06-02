@@ -20,8 +20,7 @@ MqttController mqttController;
 
 void onConnectionEstablished() {}   // legacy
 
-void setup () 
-{
+void setup () {
   taskManager.registerTask(&mqttController);
 #if RELAY_COUNT > 0
   taskManager.registerTask(&relayController);

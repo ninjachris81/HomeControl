@@ -187,7 +187,12 @@ void LogController::retrieveLog() {
 
         if (socket.waitForReadyRead(5000)) {
 
-            QByteArray buffer = socket.readAll();
+            QByteArray buffer; // = socket.readAll();
+            while (!socket.atEnd()) {
+                buffer.append(socket.read(4096));
+                qDebug() << buffer.size();
+            }
+
             socket.close();
 
             if (!buffer.isEmpty()) {
@@ -224,7 +229,7 @@ void LogController::onNewConnection() {
 
     QJsonArray array;
 
-    QSqlQuery query("SELECT * FROM " + DB_TABLE_LOGS, m_db);
+    QSqlQuery query("SELECT * FROM " + DB_TABLE_LOGS + " ORDER BY date DESC LIMIT 500", m_db);
     while (query.next()) {
         QJsonArray data;
 

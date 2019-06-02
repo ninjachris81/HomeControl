@@ -9,12 +9,14 @@ DataBridge::DataBridge(AppConfiguration *appConfig, QObject *parent) : QObject(p
     m_controllerManager.registerController(&m_logController);
     m_controllerManager.registerController(&m_relayController);
     m_controllerManager.registerController(&m_settingsController);
+    m_controllerManager.registerController(&m_brightnessController);
     m_controllerManager.init(appConfig);
 
     m_tempListModelController = new ControllerListModel(&m_tempController);
     m_logListModelController = new LogControllerListModel(&m_logController);
     m_relayListModelController = new RelayControllerListModel(&m_relayController);
     m_settingsListModelController = new SettingsControllerListModel(&m_settingsController);
+    m_brightnessListModelController = new ControllerListModel(&m_brightnessController);
 
     m_settingsControllerWrapper = new SettingsWrapper(&m_settingsController);
     m_logControllerWrapper = new LogWrapper(&m_logController);
@@ -24,8 +26,14 @@ DataBridge::DataBridge(AppConfiguration *appConfig, QObject *parent) : QObject(p
     ControllerWrapper::registerTypes();
 }
 
+bool DataBridge::isConnected() {
+    return m_isConnected;
+}
+
 void DataBridge::onMqttConnected() {
     m_logController.addLog(EnumsDeclarations::LOGS_TYPE_STARTUP, DEV_ID_TERMINAL);
+    m_isConnected = true;
+    Q_EMIT(isConnectedChanged());
 }
 
 ControllerListModel* DataBridge::tempListModelController() {
@@ -42,6 +50,10 @@ RelayControllerListModel *DataBridge::relayListModelController() {
 
 SettingsControllerListModel *DataBridge::settingsListModelController() {
     return m_settingsListModelController;
+}
+
+ControllerListModel* DataBridge::brightnessListModelController() {
+    return m_brightnessListModelController;
 }
 
 SettingsWrapper *DataBridge::settingsControllerWrapper() {

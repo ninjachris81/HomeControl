@@ -16,43 +16,58 @@ void HeatingLogic::startMaintenance() {
 
 void HeatingLogic::onMaintenance() {
     int heatingMode = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_MODE).toInt();
+    bool heatingPumpOn = false;
 
     switch(heatingMode) {
     case EnumsDeclarations::SETTING_MODE_AUTOMATIC:
         if (m_tempController->valueIsValid(EnumsDeclarations::TEMPS_INSIDE)) {
-            float heatingTemp = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_TEMP).toDouble();
-            float insideTemp = m_tempController->value(EnumsDeclarations::TEMPS_INSIDE).toFloat();
-            bool useToggle = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE).toBool();
+            if (isValidMonth()) {
+                float heatingTemp = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_TEMP).toDouble();
+                float insideTemp = m_tempController->value(EnumsDeclarations::TEMPS_INSIDE).toFloat();
+                bool useToggle = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE).toBool();
 
-            if (useToggle) {
-                if (insideTemp<heatingTemp) {
+                if (useToggle) {
+                    if (insideTemp<heatingTemp) {
 
-                    if (QDateTime::currentMSecsSinceEpoch()> m_lastHeatOff + HEATING_TOGGLE_ON_DURATION) {
-                        // switch off
-                        m_lastHeatOff = QDateTime::currentMSecsSinceEpoch();
-                        m_relayController->setValue(EnumsDeclarations::RELAYS_HEATING_PUMP, false, true);
+                        if (QDateTime::currentMSecsSinceEpoch()> m_lastHeatOff + HEATING_TOGGLE_ON_DURATION) {
+                            // switch off
+                            m_lastHeatOff = QDateTime::currentMSecsSinceEpoch();
+                        } else {
+                            heatingPumpOn = true;
+                        }
+
                     } else {
-                        m_relayController->setValue(EnumsDeclarations::RELAYS_HEATING_PUMP, true, true);
+                        m_lastHeatOff = 0;
                     }
-
                 } else {
-                    m_relayController->setValue(EnumsDeclarations::RELAYS_HEATING_PUMP, false, true);
-                    m_lastHeatOff = 0;
+                    heatingPumpOn = insideTemp<heatingTemp;
                 }
             } else {
-                m_relayController->setValue(EnumsDeclarations::RELAYS_HEATING_PUMP, insideTemp<heatingTemp, true);
+                qWarning() << "Out of valid month";
             }
-
         } else {
             qWarning() << "Inside temp is not valid";
-            m_relayController->setValue(EnumsDeclarations::RELAYS_HEATING_PUMP, false, true);
         }
         break;
     case EnumsDeclarations::SETTING_MODE_MANUAL:
-        bool heatingState = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_MANUAL_STATE).toBool();
-        m_relayController->setValue(EnumsDeclarations::RELAYS_HEATING_PUMP, heatingState, true);
+        heatingPumpOn = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_MANUAL_STATE).toBool();
         break;
     }
+
+    m_relayController->setValue(EnumsDeclarations::RELAYS_HEATING_PUMP, heatingPumpOn, true);
+}
+
+bool HeatingLogic::isValidMonth() {
+    int from = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_MONTH_FROM).toInt();
+    int to = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_MONTH_TO).toInt();
+
+    int currentMonth = QDate::currentDate().month();
+    if (to<from) {
+        to+=12;
+        currentMonth+=12;
+    }
+
+    return currentMonth>=from && currentMonth<=to;
 }
 
 void HeatingLogic::onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd) {

@@ -3,6 +3,8 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 import QtQuick.VirtualKeyboard 2.1
 
+import "../style"
+
 Item {
 
     property string labelText: ""
@@ -14,6 +16,7 @@ Item {
     property alias inputMethodHints: value.inputMethodHints
     property alias inputValidator: value.validator
     property int labelWidth: 160
+    property bool formatAsFloat: false
 
     RowLayout {
         Label {
@@ -30,7 +33,7 @@ Item {
 
             visible: !checkbox.visible
 
-            text: labelValue
+            text: formatAsFloat ? Number(labelValue).toLocaleString(Qt.locale(), "f", 1) : labelValue
             color: isValid ? "black" : "red"
 
             readOnly: !allowInput
@@ -42,9 +45,8 @@ Item {
             }
         }
 
-        Label {
+        HCLabel {
             text: unit
-            font.pointSize: 12
         }
 
         CheckBox {

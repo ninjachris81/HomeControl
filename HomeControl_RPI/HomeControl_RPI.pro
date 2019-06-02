@@ -21,8 +21,8 @@ SOURCES += \
     screensaverfilter.cpp
 
 RESOURCES += qml.qrc \
-    qml_components.qrc \
-    qml_style.qrc
+    components/qml_components.qrc \
+    style/qml_style.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.3
 
 import hc 1.0
 
-import "."
+import "components"
 
 HCPage {
     id: root
@@ -89,9 +89,46 @@ HCPage {
                     modelIndex: Enums.TEMPS_INSIDE
                     unit: "°"
                     allowInput: false
+                    formatAsFloat: true
                 }
             }
 
+            HCDividerH {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 2
+            }
+
+            HCLabel {
+                text: qsTr("Month from:")
+            }
+
+            HCOptionBoxMonth {
+                Layout.preferredHeight: 30
+                Layout.fillWidth: true
+
+                model: DataBridge.settingsControllerModel
+                modelIndex: Enums.SETTINGS_HEATING_MONTH_FROM
+                allowInput: true
+                inputHandler: function(thisValue, index) {
+                    DataBridge.settings.setValue(modelIndex, thisValue);
+                }
+            }
+
+            HCLabel {
+                text: qsTr("Month to:")
+            }
+
+            HCOptionBoxMonth {
+                Layout.preferredHeight: 30
+                Layout.fillWidth: true
+
+                model: DataBridge.settingsControllerModel
+                modelIndex: Enums.SETTINGS_HEATING_MONTH_TO
+                allowInput: true
+                inputHandler: function(thisValue, index) {
+                    DataBridge.settings.setValue(modelIndex, thisValue);
+                }
+            }
         }
     }
 }
