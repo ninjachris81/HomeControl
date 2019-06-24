@@ -10,6 +10,7 @@ DataBridge::DataBridge(AppConfiguration *appConfig, QObject *parent) : QObject(p
     m_controllerManager.registerController(&m_relayController);
     m_controllerManager.registerController(&m_settingsController);
     m_controllerManager.registerController(&m_brightnessController);
+    m_controllerManager.registerController(&m_switchController);
     m_controllerManager.init(appConfig);
 
     m_tempListModelController = new ControllerListModel(&m_tempController);
@@ -17,6 +18,7 @@ DataBridge::DataBridge(AppConfiguration *appConfig, QObject *parent) : QObject(p
     m_relayListModelController = new RelayControllerListModel(&m_relayController);
     m_settingsListModelController = new SettingsControllerListModel(&m_settingsController);
     m_brightnessListModelController = new ControllerListModel(&m_brightnessController);
+    m_switchListModelController = new ControllerListModel(&m_switchController);
 
     m_settingsControllerWrapper = new SettingsWrapper(&m_settingsController);
     m_logControllerWrapper = new LogWrapper(&m_logController);
@@ -54,6 +56,10 @@ SettingsControllerListModel *DataBridge::settingsListModelController() {
 
 ControllerListModel* DataBridge::brightnessListModelController() {
     return m_brightnessListModelController;
+}
+
+ControllerListModel* DataBridge::switchListModelController() {
+    return m_switchListModelController;
 }
 
 SettingsWrapper *DataBridge::settingsControllerWrapper() {

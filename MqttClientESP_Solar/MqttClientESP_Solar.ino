@@ -37,10 +37,15 @@ void setup() {
 }
 
 void sleepRestart() {
+#ifndef ESP32
   wdt_disable();
+#endif
+
   WiFi.disconnect();
   WiFi.mode( WIFI_OFF );
+#ifndef ESP32
   WiFi.forceSleepBegin();
+#endif
   delay(100);
 
 #if REAL_DEEP_SLEEP==1

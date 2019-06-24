@@ -39,6 +39,10 @@ ApplicationWindow {
             text: page5.title
             font.pointSize: Style.fontPointSize
         }
+        TabButton {
+            text: page6.title
+            font.pointSize: Style.fontPointSize
+        }
     }
 
     SwipeView {
@@ -58,12 +62,16 @@ ApplicationWindow {
             id: page3
         }
 
-        PageLogs {
+        PageSecurity {
             id: page4
         }
 
-        PageSettings {
+        PageLogs {
             id: page5
+        }
+
+        PageSettings {
+            id: page6
         }
     }
 

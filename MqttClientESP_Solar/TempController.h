@@ -1,13 +1,21 @@
 #ifndef TEMPCONTROLLER_H
 #define TEMPCONTROLLER_H
 
-#include <AbstractTask.h>
-#include <OneWire.h>
-#include <DallasTemperature.h>
+#include <AbstractIntervalTask.h>
+#include "ESPConfigurations.h"
+
+#if TEMP_SENSOR == TEMP_SENSOR_DALLAS
+  #include <OneWire.h>
+  #include <DallasTemperature.h>
+  #warning DALLAS SENSOR
+#elif TEMP_SENSOR == TEMP_SENSOR_LM75
+  #include <Temperature_LM75_Derived.h>
+  #warning LM75 SENSOR
+#endif
 
 #define TEMPERATURE_RESOLUTION 9
 
-class TempController : public AbstractTask {
+class TempController : public AbstractIntervalTask {
 public:
   TempController();
   ~TempController();
@@ -18,8 +26,12 @@ public:
   
   bool isFinished();
 private:
+#if TEMP_SENSOR == TEMP_SENSOR_DALLAS
   OneWire *oneWire;
   DallasTemperature* sensors;
+#elif TEMP_SENSOR == TEMP_SENSOR_LM75
+  Generic_LM75 temperature;
+#endif
 
   bool hasSent = false;
   uint8_t retryCount = 0;

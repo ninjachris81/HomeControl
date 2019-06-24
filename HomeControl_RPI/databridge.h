@@ -10,6 +10,7 @@
 #include "controller/relaycontroller.h"
 #include "controller/settingscontroller.h"
 #include "controller/brightnesscontroller.h"
+#include "controller/switchcontroller.h"
 
 #include "listmodel/logcontrollerlistmodel.h"
 #include "listmodel/relaycontrollerlistmodel.h"
@@ -32,6 +33,7 @@ public:
     Q_PROPERTY(RelayControllerListModel* relayControllerModel READ relayListModelController NOTIFY relayControllerModelChanged)
     Q_PROPERTY(SettingsControllerListModel* settingsControllerModel READ settingsListModelController NOTIFY settingsControllerModelChanged)
     Q_PROPERTY(ControllerListModel* brightnessControllerModel READ brightnessListModelController NOTIFY brightnessControllerModelChanged)
+    Q_PROPERTY(ControllerListModel* switchControllerModel READ switchListModelController NOTIFY switchControllerModelChanged)
 
     Q_PROPERTY(SettingsWrapper* settings READ settingsControllerWrapper NOTIFY settingsControllerChanged)
     Q_PROPERTY(LogWrapper* logs READ logControllerWrapper NOTIFY logControllerChanged)
@@ -47,6 +49,7 @@ public:
     RelayControllerListModel *relayListModelController();
     SettingsControllerListModel *settingsListModelController();
     ControllerListModel *brightnessListModelController();
+    ControllerListModel *switchListModelController();
 
     SettingsWrapper *settingsControllerWrapper();
     LogWrapper *logControllerWrapper();
@@ -69,12 +72,14 @@ private:
     RelayController m_relayController;
     SettingsController m_settingsController;
     BrightnessController m_brightnessController;
+    SwitchController m_switchController;
 
     ControllerListModel *m_tempListModelController;
     LogControllerListModel *m_logListModelController;
     RelayControllerListModel *m_relayListModelController;
     SettingsControllerListModel *m_settingsListModelController;
     ControllerListModel *m_brightnessListModelController;
+    ControllerListModel *m_switchListModelController;
 
     SettingsWrapper *m_settingsControllerWrapper;
     LogWrapper *m_logControllerWrapper;
@@ -92,6 +97,7 @@ signals:
     void relayControllerModelChanged();
     void settingsControllerModelChanged();
     void brightnessControllerModelChanged();
+    void switchControllerModelChanged();
 
     void settingsControllerChanged();
     void logControllerChanged();

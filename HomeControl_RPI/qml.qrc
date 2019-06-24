@@ -7,5 +7,6 @@
         <file>qtquickcontrols2.conf</file>
         <file>PageSettings.qml</file>
         <file>PageSolar.qml</file>
+        <file>PageSecurity.qml</file>
     </qresource>
 </RCC>
