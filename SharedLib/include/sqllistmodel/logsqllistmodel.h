@@ -16,6 +16,8 @@ public:
 
     Q_INVOKABLE void setTypeFilter(int filter);
 
+    Q_INVOKABLE void setSourceFilter(QString source);
+
 protected slots:
     void onLogChanged();
 

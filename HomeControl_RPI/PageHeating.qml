@@ -5,23 +5,24 @@ import QtQuick.Layouts 1.3
 import hc 1.0
 
 import "components"
+import "style"
 
 HCPage {
     id: root
 
     title: qsTr("Heating")
 
-    GroupBox {
+    HCGroupBox {
         id: groupBox
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.margins: 2
 
-        title: qsTr("Heating")
-
         ColumnLayout {
             anchors.fill: parent
+
+            spacing: 18
 
             RowLayout {
                 HCOptionBox {
@@ -99,7 +100,7 @@ HCPage {
             }
 
             HCLabel {
-                text: qsTr("Month from:")
+                text: qsTr("Month from")
             }
 
             HCOptionBoxMonth {
@@ -115,7 +116,7 @@ HCPage {
             }
 
             HCLabel {
-                text: qsTr("Month to:")
+                text: qsTr("Month to")
             }
 
             HCOptionBoxMonth {

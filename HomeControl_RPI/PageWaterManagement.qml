@@ -12,16 +12,16 @@ HCPage {
 
     title: qsTr("Water Management")
 
-    GroupBox {
+    HCGroupBox {
         id: groupBox
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.margins: 2
 
-        title: qsTr("Preheating")
-
         ColumnLayout {
             anchors.fill: parent
+
+            spacing: 18
 
             RowLayout {
                 HCButton {
@@ -56,7 +56,7 @@ HCPage {
 
             RowLayout {
                 HCLabel {
-                    text: qsTr("Current Mode:")
+                    text: qsTr("Current Mode")
                 }
 
                 HCOptionBox {

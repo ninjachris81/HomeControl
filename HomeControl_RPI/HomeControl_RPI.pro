@@ -16,13 +16,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    apptranslator.cpp \
         main.cpp \
     databridge.cpp \
     screensaverfilter.cpp
 
 RESOURCES += qml.qrc \
     components/qml_components.qrc \
-    style/qml_style.qrc
+    style/qml_style.qrc \
+    translations.qrc
+
+TRANSLATIONS = languages/hc.en.ts  languages/hc.de.ts
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -36,6 +40,8 @@ else: unix:!android: target.path = $$[QT_INSTALL_PREFIX]/opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    apptranslator.h \
+    constant_strings.h \
     databridge.h \
     screensaverfilter.h
 
@@ -45,3 +51,5 @@ else:unix: LIBS += -L$$[QT_INSTALL_LIBS] -lSharedLib
 
 INCLUDEPATH += $$PWD/../SharedLib/include
 DEPENDPATH += $$PWD/../SharedLib
+
+system(perl generate_ts.pl ..\SharedLib\include\constants.h constant_strings.h)

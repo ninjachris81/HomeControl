@@ -12,5 +12,6 @@
         <file>HCDividerH.qml</file>
         <file>qmldir</file>
         <file>HCToastManager.qml</file>
+        <file>HCGroupBox.qml</file>
     </qresource>
 </RCC>

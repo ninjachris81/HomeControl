@@ -28,6 +28,8 @@ ThingSpeakLogger::ThingSpeakLogger(ControllerManager *controllerManager, AppConf
 }
 
 void ThingSpeakLogger::executeRequest(QString query, QString apiKey) {
+    qDebug() << Q_FUNC_INFO << query;
+
     QNetworkRequest req;
 
     QUrl url;
@@ -63,7 +65,7 @@ void ThingSpeakLogger::onRelayValueChanged(int index, QVariant value) {
 }
 
 void ThingSpeakLogger::onMaintenance() {
-
+    qDebug() << Q_FUNC_INFO;
 }
 
 void ThingSpeakLogger::onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd) {

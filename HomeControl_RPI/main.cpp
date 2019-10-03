@@ -3,8 +3,12 @@
 #include <QQmlContext>
 #include "appconfiguration.h"
 #include "databridge.h"
-#include <QTimer>
 #include "screensaverfilter.h"
+#include "apptranslator.h"
+
+#include "constant_strings.h"
+
+#include <QTimer>
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +19,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     AppConfiguration appConfig;
+    AppTranslator appTranslator(&appConfig);
 
     ScreenSaverFilter mef(&appConfig);
     app.installEventFilter(&mef);

@@ -137,7 +137,7 @@ bool LogController::checkTables() {
         qDebug() << "Creating new table" << DB_TABLE_LOGS;
 
         QSqlQuery query(m_db);
-        if (query.exec("CREATE TABLE " + DB_TABLE_LOGS + " (\"date\" UNSIGNED BIG INT NOT NULL, \"type\" TINYINT NOT NULL, \"msg\" TEXT)")) {
+        if (query.exec("CREATE TABLE " + DB_TABLE_LOGS + " (\"date\" UNSIGNED BIG INT NOT NULL, \"type\" TINYINT NOT NULL, \"source\" TEXT, \"msg\" TEXT)")) {
             qDebug() << "Created new table" << DB_TABLE_LOGS;
         } else {
             qWarning() << "Failed to create new table" << query.lastError().text();
@@ -169,7 +169,7 @@ void LogController::addLog(EnumsDeclarations::MQTT_LOGS type, QString source, QS
     qDebug() << Q_FUNC_INFO << type << msg;
 
     if (m_mode==VALUE_OWNER_SERVER) {
-        insertRecord(QDateTime::currentDateTime(), type, source + MQTT_LOG_SOURCE_DIV + msg);
+        insertRecord(QDateTime::currentDateTime(), type, source, msg);
         Q_EMIT(logDataChanged());
     } else {
         setValue(type, source + MQTT_LOG_SOURCE_DIV + msg, true, true);
@@ -204,7 +204,7 @@ void LogController::retrieveLog() {
 
                     for (int i=0;i<arr.count();i++) {
                         QJsonArray data = arr.at(i).toArray();
-                        insertRecord(QDateTime::fromSecsSinceEpoch(data.at(0).toInt()), data.at(1).toInt(), data.at(2).toString());
+                        insertRecord(QDateTime::fromSecsSinceEpoch(data.at(0).toInt()), data.at(1).toInt(), data.at(2).toString(), data.at(3).toString());
                     }
 
                     Q_EMIT(logDataChanged());
@@ -235,6 +235,7 @@ void LogController::onNewConnection() {
 
         data.append(QJsonValue(query.value("date").toLongLong()));
         data.append(QJsonValue(query.value("type").toInt()));
+        data.append(QJsonValue(query.value("source").toString()));
         data.append(QJsonValue(query.value("msg").toString()));
 
         array.append(data);
@@ -252,22 +253,35 @@ void LogController::onValueChanged(int index, QVariant value) {
 }
 
 void LogController::onSetReceived(int index, QVariant value) {
+    qDebug() << Q_FUNC_INFO << index << value;
+
     if (m_mode==VALUE_OWNER_SERVER) {
         // index = type
 
-        insertRecord(QDateTime::currentDateTime(), index, value.toString());
+        int i = value.toString().indexOf(MQTT_LOG_SOURCE_DIV);
+        if (i>=0) {
+            QString source = value.toString().left(i);
+            QString msg = value.toString().mid(i+QString(MQTT_LOG_SOURCE_DIV).length());
+
+            qDebug() << source << msg;
+
+            insertRecord(QDateTime::currentDateTime(), index, source, msg);
+        } else {
+
+        }
     } else {
         // do nothing
     }
 }
 
-bool LogController::insertRecord(QDateTime date, int type, QString msg) {
-    qDebug() << Q_FUNC_INFO << m_db <<date << type << msg;
+bool LogController::insertRecord(QDateTime date, int type, QString source, QString msg) {
+    qDebug() << Q_FUNC_INFO << m_db <<date << type << source << msg;
 
     QSqlQuery query(m_db);
-    query.prepare("INSERT INTO " + DB_TABLE_LOGS + " (date, type, msg) VALUES (:date, :type, :msg)");
+    query.prepare("INSERT INTO " + DB_TABLE_LOGS + " (date, type, source, msg) VALUES (:date, :type, :source, :msg)");
     query.bindValue(":date", date.toSecsSinceEpoch());
     query.bindValue(":type", type);
+    query.bindValue(":source", source);
     query.bindValue(":msg", msg);
 
     if (!query.exec()) {

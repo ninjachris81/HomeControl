@@ -20,7 +20,7 @@ HCSimpleLabel {
     }
 
     onModelChanged: {
-        labelText = model.data(model.index(modelIndex, 0), 257)
+        labelText = qsTranslate("Constants", model.data(model.index(modelIndex, 0), 257))
     }
 
     onModelIndexChanged: {

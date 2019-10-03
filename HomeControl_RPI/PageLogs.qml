@@ -36,6 +36,26 @@ HCPage {
                 }
             }
 
+            C2.ComboBox {
+                id: sourceFilter
+
+                Layout.preferredHeight: Style.buttonHeight
+                Layout.preferredWidth: 200
+
+                font.pointSize: Style.fontPointSize
+
+                currentIndex: 0
+                model: [qsTr("All"), "SERV", "TERM", "4RLB", "WTB1", "ITB1", "SHRC", "SSEN"]
+
+                onCurrentTextChanged: {
+                    if (currentIndex==0) {
+                        DataBridge.logListModel.setSourceFilter("")
+                    } else {
+                        DataBridge.logListModel.setSourceFilter(sourceFilter.currentText)
+                    }
+                }
+            }
+
             C2.Button {
                 Layout.preferredHeight: Style.buttonHeight
                 Layout.preferredWidth: 100
@@ -78,6 +98,11 @@ HCPage {
                 role: "col_type"
                 title: "Type"
                 width: 150
+            }
+            C1.TableViewColumn {
+                role: "col_source"
+                title: "Source"
+                width: 50
             }
             C1.TableViewColumn {
                 role: "col_msg"

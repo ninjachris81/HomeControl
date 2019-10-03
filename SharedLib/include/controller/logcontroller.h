@@ -58,7 +58,7 @@ protected:
 
     /*virtual*/ void onSetReceived(int index, QVariant value);
 
-    bool insertRecord(QDateTime date, int type, QString msg);
+    bool insertRecord(QDateTime date, int type, QString source, QString msg);
 
     bool checkTables();
 

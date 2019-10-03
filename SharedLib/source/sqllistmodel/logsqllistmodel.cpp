@@ -55,3 +55,12 @@ void LogSqlListModel::setTypeFilter(int filter) {
         setFilter("type=" + QString::number(filter-1));
     }
 }
+
+void LogSqlListModel::setSourceFilter(QString filter) {
+    if (filter.isEmpty()) {
+        setFilter("");
+    } else {
+        setFilter("source='" +filter + "'");
+    }
+}
+

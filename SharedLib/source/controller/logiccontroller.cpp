@@ -14,7 +14,7 @@ void LogicController::onConnected() {
 }
 
 void LogicController::startMaintenance() {
-    m_maintenanceTimer.start(m_interval);
+    if (m_interval>0) m_maintenanceTimer.start(m_interval);
 }
 
 void LogicController::stopMaintenance() {

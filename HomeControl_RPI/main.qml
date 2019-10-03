@@ -124,6 +124,8 @@ ApplicationWindow {
 
             anchors.fill: parent
 
+            color: "white"
+
             visible: parent.height>0
 
             verticalAlignment: Text.AlignVCenter
@@ -132,6 +134,41 @@ ApplicationWindow {
 
         Behavior on height {
             NumberAnimation { duration: 300 }
+        }
+    }
+
+    footer: Rectangle {
+        height: 50
+
+        radius: 10
+
+        color: "grey"
+
+        Rectangle {
+            color: parent.color
+
+            height: 10
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+        }
+
+        HCLabel {
+            id: currentDateTime
+            anchors.centerIn: parent
+
+            color: "white"
+        }
+
+        Timer {
+            id: timer
+            interval: 1000
+            repeat: true
+            running: true
+
+            onTriggered: {
+                currentDateTime.text =  Qt.formatDateTime(new Date(), Qt.SystemLocaleDate)
+            }
         }
     }
 

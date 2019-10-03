@@ -5,4 +5,6 @@ import "../style"
 
 Label {
     font.pointSize: Style.fontPointSize-2
+
+    elide: Text.ElideRight
 }
