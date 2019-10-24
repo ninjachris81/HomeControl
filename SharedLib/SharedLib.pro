@@ -28,6 +28,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    source/wrapper/infowrapper.cpp \
+    source/controller/infocontroller.cpp \
     source/controller/switchcontroller.cpp \
         source/sharedlib.cpp \
         source/appconfiguration.cpp \
@@ -51,6 +53,7 @@ SOURCES += \
     source/controller/brightnesscontroller.cpp
 
 HEADERS += \
+    include/controller/infocontroller.h \
     include/controller/switchcontroller.h \
         include/sharedlib.h \
         include/appconfiguration.h \
@@ -66,6 +69,7 @@ HEADERS += \
         include/listmodel/relaycontrollerlistmodel.h \
         include/listmodel/settingscontrollerlistmodel.h \
         include/wrapper/controllerwrapper.h \
+    include/wrapper/infowrapper.h \
     include/wrapper/settingswrapper.h \
     include/controller/logcontroller.h \
     include/listmodel/logcontrollerlistmodel.h \

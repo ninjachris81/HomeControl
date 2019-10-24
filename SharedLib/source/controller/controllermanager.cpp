@@ -3,13 +3,16 @@
 #include <QDebug>
 #include <QTimer>
 
-ControllerManager::ControllerManager(QObject *parent) : QObject(parent)
+ControllerManager::ControllerManager(bool isServer, QObject *parent) : QObject(parent), m_isServer(isServer)
 {
+    qDebug() << Q_FUNC_INFO;
     connect(&m_mqttClient, &QMqttClient::connected, this, &ControllerManager::_onMqttConnected);
     connect(&m_mqttClient, &QMqttClient::disconnected, this, &ControllerManager::_onMqttDisconnected);
 }
 
 void ControllerManager::init(AppConfiguration *appConfig) {
+    qDebug() << Q_FUNC_INFO;
+
     m_appConfig = appConfig;
 
     m_mqttClient.setHostname(m_appConfig->getString(AppConfiguration::MQTT_HOST, "localhost"));
@@ -94,6 +97,10 @@ QString ControllerManager::getBroadcastValue(MQTT_BROADCAST_TYPE type) {
         return MQTT_PATH_RELAYS;
     }
     return "";
+}
+
+bool ControllerManager::isServer() {
+    return m_isServer;
 }
 
 void ControllerManager::publishBC(MQTT_BROADCAST_TYPE type) {

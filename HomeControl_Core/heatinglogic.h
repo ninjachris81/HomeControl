@@ -8,7 +8,7 @@
 #include "controller/relaycontroller.h"
 #include "controller/settingscontroller.h"
 
-#define HEATING_TOGGLE_ON_DURATION 60000
+//#define HEATING_TOGGLE_ON_DURATION 60000
 #define HEATING_LOGIC_INTERVAL 5000
 
 class HeatingLogic : public LogicController
@@ -28,6 +28,10 @@ protected:
     void startMaintenance();
 
     bool isValidMonth();
+
+    bool isValidTime();
+
+    bool isValidTankTemp();
 
 public slots:
     void onMaintenance();

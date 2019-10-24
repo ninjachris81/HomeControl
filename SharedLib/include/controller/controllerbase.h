@@ -23,6 +23,13 @@ public:
         VALUE_OWNER_DEFAULT = VALUE_OWNER_CLIENT
     };
 
+    enum VALUE_BC_INTERVAL {
+        VALUE_BC_NONE = 0,
+        VALUE_BC_FAST=5000,
+        VALUE_BC_SLOW=20000,
+        VALUE_BC_FASTEST = VALUE_BC_FAST
+    };
+
     struct ValueStruct {
         qint64 lifeTime = LIFETIME_UNLIMITED;
         qint64 lastUpdate;
@@ -63,6 +70,8 @@ public:
     virtual QVariant::Type getDefaultValueType();
 
     virtual qint64 getValueLifetime(int index = -1) = 0;
+
+    virtual VALUE_BC_INTERVAL getValueBCInterval(int index=-1);
 
     virtual QString getEnumName() = 0;
 
@@ -136,6 +145,7 @@ private:
     QMqttSubscription* m_bcSub;
 
     QTimer m_validityTimer;
+    QTimer m_valueBCTimer;
 
 signals:
     void valueChanged(int index, QVariant value);
@@ -152,6 +162,8 @@ private slots:
     void _onMqttMessageReceived(QMqttMessage msg);
 
     void onCheckValidity();
+
+    void onCheckBroadcasts();
 
 };
 

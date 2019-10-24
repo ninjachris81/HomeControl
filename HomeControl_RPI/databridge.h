@@ -11,6 +11,7 @@
 #include "controller/settingscontroller.h"
 #include "controller/brightnesscontroller.h"
 #include "controller/switchcontroller.h"
+#include "controller/infocontroller.h"
 
 #include "listmodel/logcontrollerlistmodel.h"
 #include "listmodel/relaycontrollerlistmodel.h"
@@ -19,6 +20,7 @@
 
 #include "wrapper/settingswrapper.h"
 #include "wrapper/logwrapper.h"
+#include "wrapper/infowrapper.h"
 
 class DataBridge : public QObject
 {
@@ -37,6 +39,7 @@ public:
 
     Q_PROPERTY(SettingsWrapper* settings READ settingsControllerWrapper NOTIFY settingsControllerChanged)
     Q_PROPERTY(LogWrapper* logs READ logControllerWrapper NOTIFY logControllerChanged)
+    Q_PROPERTY(InfoWrapper* infos READ infoControllerWrapper NOTIFY infoControllerChanged)
 
     Q_PROPERTY(LogSqlListModel* logListModel READ logListModel NOTIFY logListModelChanged)
 
@@ -53,6 +56,7 @@ public:
 
     SettingsWrapper *settingsControllerWrapper();
     LogWrapper *logControllerWrapper();
+    InfoWrapper *infoControllerWrapper();
 
     LogSqlListModel *logListModel();
 
@@ -73,6 +77,7 @@ private:
     SettingsController m_settingsController;
     BrightnessController m_brightnessController;
     SwitchController m_switchController;
+    InfoController m_infoController;
 
     ControllerListModel *m_tempListModelController;
     LogControllerListModel *m_logListModelController;
@@ -83,6 +88,7 @@ private:
 
     SettingsWrapper *m_settingsControllerWrapper;
     LogWrapper *m_logControllerWrapper;
+    InfoWrapper *m_infoControllerWrapper;
 
     LogSqlListModel *m_logListModel;
 
@@ -101,6 +107,7 @@ signals:
 
     void settingsControllerChanged();
     void logControllerChanged();
+    void infoControllerChanged();
 
     void logListModelChanged();
 

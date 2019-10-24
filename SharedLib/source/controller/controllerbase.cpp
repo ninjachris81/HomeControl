@@ -22,6 +22,12 @@ bool ControllerBase::isValueOwner(int index) {
     return m_mode==VALUE_OWNER_SERVER;
 }
 
+ControllerBase::VALUE_BC_INTERVAL ControllerBase::getValueBCInterval(int index) {
+    Q_UNUSED(index);
+
+    return VALUE_BC_NONE;
+}
+
 void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig, QMqttClient *mqttClient) {
     qDebug() << Q_FUNC_INFO;
 
@@ -51,6 +57,12 @@ void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig
         t.value =  QVariant(getValueType(i));
         t.wasValid = false;
         m_values.append(t);
+    }
+
+    if (m_parent->isServer()) {
+        connect(&m_valueBCTimer, &QTimer::timeout, this, &ControllerBase::onCheckBroadcasts);
+        m_valueBCTimer.setInterval(VALUE_BC_FASTEST);
+        m_valueBCTimer.start();
     }
 
     connect(parent, &ControllerManager::mqttConnected, this, &ControllerBase::onMqttConnected);
@@ -336,6 +348,14 @@ void ControllerBase::onCheckValidity() {
 
         if (oldValid!=m_values[i].isValid()) {
             Q_EMIT(valueValidChanged(i));
+        }
+    }
+}
+
+void ControllerBase::onCheckBroadcasts() {
+    for (uint8_t i=0;i<m_values.count();i++) {
+        if (m_values[i].isValid() && getValueBCInterval(i)!=VALUE_BC_NONE) {
+            publish(i);
         }
     }
 }

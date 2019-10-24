@@ -71,6 +71,11 @@ void SettingsController::onInit() {
 
         publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MONTH_FROM, 9);
         publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MONTH_TO, 5);
+
+        publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_TOGGLE_ON_DURATION, 60000);
+
+        publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_HOUR_FROM, 6);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_HOUR_TO, 21);
     }
 }
 

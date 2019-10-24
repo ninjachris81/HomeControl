@@ -11,6 +11,7 @@ DataBridge::DataBridge(AppConfiguration *appConfig, QObject *parent) : QObject(p
     m_controllerManager.registerController(&m_settingsController);
     m_controllerManager.registerController(&m_brightnessController);
     m_controllerManager.registerController(&m_switchController);
+    m_controllerManager.registerController(&m_infoController);
     m_controllerManager.init(appConfig);
 
     m_tempListModelController = new ControllerListModel(&m_tempController);
@@ -22,6 +23,7 @@ DataBridge::DataBridge(AppConfiguration *appConfig, QObject *parent) : QObject(p
 
     m_settingsControllerWrapper = new SettingsWrapper(&m_settingsController);
     m_logControllerWrapper = new LogWrapper(&m_logController);
+    m_infoControllerWrapper = new InfoWrapper(&m_infoController);
 
     m_logListModel = new LogSqlListModel(&m_logController, QSqlDatabase::database(LogController::DB_CONN_LOGS));
 
@@ -68,6 +70,10 @@ SettingsWrapper *DataBridge::settingsControllerWrapper() {
 
 LogWrapper *DataBridge::logControllerWrapper() {
     return m_logControllerWrapper;
+}
+
+InfoWrapper *DataBridge::infoControllerWrapper() {
+    return m_infoControllerWrapper;
 }
 
 LogSqlListModel *DataBridge::logListModel() {

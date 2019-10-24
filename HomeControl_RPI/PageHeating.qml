@@ -68,6 +68,8 @@ HCPage {
 
             RowLayout {
                 HCValueLabel {
+                    id: heatingTemp
+
                     Layout.preferredHeight: 30
                     Layout.fillWidth: true
 
@@ -91,6 +93,83 @@ HCPage {
                     unit: "°"
                     allowInput: false
                     formatAsFloat: true
+                }
+            }
+
+            HCDividerH {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 2
+            }
+
+            RowLayout {
+                HCValueLabel {
+                    id: useToggleLabel
+
+                    Layout.preferredHeight: 30
+                    Layout.fillWidth: true
+
+                    model: DataBridge.settingsControllerModel
+                    modelIndex: Enums.SETTINGS_HEATING_USE_TOGGLE
+                    allowInput: true
+                    inputHandler: function(thisValue) {
+                        DataBridge.settings.setValue(modelIndex, thisValue);
+                    }
+                }
+
+                HCValueLabel {
+                    id: useToggleDurationLabel
+
+                    Layout.preferredHeight: 30
+                    Layout.fillWidth: true
+
+                    enabled: useToggleLabel.labelValue
+
+                    model: DataBridge.settingsControllerModel
+                    modelIndex: Enums.SETTINGS_HEATING_TOGGLE_ON_DURATION
+                    unit: "ms"
+                    allowInput: true
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    inputValidator: IntValidator { bottom: 5000; top: 999999 }
+                    inputHandler: function(thisValue) {
+                        DataBridge.settings.setValue(modelIndex, thisValue);
+                    }
+                }
+            }
+
+            HCDividerH {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 2
+            }
+
+            RowLayout {
+                HCValueLabel {
+                    Layout.preferredHeight: 30
+                    Layout.fillWidth: true
+
+                    model: DataBridge.settingsControllerModel
+                    modelIndex: Enums.SETTINGS_HEATING_HOUR_FROM
+                    unit: "h"
+                    allowInput: true
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    inputValidator: IntValidator { bottom: 0; top: 23 }
+                    inputHandler: function(thisValue) {
+                        DataBridge.settings.setValue(modelIndex, thisValue);
+                    }
+                }
+
+                HCValueLabel {
+                    Layout.preferredHeight: 30
+                    Layout.fillWidth: true
+
+                    model: DataBridge.settingsControllerModel
+                    modelIndex: Enums.SETTINGS_HEATING_HOUR_TO
+                    unit: "h"
+                    allowInput: true
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    inputValidator: IntValidator { bottom: 0; top: 23 }
+                    inputHandler: function(thisValue) {
+                        DataBridge.settings.setValue(modelIndex, thisValue);
+                    }
                 }
             }
 

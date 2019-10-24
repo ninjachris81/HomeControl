@@ -7,6 +7,7 @@
 #include "controller/settingscontroller.h"
 #include "controller/brightnesscontroller.h"
 #include "controller/switchcontroller.h"
+#include "controller/infocontroller.h"
 
 #include "preheatlogic.h"
 #include "heatinglogic.h"
@@ -18,7 +19,7 @@ int main(int argc, char *argv[])
 
     AppConfiguration appConfig;
 
-    ControllerManager controllerManager(&appConfig);
+    ControllerManager controllerManager(true, &appConfig);
 
     TempController tempController;
     controllerManager.registerController(&tempController);
@@ -41,6 +42,10 @@ int main(int argc, char *argv[])
     SwitchController switchController;
     switchController.setMode(ControllerBase::VALUE_OWNER_SERVER);
     controllerManager.registerController(&switchController);
+
+    InfoController infoController;
+    infoController.setMode(ControllerBase::VALUE_OWNER_SERVER);
+    controllerManager.registerController(&infoController);
 
     controllerManager.init(&appConfig);
 

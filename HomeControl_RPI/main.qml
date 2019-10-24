@@ -3,6 +3,8 @@ import QtQuick.Window 2.11
 import QtQuick.Controls 2.4
 import QtQuick.VirtualKeyboard 2.2
 
+import hc 1.0
+
 import "style"
 import "components"
 
@@ -158,6 +160,16 @@ ApplicationWindow {
             anchors.centerIn: parent
 
             color: "white"
+        }
+
+        HCLabel {
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            anchors.verticalCenter: parent.verticalCenter
+
+            color: "red"
+            text: qsTr("INVALID TIME")
+            visible: DataBridge.infos.timeIsOffset
         }
 
         Timer {

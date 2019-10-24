@@ -1,14 +1,16 @@
-#ifndef TEMPCONTROLLER_H
-#define TEMPCONTROLLER_H
+#ifndef INFOCONTROLLER_H
+#define INFOCONTROLLER_H
 
 #include <QObject>
+#include <QTimer>
+
 #include "controllerbase.h"
 
-class TempController : public ControllerBase
+class InfoController : public ControllerBase
 {
     Q_OBJECT
 public:
-    explicit TempController(QObject *parent = nullptr);
+    explicit InfoController(QObject *parent = nullptr);
 
     QString getName();
 
@@ -22,11 +24,9 @@ public:
 
     qint64 getValueLifetime(int index = -1);
 
-    bool isValueOwner(int index = -1);
-
     static QString CONTROLLER_NAME;
 
-    VALUE_BC_INTERVAL getValueBCInterval(int index=-1);
+    bool timeIsOffset();
 
 protected:
     void onInit();
@@ -35,10 +35,16 @@ protected:
 
     void onValueChanged(int index, QVariant value);
 
+    QTimer m_systemTimeTimer;
+
+    bool m_timeIsOffset = false;
+
 signals:
+
+    void timeIsOffsetChanged(bool isOffset);
 
 public slots:
 
 };
 
-#endif // TEMPCONTROLLER_H
+#endif // INFOCONTROLLER_H

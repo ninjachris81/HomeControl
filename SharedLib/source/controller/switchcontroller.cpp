@@ -28,6 +28,10 @@ QString SwitchController::getEnumName() {
     return "MQTT_SWITCHES";
 }
 
+SwitchController::VALUE_BC_INTERVAL SwitchController::getValueBCInterval(int index) {
+    return VALUE_BC_SLOW;
+}
+
 bool SwitchController::isValueOwner(int index) {
     Q_UNUSED(index);
 

@@ -41,7 +41,10 @@ Item {
             font.pointSize: Style.fontPointSize-2
 
             onAccepted: {
-                if (typeof(inputHandler)=="function") inputHandler(text);
+                if (typeof(inputHandler)=="function") {
+                    inputHandler(text);
+                }
+                //labelValue = text
             }
         }
 
@@ -58,7 +61,10 @@ Item {
             font.pointSize: Style.fontPointSize-2
 
             onToggled: {
-                if (typeof(inputHandler)=="function") inputHandler(labelValue);
+                if (typeof(inputHandler)=="function") {
+                    inputHandler(labelValue);
+                }
+                //labelValue = checked
             }
         }
     }

@@ -24,7 +24,7 @@ public:
         MQTT_BC_RELAYS
     };
 
-    explicit ControllerManager(QObject *parent = nullptr);
+    explicit ControllerManager(bool isServer = false, QObject *parent = nullptr);
 
     void init(AppConfiguration* appConfig);
 
@@ -45,6 +45,8 @@ public:
 
     void publishCmd(EnumsDeclarations::MQTT_CMDS cmd);
 
+    bool isServer();
+
 private:
     QMap<QString, ControllerBase*> m_controllers;
     AppConfiguration* m_appConfig;
@@ -52,6 +54,8 @@ private:
     QMqttClient m_mqttClient;
 
     QMqttSubscription* m_cmdSub;
+
+    bool m_isServer = false;
 
     void _onMqttConnected();
     void _onMqttDisconnected();

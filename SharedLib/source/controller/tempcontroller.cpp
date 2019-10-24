@@ -24,6 +24,19 @@ QString TempController::getEnumName() {
     return "MQTT_TEMPS";
 }
 
+TempController::VALUE_BC_INTERVAL TempController::getValueBCInterval(int index) {
+    switch (index) {
+    case EnumsDeclarations::TEMPS_HC:
+    case EnumsDeclarations::TEMPS_TANK:
+    case EnumsDeclarations::TEMPS_WATER:
+        return VALUE_BC_SLOW;
+    case EnumsDeclarations::TEMPS_INSIDE:
+        return VALUE_BC_FAST;
+    default:
+        return VALUE_BC_NONE;
+    }
+}
+
 QVariant::Type TempController::getDefaultValueType() {
     return QVariant::Double;
 }

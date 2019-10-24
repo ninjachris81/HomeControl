@@ -6,147 +6,167 @@
     <message>
         <location filename="../constant_strings.h" line="1"/>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="2"/>
         <source>Error</source>
-        <translation type="unfinished">Fehler</translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="3"/>
         <source>Startup</source>
-        <translation type="unfinished">Starten</translation>
+        <translation>Starten</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="4"/>
-        <source>Preheat from</source>
-        <translation type="unfinished">Vorheizen von</translation>
+        <source>System time</source>
+        <translation>Systemzeit</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="5"/>
-        <source>Preheat to</source>
-        <translation type="unfinished">Vorheizen bis</translation>
+        <source>Preheat from</source>
+        <translation>Vorheizen von</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="6"/>
-        <source>Preheat HC Temp</source>
-        <translation type="unfinished">Vorheizen WT Temp</translation>
+        <source>Preheat to</source>
+        <translation>Vorheizen bis</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="7"/>
-        <source>Preheat Water Temp</source>
-        <translation type="unfinished">Vorheizen Wasser Temp</translation>
+        <source>Preheat HC Temp</source>
+        <translation>Vorheizen WT Temp</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="8"/>
-        <source>Preheat Mode</source>
-        <translation type="unfinished">Vorheizmodus</translation>
+        <source>Preheat Water Temp</source>
+        <translation>Vorheizen Wasser Temp</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="9"/>
-        <source>Preheat Duration</source>
-        <translation type="unfinished">Vorheizdauer</translation>
+        <source>Preheat Mode</source>
+        <translation>Vorheizmodus</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="10"/>
-        <source>Heating Temp</source>
-        <translation type="unfinished">Heizungstemperatur</translation>
+        <source>Preheat Duration</source>
+        <translation>Vorheizdauer</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="11"/>
-        <source>Use toggle</source>
-        <translation type="unfinished"></translation>
+        <source>Heating Temp</source>
+        <translation>Heizungstemperatur</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="12"/>
-        <source>Heating Mode</source>
-        <translation type="unfinished">Heizmodus</translation>
+        <source>Use toggle</source>
+        <translation>Heizboost</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="13"/>
-        <source>Heating Manual State</source>
-        <translation type="unfinished">Heizung Manuell</translation>
+        <source>Heating Mode</source>
+        <translation>Heizmodus</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="14"/>
-        <source>Core Host</source>
-        <translation type="unfinished"></translation>
+        <source>Heating Manual State</source>
+        <translation>Heizung Manuell</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="15"/>
-        <source>HC Standby Temp</source>
-        <translation type="unfinished">WT Standby Temperatur</translation>
+        <source>Core Host</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="16"/>
-        <source>Standby From</source>
-        <translation type="unfinished">Standby von</translation>
+        <source>HC Standby Temp</source>
+        <translation>WT Standby Temperatur</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="17"/>
-        <source>Standby To</source>
-        <translation type="unfinished">Standby bis</translation>
+        <source>Standby From</source>
+        <translation>Standby von</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="18"/>
-        <source>Month from</source>
-        <translation type="unfinished">Monat von</translation>
+        <source>Standby To</source>
+        <translation>Standby bis</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="19"/>
-        <source>Month to</source>
-        <translation type="unfinished">Monat bis</translation>
+        <source>Month from</source>
+        <translation>Monat von</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="20"/>
-        <source>Heat Changer</source>
-        <translation type="unfinished">Wärmetauscher</translation>
+        <source>Month to</source>
+        <translation>Monat bis</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="21"/>
-        <source>Tank</source>
-        <translation type="unfinished"></translation>
+        <source>Toggle duration</source>
+        <translation>Toggle-Dauer</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="22"/>
-        <source>Water</source>
-        <translation type="unfinished">Wasser</translation>
+        <source>Heating from</source>
+        <translation>Heizung von</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="23"/>
-        <source>Inside</source>
-        <translation type="unfinished">Innen</translation>
+        <source>Heating to</source>
+        <translation>Heizung bis</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="24"/>
-        <source>HC Pump</source>
-        <translation type="unfinished">WT Pumpe</translation>
+        <source>Heat Changer</source>
+        <translation>Wärmetauscher</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="25"/>
-        <source>Water Pump</source>
-        <translation type="unfinished">Wasserpumpe</translation>
+        <source>Tank</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="26"/>
-        <source>Heating Pump</source>
-        <translation type="unfinished">Heizpumpe</translation>
+        <source>Water</source>
+        <translation>Wasser</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="27"/>
-        <source>Solar Pump</source>
-        <translation type="unfinished">Solarpumpe</translation>
+        <source>Inside</source>
+        <translation>Innen</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="28"/>
-        <source>Solar</source>
-        <translation type="unfinished"></translation>
+        <source>HC Pump</source>
+        <translation>WT Pumpe</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="29"/>
+        <source>Water Pump</source>
+        <translation>Wasserpumpe</translation>
+    </message>
+    <message>
+        <location filename="../constant_strings.h" line="30"/>
+        <source>Heating Pump</source>
+        <translation>Heizpumpe</translation>
+    </message>
+    <message>
+        <location filename="../constant_strings.h" line="31"/>
+        <source>Solar Pump</source>
+        <translation>Solarpumpe</translation>
+    </message>
+    <message>
+        <location filename="../constant_strings.h" line="32"/>
+        <source>Solar</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../constant_strings.h" line="33"/>
         <source>Wintergarden</source>
-        <translation type="unfinished">Wintergarten</translation>
+        <translation>Wintergarten</translation>
     </message>
 </context>
 <context>
@@ -154,96 +174,95 @@
     <message>
         <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
         <source>Jan</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
         <source>Feb</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
         <source>Mar</source>
-        <translation type="unfinished">Mär</translation>
+        <translation>Mär</translation>
     </message>
     <message>
         <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
         <source>Apr</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
         <source>May</source>
-        <translation type="unfinished">Mai</translation>
+        <translation>Mai</translation>
     </message>
     <message>
         <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
         <source>Jun</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
         <source>Jul</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
         <source>Aug</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
         <source>Sep</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
         <source>Oct</source>
-        <translation type="unfinished">Okt</translation>
+        <translation>Okt</translation>
     </message>
     <message>
         <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
         <source>Nov</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
         <source>Dec</source>
-        <translation type="unfinished">Dez</translation>
+        <translation>Dez</translation>
     </message>
 </context>
 <context>
     <name>PageHeating</name>
     <message>
-        <location filename="../PageHeating.qml" line="12"/>
-        <location filename="../PageHeating.qml" line="21"/>
+        <location filename="../PageHeating.qml" line="13"/>
         <source>Heating</source>
-        <translation type="unfinished">Heizung</translation>
+        <translation>Heizung</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="35"/>
+        <location filename="../PageHeating.qml" line="36"/>
         <source>Automatic</source>
-        <translation type="unfinished">Automatisch</translation>
+        <translation>Automatisch</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="35"/>
+        <location filename="../PageHeating.qml" line="36"/>
         <source>Manual</source>
-        <translation type="unfinished">Manuell</translation>
+        <translation>Manuell</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="45"/>
+        <location filename="../PageHeating.qml" line="46"/>
         <source>Manual state</source>
-        <translation type="unfinished">Manueller Status</translation>
+        <translation>Manueller Status</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="102"/>
+        <location filename="../PageHeating.qml" line="143"/>
         <source>Month from</source>
-        <translation type="unfinished">Monat von</translation>
+        <translation>Monat von</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="118"/>
+        <location filename="../PageHeating.qml" line="159"/>
         <source>Month to</source>
-        <translation type="unfinished">Monat bis</translation>
+        <translation>Monat bis</translation>
     </message>
 </context>
 <context>
@@ -251,38 +270,38 @@
     <message>
         <location filename="../PageLogs.qml" line="12"/>
         <source>Logs</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../PageLogs.qml" line="32"/>
         <location filename="../PageLogs.qml" line="48"/>
         <source>All</source>
-        <translation type="unfinished">Alle</translation>
+        <translation>Alle</translation>
     </message>
     <message>
         <location filename="../PageLogs.qml" line="32"/>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../PageLogs.qml" line="32"/>
         <source>Error</source>
-        <translation type="unfinished">Fehler</translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <location filename="../PageLogs.qml" line="32"/>
         <source>Startup</source>
-        <translation type="unfinished">Starten</translation>
+        <translation>Starten</translation>
     </message>
     <message>
         <location filename="../PageLogs.qml" line="65"/>
         <source>Refresh</source>
-        <translation type="unfinished">Aktualisieren</translation>
+        <translation>Aktualisieren</translation>
     </message>
     <message>
         <location filename="../PageLogs.qml" line="78"/>
         <source>Clear</source>
-        <translation type="unfinished">Leeren</translation>
+        <translation>Leeren</translation>
     </message>
 </context>
 <context>
@@ -290,7 +309,7 @@
     <message>
         <location filename="../PageSecurity.qml" line="14"/>
         <source>Security</source>
-        <translation type="unfinished">Sicherheit</translation>
+        <translation>Sicherheit</translation>
     </message>
 </context>
 <context>
@@ -298,7 +317,7 @@
     <message>
         <location filename="../PageSettings.qml" line="12"/>
         <source>Settings</source>
-        <translation type="unfinished">Einstellungen</translation>
+        <translation>Einstellungen</translation>
     </message>
 </context>
 <context>
@@ -306,7 +325,7 @@
     <message>
         <location filename="../PageSolar.qml" line="14"/>
         <source>Solar</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -314,50 +333,54 @@
     <message>
         <location filename="../PageWaterManagement.qml" line="13"/>
         <source>Water Management</source>
-        <translation type="unfinished">Wasser Einstellungen</translation>
+        <translation>Wasser Einstellungen</translation>
     </message>
     <message>
-        <location filename="../PageWaterManagement.qml" line="21"/>
         <source>Preheating</source>
-        <translation type="unfinished">Vorheizen</translation>
+        <translation type="obsolete">Vorheizen</translation>
     </message>
     <message>
         <location filename="../PageWaterManagement.qml" line="32"/>
         <source>Start preheat</source>
-        <translation type="unfinished">Vorheizen starten</translation>
+        <translation>Vorheizen starten</translation>
     </message>
     <message>
         <location filename="../PageWaterManagement.qml" line="43"/>
         <source>Stop preheat</source>
-        <translation type="unfinished">Vorheizen stoppen</translation>
+        <translation>Vorheizen stoppen</translation>
     </message>
     <message>
         <location filename="../PageWaterManagement.qml" line="59"/>
         <source>Current Mode</source>
-        <translation type="unfinished">Aktueller Modus</translation>
+        <translation>Aktueller Modus</translation>
     </message>
     <message>
         <location filename="../PageWaterManagement.qml" line="68"/>
         <source>Automatic</source>
-        <translation type="unfinished">Automatisch</translation>
+        <translation>Automatisch</translation>
     </message>
     <message>
         <location filename="../PageWaterManagement.qml" line="68"/>
         <source>Manual</source>
-        <translation type="unfinished">Manuell</translation>
+        <translation>Manuell</translation>
     </message>
 </context>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.qml" line="14"/>
+        <location filename="../main.qml" line="16"/>
         <source>Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="168"/>
+        <location filename="../main.qml" line="171"/>
+        <source>INVALID TIME</source>
+        <translation>ZEIT UNGÜLTIG</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="196"/>
         <source>Connected</source>
-        <translation type="unfinished">Verbunden</translation>
+        <translation>Verbunden</translation>
     </message>
 </context>
 </TS>

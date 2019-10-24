@@ -10,12 +10,15 @@ HCSimpleLabel {
     property var model
     property int modelIndex
 
+    signal valueChanged
+
     Connections {
         target: model
 
         onDataChanged: {
             labelValue = model ? model.data(model.index(modelIndex, 0), 258) : ""
             isValid = model ? model.data(model.index(modelIndex, 0), 259) : false
+            valueChanged()
         }
     }
 

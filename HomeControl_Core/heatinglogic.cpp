@@ -22,25 +22,34 @@ void HeatingLogic::onMaintenance() {
     case EnumsDeclarations::SETTING_MODE_AUTOMATIC:
         if (m_tempController->valueIsValid(EnumsDeclarations::TEMPS_INSIDE)) {
             if (isValidMonth()) {
-                float heatingTemp = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_TEMP).toDouble();
-                float insideTemp = m_tempController->value(EnumsDeclarations::TEMPS_INSIDE).toFloat();
-                bool useToggle = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE).toBool();
+                if (isValidTime()) {
+                    if (isValidTankTemp()) {
+                        float heatingTemp = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_TEMP).toDouble();
+                        float insideTemp = m_tempController->value(EnumsDeclarations::TEMPS_INSIDE).toFloat();
+                        bool useToggle = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_USE_TOGGLE).toBool();
+                        int toggleOnDuration = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_TOGGLE_ON_DURATION).toInt();
 
-                if (useToggle) {
-                    if (insideTemp<heatingTemp) {
+                        if (useToggle) {
+                            if (insideTemp<heatingTemp) {
+                                if (QDateTime::currentMSecsSinceEpoch()> m_lastHeatOff + toggleOnDuration) {
+                                    // switch off
+                                    m_lastHeatOff = QDateTime::currentMSecsSinceEpoch();
+                                    qDebug() << "Toggle off for" << toggleOnDuration;
+                                } else {
+                                    heatingPumpOn = true;
+                                }
 
-                        if (QDateTime::currentMSecsSinceEpoch()> m_lastHeatOff + HEATING_TOGGLE_ON_DURATION) {
-                            // switch off
-                            m_lastHeatOff = QDateTime::currentMSecsSinceEpoch();
+                            } else {
+                                m_lastHeatOff = 0;
+                            }
                         } else {
-                            heatingPumpOn = true;
+                            heatingPumpOn = insideTemp<heatingTemp;
                         }
-
                     } else {
-                        m_lastHeatOff = 0;
+                        qWarning() << "Tank temp too low";
                     }
                 } else {
-                    heatingPumpOn = insideTemp<heatingTemp;
+                    qWarning() << "Out of valid time";
                 }
             } else {
                 qWarning() << "Out of valid month";
@@ -64,10 +73,33 @@ bool HeatingLogic::isValidMonth() {
     int currentMonth = QDate::currentDate().month();
     if (to<from) {
         to+=12;
-        currentMonth+=12;
+        //was wrong: currentMonth+=12;
     }
 
     return currentMonth>=from && currentMonth<=to;
+}
+
+bool HeatingLogic::isValidTime() {
+    int from = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_HOUR_FROM).toInt();
+    int to = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_HOUR_TO).toInt();
+
+    int currentHour = QTime::currentTime().hour();
+    if (to<from) {
+        to+=24;
+    }
+
+    return currentHour>=from && currentHour<=to;
+}
+
+bool HeatingLogic::isValidTankTemp() {
+    if (m_tempController->value(EnumsDeclarations::TEMPS_TANK).isValid()) {
+        double tankTemp = m_tempController->value(EnumsDeclarations::TEMPS_TANK).toDouble();
+        float heatingTemp = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_TEMP).toDouble();
+
+        return tankTemp>heatingTemp;
+    } else {
+        return true;        // hmm, well - lets not create too many deps
+    }
 }
 
 void HeatingLogic::onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd) {

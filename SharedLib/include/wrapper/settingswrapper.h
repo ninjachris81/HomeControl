@@ -2,6 +2,7 @@
 #define SETTINGSWRAPPER_H
 
 #include "controllerwrapper.h"
+#include <QObject>
 #include <QQmlEngine>
 #include <QtGlobal>
 #include "../constants_qt.h"
