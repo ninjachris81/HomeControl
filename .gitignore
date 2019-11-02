@@ -5,3 +5,4 @@
 /SharedLib/*.user
 /MqttClientESP/credentials.h
 /PreheatRemoteControl/credentials.h
+/MqttClientESP_Relay/credentials.h

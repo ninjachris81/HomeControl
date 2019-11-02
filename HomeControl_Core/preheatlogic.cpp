@@ -58,7 +58,11 @@ void PreheatLogic::onMaintenance() {
 
             if (preheatStbFrom <= currentHour && preheatStbTo >= currentHour) {
                 if (m_tempController->valueIsValid(EnumsDeclarations::TEMPS_HC)) {
-                    hcOn = m_tempController->value(EnumsDeclarations::TEMPS_HC).toDouble()<m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_HC_STANDBY_TEMP).toFloat();
+                    if (isValidTankTemp()) {
+                        hcOn = m_tempController->value(EnumsDeclarations::TEMPS_HC).toDouble()<m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_HC_STANDBY_TEMP).toFloat();
+                    } else {
+                        qDebug() << "Tank limit reached";
+                    }
                 }
             } else {
                 qDebug() << "Not in time frame" << preheatFrom << preheatTo << currentHour;
@@ -117,5 +121,13 @@ void PreheatLogic::onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd) {
         break;
     default:
         break;
+    }
+}
+
+bool PreheatLogic::isValidTankTemp() {
+    if (m_tempController->value(EnumsDeclarations::TEMPS_TANK).isValid()) {
+        return m_tempController->value(EnumsDeclarations::TEMPS_TANK).toFloat()>m_tempController->value(EnumsDeclarations::TEMPS_HC).toFloat();
+    } else {
+        return false;
     }
 }

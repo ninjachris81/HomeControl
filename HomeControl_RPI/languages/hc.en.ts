@@ -120,51 +120,56 @@
     </message>
     <message>
         <location filename="../constant_strings.h" line="24"/>
-        <source>Heat Changer</source>
+        <source>Min Tank Temp</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="25"/>
-        <source>Tank</source>
+        <source>Heat Changer</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="26"/>
-        <source>Water</source>
+        <source>Tank</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="27"/>
-        <source>Inside</source>
+        <source>Water</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="28"/>
-        <source>HC Pump</source>
+        <source>Inside</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="29"/>
-        <source>Water Pump</source>
+        <source>HC Pump</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="30"/>
-        <source>Heating Pump</source>
+        <source>Water Pump</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="31"/>
-        <source>Solar Pump</source>
+        <source>Heating Pump</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="32"/>
-        <source>Solar</source>
+        <source>Solar Pump</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="33"/>
+        <source>Solar</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../constant_strings.h" line="34"/>
         <source>Wintergarden</source>
         <translation></translation>
     </message>
@@ -255,12 +260,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="143"/>
+        <location filename="../PageHeating.qml" line="182"/>
         <source>Month from</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="159"/>
+        <location filename="../PageHeating.qml" line="198"/>
         <source>Month to</source>
         <translation></translation>
     </message>
@@ -374,7 +379,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="196"/>
+        <location filename="../main.qml" line="204"/>
         <source>Connected</source>
         <translation></translation>
     </message>

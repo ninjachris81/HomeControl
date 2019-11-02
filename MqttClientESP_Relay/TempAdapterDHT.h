@@ -25,7 +25,7 @@ class TempAdapterDHT {
 
     void setMapping(uint8_t index, uint8_t *addr);
 
-    bool checkMapping(uint8_t index);
+    bool checkConnected(uint8_t index);
 
     bool getUnmappedDevices(String &list);
 

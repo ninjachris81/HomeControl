@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QQmlEngine>
 #include <QtGlobal>
+#include <QDateTime>
 #include "../controller/infocontroller.h"
 
 class InfoWrapper : public ControllerWrapper
@@ -15,13 +16,21 @@ public:
 
     Q_PROPERTY(bool timeIsOffset READ timeIsOffset NOTIFY timeIsOffsetChanged)
 
+    Q_PROPERTY(QDateTime serverTime READ serverTime NOTIFY serverTimeChanged)
+
     bool timeIsOffset();
+
+    QDateTime serverTime();
 
 signals:
     void timeIsOffsetChanged();
 
+    void serverTimeChanged();
+
 protected slots:
     void onTimeIsOffsetChanged(bool isOffset);
+
+    void onValueChanged(int index, QVariant value);
 
 };
 

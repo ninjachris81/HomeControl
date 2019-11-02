@@ -170,6 +170,14 @@ ApplicationWindow {
             color: "red"
             text: qsTr("INVALID TIME")
             visible: DataBridge.infos.timeIsOffset
+
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: {
+                    HCToastManager.showToast("Server time: " + DataBridge.infos.serverTime)
+                }
+            }
         }
 
         Timer {

@@ -76,6 +76,8 @@ void SettingsController::onInit() {
 
         publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_HOUR_FROM, 6);
         publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_HOUR_TO, 21);
+
+        publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MIN_TEMP_TANK, 30);
     }
 }
 

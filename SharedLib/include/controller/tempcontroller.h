@@ -26,8 +26,6 @@ public:
 
     static QString CONTROLLER_NAME;
 
-    VALUE_BC_INTERVAL getValueBCInterval(int index=-1);
-
 protected:
     void onInit();
 

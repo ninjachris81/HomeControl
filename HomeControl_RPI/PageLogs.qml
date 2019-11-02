@@ -58,7 +58,7 @@ HCPage {
 
             C2.Button {
                 Layout.preferredHeight: Style.buttonHeight
-                Layout.preferredWidth: 100
+                Layout.preferredWidth: 200
 
                 font.pointSize: Style.fontPointSize
 

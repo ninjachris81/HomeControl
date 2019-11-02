@@ -95,8 +95,9 @@ bool HeatingLogic::isValidTankTemp() {
     if (m_tempController->value(EnumsDeclarations::TEMPS_TANK).isValid()) {
         double tankTemp = m_tempController->value(EnumsDeclarations::TEMPS_TANK).toDouble();
         float heatingTemp = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_TEMP).toDouble();
+        float minTankTemp = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_MIN_TEMP_TANK).toDouble();
 
-        return tankTemp>heatingTemp;
+        return tankTemp>heatingTemp && tankTemp>minTankTemp;
     } else {
         return true;        // hmm, well - lets not create too many deps
     }

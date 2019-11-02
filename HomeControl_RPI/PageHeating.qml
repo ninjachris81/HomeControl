@@ -17,7 +17,6 @@ HCPage {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.margins: 2
 
         ColumnLayout {
             anchors.fill: parent

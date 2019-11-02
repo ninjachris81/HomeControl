@@ -54,8 +54,8 @@ void TempController::initMapping() {
     
     tempAdapter.setMapping(i, mapping);
     
-    if (!tempAdapter.checkMapping(i)) {
-      taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->sendError(F("Invalid mapping for:"), i);
+    if (!tempAdapter.checkConnected(i)) {
+      taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->sendError(F("Sensor not connected:"), i);
       hasValidMapping[i] = false;
     } else {
       hasValidMapping[i] = true;
@@ -86,12 +86,12 @@ void TempController::initMapping() {
 }
 
 void TempController::update() {
+  if (!taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->isConnected()) return;
+
   if (!mappingInitialized) initMapping();
   
   tempAdapter.update();
   
-  if (!taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->isConnected()) return;
-
   if (!tempAdapter.sensorsValid()) {
     taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->sendError(F("Invalid sensors:"), tempAdapter.getFoundSensors());
 

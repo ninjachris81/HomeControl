@@ -13,9 +13,6 @@
 #include "controller/switchcontroller.h"
 #include "controller/infocontroller.h"
 
-#include "listmodel/logcontrollerlistmodel.h"
-#include "listmodel/relaycontrollerlistmodel.h"
-#include "listmodel/settingscontrollerlistmodel.h"
 #include "sqllistmodel/logsqllistmodel.h"
 
 #include "wrapper/settingswrapper.h"
@@ -31,9 +28,9 @@ public:
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY isConnectedChanged)
 
     Q_PROPERTY(ControllerListModel* tempControllerModel READ tempListModelController NOTIFY tempControllerModelChanged)
-    Q_PROPERTY(LogControllerListModel* logControllerModel READ logListModelController NOTIFY logControllerModelChanged)
-    Q_PROPERTY(RelayControllerListModel* relayControllerModel READ relayListModelController NOTIFY relayControllerModelChanged)
-    Q_PROPERTY(SettingsControllerListModel* settingsControllerModel READ settingsListModelController NOTIFY settingsControllerModelChanged)
+    Q_PROPERTY(ControllerListModel* logControllerModel READ logListModelController NOTIFY logControllerModelChanged)
+    Q_PROPERTY(ControllerListModel* relayControllerModel READ relayListModelController NOTIFY relayControllerModelChanged)
+    Q_PROPERTY(ControllerListModel* settingsControllerModel READ settingsListModelController NOTIFY settingsControllerModelChanged)
     Q_PROPERTY(ControllerListModel* brightnessControllerModel READ brightnessListModelController NOTIFY brightnessControllerModelChanged)
     Q_PROPERTY(ControllerListModel* switchControllerModel READ switchListModelController NOTIFY switchControllerModelChanged)
 
@@ -48,9 +45,9 @@ public:
     bool isConnected();
 
     ControllerListModel *tempListModelController();
-    LogControllerListModel *logListModelController();
-    RelayControllerListModel *relayListModelController();
-    SettingsControllerListModel *settingsListModelController();
+    ControllerListModel *logListModelController();
+    ControllerListModel *relayListModelController();
+    ControllerListModel *settingsListModelController();
     ControllerListModel *brightnessListModelController();
     ControllerListModel *switchListModelController();
 
@@ -80,9 +77,9 @@ private:
     InfoController m_infoController;
 
     ControllerListModel *m_tempListModelController;
-    LogControllerListModel *m_logListModelController;
-    RelayControllerListModel *m_relayListModelController;
-    SettingsControllerListModel *m_settingsListModelController;
+    ControllerListModel *m_logListModelController;
+    ControllerListModel *m_relayListModelController;
+    ControllerListModel *m_settingsListModelController;
     ControllerListModel *m_brightnessListModelController;
     ControllerListModel *m_switchListModelController;
 

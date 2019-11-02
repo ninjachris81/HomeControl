@@ -41,7 +41,7 @@
     <message>
         <location filename="../constant_strings.h" line="8"/>
         <source>Preheat Water Temp</source>
-        <translation>Vorheizen Wasser Temp</translation>
+        <translation>Vorheizen Was. Temp</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="9"/>
@@ -81,7 +81,7 @@
     <message>
         <location filename="../constant_strings.h" line="16"/>
         <source>HC Standby Temp</source>
-        <translation>WT Standby Temperatur</translation>
+        <translation>WT Standby Temp</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="17"/>
@@ -120,51 +120,56 @@
     </message>
     <message>
         <location filename="../constant_strings.h" line="24"/>
+        <source>Min Tank Temp</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../constant_strings.h" line="25"/>
         <source>Heat Changer</source>
         <translation>Wärmetauscher</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="25"/>
+        <location filename="../constant_strings.h" line="26"/>
         <source>Tank</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="26"/>
+        <location filename="../constant_strings.h" line="27"/>
         <source>Water</source>
         <translation>Wasser</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="27"/>
+        <location filename="../constant_strings.h" line="28"/>
         <source>Inside</source>
         <translation>Innen</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="28"/>
+        <location filename="../constant_strings.h" line="29"/>
         <source>HC Pump</source>
         <translation>WT Pumpe</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="29"/>
+        <location filename="../constant_strings.h" line="30"/>
         <source>Water Pump</source>
         <translation>Wasserpumpe</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="30"/>
+        <location filename="../constant_strings.h" line="31"/>
         <source>Heating Pump</source>
         <translation>Heizpumpe</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="31"/>
+        <location filename="../constant_strings.h" line="32"/>
         <source>Solar Pump</source>
         <translation>Solarpumpe</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="32"/>
+        <location filename="../constant_strings.h" line="33"/>
         <source>Solar</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="33"/>
+        <location filename="../constant_strings.h" line="34"/>
         <source>Wintergarden</source>
         <translation>Wintergarten</translation>
     </message>
@@ -255,12 +260,12 @@
         <translation>Manueller Status</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="143"/>
+        <location filename="../PageHeating.qml" line="182"/>
         <source>Month from</source>
         <translation>Monat von</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="159"/>
+        <location filename="../PageHeating.qml" line="198"/>
         <source>Month to</source>
         <translation>Monat bis</translation>
     </message>
@@ -378,7 +383,7 @@
         <translation>ZEIT UNGÜLTIG</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="196"/>
+        <location filename="../main.qml" line="204"/>
         <source>Connected</source>
         <translation>Verbunden</translation>
     </message>

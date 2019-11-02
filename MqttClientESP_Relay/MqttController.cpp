@@ -13,10 +13,6 @@ MqttController::~MqttController() {
 }
 
 void MqttController::init() {
-  WiFi.persistent(false);
-  uint8_t bssid[] = WIFI_BSSID;
-  WiFi.begin(WIFI_SSID, WIFI_PASS, WIFI_CHANNEL, bssid, false);
-
   instance = this;
   
   mqttClient = new EspMQTTClient(
@@ -48,7 +44,7 @@ void MqttController::onConnectionEstablished() {
   for (uint8_t i=0;i<callbackHandlerCount;i++) callbackHandlers[i]->onConnected();
 
   if (sendStartup) {
-    sendLog(MQTT_PATH_LOGS_TYPE_STARTUP, "");
+    sendLog(MQTT_PATH_LOGS_TYPE_STARTUP, WiFi.localIP().toString());
   }
 }
 

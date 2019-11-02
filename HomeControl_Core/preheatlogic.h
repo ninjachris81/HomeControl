@@ -34,6 +34,8 @@ private:
     qint64 m_lastStartRequest = 0;
     qint64 m_lastStartDuration = 0;
 
+    bool isValidTankTemp();
+
 signals:
 
 private slots:

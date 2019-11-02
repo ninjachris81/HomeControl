@@ -21,13 +21,25 @@ void TempAdapterDHT::init() {
   sensors->requestTemperatures();
 
   foundSensors = sensors->getDeviceCount();
+
+  LOG_PRINT(F("Sensor count: "));
+  LOG_PRINTLN(foundSensors);
+
+  for (uint8_t i=0;i<foundSensors;i++) {
+    uint8_t addr[8];
+    if (sensors->getAddress(addr, i)) {
+      LOG_PRINTLN(addressToString(addr));
+    } else {
+      LOG_PRINTLN(F("Error while reading addr"));
+    }
+  }
 }
 
 void TempAdapterDHT::setMapping(uint8_t index, uint8_t *addr) {
   memcpy(addressMappings[index], addr, 8);
 }
 
-bool TempAdapterDHT::checkMapping(uint8_t index) {
+bool TempAdapterDHT::checkConnected(uint8_t index) {
   uint8_t *addr = addressMappings[index];
   
   if (sensors->isConnected(addr)) {

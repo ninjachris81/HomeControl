@@ -40,12 +40,9 @@ SOURCES += \
         source/controller/logiccontroller.cpp \
         source/controller/settingscontroller.cpp \
         source/listmodel/controllerlistmodel.cpp \
-        source/listmodel/relaycontrollerlistmodel.cpp \
-        source/listmodel/settingscontrollerlistmodel.cpp \
         source/wrapper/controllerwrapper.cpp \
     source/wrapper/settingswrapper.cpp \
     source/controller/logcontroller.cpp \
-    source/listmodel/logcontrollerlistmodel.cpp \
     source/sqllistmodel/logsqllistmodel.cpp \
     source/utils/qsqldatabasewrapper.cpp \
     source/sqllistmodel/sqlquerymodel.cpp \
@@ -66,13 +63,10 @@ HEADERS += \
         include/controller/settingscontroller.h \
         include/controller/logiccontroller.h \
         include/listmodel/controllerlistmodel.h \
-        include/listmodel/relaycontrollerlistmodel.h \
-        include/listmodel/settingscontrollerlistmodel.h \
         include/wrapper/controllerwrapper.h \
     include/wrapper/infowrapper.h \
     include/wrapper/settingswrapper.h \
     include/controller/logcontroller.h \
-    include/listmodel/logcontrollerlistmodel.h \
     include/sqllistmodel/logsqllistmodel.h \
     include/utils/qsqldatabasewrapper.h \
     include/sqllistmodel/sqlquerymodel.h \

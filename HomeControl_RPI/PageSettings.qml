@@ -11,54 +11,99 @@ HCPage {
 
     title: qsTr("Settings")
 
-    ColumnLayout {
-        anchors.fill: parent
+    HCGroupBox {
+        title: qsTr("Local")
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: gb2.left
+        anchors.bottom: parent.bottom
 
-        ListView {
-            id: listView
-            Layout.fillHeight: true
-            Layout.fillWidth: true
+        ColumnLayout {
+            anchors.fill: parent
 
-            model: getModel()
+            ListView {
+                id: listView
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                clip: true
 
-            delegate: Item {
-                height: 30
-                width: listView.width
+                model: getModel()
 
-                HCSimpleLabel {
-                    labelText: modelData
-                    labelValue: DataBridge.appConfigModel[modelData]
-                    labelWidth: 300
+                delegate: Item {
+                    height: 30
+                    width: listView.width
 
-                    isValid: true
-                    allowInput: true
-                    inputHandler: function(newValue) {
-                        DataBridge.setAppConfig(modelData, newValue)
+                    HCSimpleLabel {
+                        labelText: modelData
+                        labelValue: DataBridge.appConfigModel[modelData]
+                        labelWidth: 300
+
+                        isValid: true
+                        allowInput: true
+                        inputHandler: function(newValue) {
+                            DataBridge.setAppConfig(modelData, newValue)
+                        }
+                    }
+                }
+
+                function getModel() {
+                    var returnModel = [];
+
+                    for (var prop in DataBridge.appConfigModel) {
+                        returnModel.push(prop);
+                    }
+
+                    return returnModel;
+                }
+
+                function readValues(anObject) {
+                    for (var prop in anObject) {
+                        console.log("Object item:", prop, "=", anObject[prop])
                     }
                 }
             }
+        }
+    }
 
-            function getModel() {
-                var returnModel = [];
+    HCGroupBox {
+        id: gb2
 
-                for (var prop in DataBridge.appConfigModel) {
-                    returnModel.push(prop);
-                }
+        title: qsTr("Server")
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        width: parent.width/2
 
-                return returnModel;
-            }
+        ColumnLayout {
+            anchors.fill: parent
 
-            function readValues(anObject) {
-                for (var prop in anObject) {
-                    console.log("Object item:", prop, "=", anObject[prop])
+            ListView {
+                id: listView2
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                clip: true
+
+                model: DataBridge.settingsControllerModel
+
+                delegate: Item {
+                    height: 40
+                    width: listView2.width
+
+                    HCValueLabel {
+                        model: DataBridge.settingsControllerModel
+                        modelIndex: index
+                        labelWidth: 300
+
+                        isValid: true
+                        allowInput: true
+                        inputHandler: function(newValue) {
+                            //DataBridge.setAppConfig(modelData, newValue)
+                        }
+                    }
                 }
             }
         }
 
-        Item {
-            Layout.preferredHeight: 100
-            Layout.fillWidth: true
-        }
     }
 
 }

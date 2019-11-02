@@ -354,7 +354,7 @@ void ControllerBase::onCheckValidity() {
 
 void ControllerBase::onCheckBroadcasts() {
     for (uint8_t i=0;i<m_values.count();i++) {
-        if (m_values[i].isValid() && getValueBCInterval(i)!=VALUE_BC_NONE) {
+        if (isValueOwner(i) && m_values[i].isValid() && getValueBCInterval(i)!=VALUE_BC_NONE) {
             publish(i);
         }
     }

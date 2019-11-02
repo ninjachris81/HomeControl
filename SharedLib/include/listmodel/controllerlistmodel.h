@@ -9,7 +9,7 @@ class ControllerListModel : public QAbstractListModel
 public:
     ControllerListModel(ControllerBase* controller);
 
-    enum AnimalRoles {
+    enum ListRoles {
         LabelRole = Qt::UserRole + 1,
         ValueRole,
         IsValidRole
