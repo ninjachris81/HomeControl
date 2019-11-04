@@ -140,36 +140,41 @@
     </message>
     <message>
         <location filename="../constant_strings.h" line="28"/>
+        <source>Solar HC</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../constant_strings.h" line="29"/>
         <source>Inside</source>
         <translation>Innen</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="29"/>
+        <location filename="../constant_strings.h" line="30"/>
         <source>HC Pump</source>
         <translation>WT Pumpe</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="30"/>
+        <location filename="../constant_strings.h" line="31"/>
         <source>Water Pump</source>
         <translation>Wasserpumpe</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="31"/>
+        <location filename="../constant_strings.h" line="32"/>
         <source>Heating Pump</source>
         <translation>Heizpumpe</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="32"/>
+        <location filename="../constant_strings.h" line="33"/>
         <source>Solar Pump</source>
         <translation>Solarpumpe</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="33"/>
+        <location filename="../constant_strings.h" line="34"/>
         <source>Solar</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="34"/>
+        <location filename="../constant_strings.h" line="35"/>
         <source>Wintergarden</source>
         <translation>Wintergarten</translation>
     </message>
@@ -245,27 +250,27 @@
         <translation>Heizung</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="36"/>
+        <location filename="../PageHeating.qml" line="35"/>
         <source>Automatic</source>
         <translation>Automatisch</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="36"/>
+        <location filename="../PageHeating.qml" line="35"/>
         <source>Manual</source>
         <translation>Manuell</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="46"/>
+        <location filename="../PageHeating.qml" line="45"/>
         <source>Manual state</source>
         <translation>Manueller Status</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="182"/>
+        <location filename="../PageHeating.qml" line="181"/>
         <source>Month from</source>
         <translation>Monat von</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="198"/>
+        <location filename="../PageHeating.qml" line="197"/>
         <source>Month to</source>
         <translation>Monat bis</translation>
     </message>
@@ -323,6 +328,16 @@
         <location filename="../PageSettings.qml" line="12"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
+    </message>
+    <message>
+        <location filename="../PageSettings.qml" line="15"/>
+        <source>Local</source>
+        <translation>Lokal</translation>
+    </message>
+    <message>
+        <location filename="../PageSettings.qml" line="71"/>
+        <source>Server</source>
+        <translation></translation>
     </message>
 </context>
 <context>

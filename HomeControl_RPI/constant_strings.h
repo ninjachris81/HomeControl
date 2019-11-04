@@ -25,6 +25,7 @@
 #define CONST_TEMPS_LABEL_HC QT_TRANSLATE_NOOP("Constants", "Heat Changer");
 #define CONST_TEMPS_LABEL_TANK QT_TRANSLATE_NOOP("Constants", "Tank");
 #define CONST_TEMPS_LABEL_WATER QT_TRANSLATE_NOOP("Constants", "Water");
+#define CONST_TEMPS_LABEL_SOLAR_HC QT_TRANSLATE_NOOP("Constants", "Solar HC");
 #define CONST_TEMPS_LABEL_INSIDE QT_TRANSLATE_NOOP("Constants", "Inside");
 #define CONST_RELAYS_LABEL_HC_PUMP QT_TRANSLATE_NOOP("Constants", "HC Pump");
 #define CONST_RELAYS_LABEL_WATER_PUMP QT_TRANSLATE_NOOP("Constants", "Water Pump");

@@ -24,5 +24,16 @@ HCPage {
             modelIndex: Enums.BRIGHTNESSES_SOLAR
             unit: ""
         }
+
+        HCValueLabel {
+            Layout.preferredHeight: 30
+            Layout.fillWidth: true
+
+            model: DataBridge.tempControllerModel
+            modelIndex: Enums.TEMPS_SOLAR_HC
+            unit: "°"
+            formatAsFloat: true
+        }
+
     }
 }

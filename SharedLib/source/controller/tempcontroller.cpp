@@ -34,6 +34,7 @@ qint64 TempController::getValueLifetime(int index) {
     case EnumsDeclarations::TEMPS_TANK:
     case EnumsDeclarations::TEMPS_WATER:
     case EnumsDeclarations::TEMPS_INSIDE:
+    case EnumsDeclarations::TEMPS_SOLAR_HC:
         return LIFETIME_MID;
     default:
         return LIFETIME_UNLIMITED;
@@ -57,8 +58,10 @@ void TempController::onMqttConnected() {
 void TempController::onValueChanged(int index, QVariant value) {
     qDebug() << Q_FUNC_INFO << index << value;
 
+    /*
     switch(index) {
     case MQTT_PATH_TEMPS_HC:
         break;
     }
+    */
 }
