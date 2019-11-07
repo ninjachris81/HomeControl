@@ -12,7 +12,8 @@ public:
     enum ListRoles {
         LabelRole = Qt::UserRole + 1,
         ValueRole,
-        IsValidRole
+        IsValidRole,
+        TrendRole
     };
 
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -24,6 +25,7 @@ public:
 private slots:
     void onValueChanged(int index, QVariant value);
     void onValueValidChanged(int index);
+    void onValueTrendChanged(int index);
 
 protected:
     ControllerBase* m_controller;

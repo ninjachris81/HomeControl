@@ -84,6 +84,7 @@ HCPage {
                     modelIndex: Enums.TEMPS_HC
                     unit: "°"
                     formatAsFloat: true
+                    showTrend: true
                 }
 
                 HCValueLabel {
@@ -94,6 +95,7 @@ HCPage {
                     modelIndex: Enums.TEMPS_WATER
                     unit: "°"
                     formatAsFloat: true
+                    showTrend: true
                 }
 
                 HCValueLabel {
@@ -104,6 +106,7 @@ HCPage {
                     modelIndex: Enums.TEMPS_TANK
                     unit: "°"
                     formatAsFloat: true
+                    showTrend: true
                 }
 
                 Item {

@@ -30,30 +30,75 @@ public:
         VALUE_BC_FASTEST = VALUE_BC_FAST
     };
 
+    enum VALUE_TREND {
+        VALUE_TREND_NONE,
+        VALUE_TREND_CONSTANT,
+        VALUE_TREND_INCREASING,
+        VALUE_TREND_DECREASING
+    };
+
+    enum VALUE_TREND_TIMEOUT {
+        VALUE_TT_NONE = 0,
+        VALUE_TT_FAST = 30000,
+        VALUE_TT_MID = 120000,
+        VALUE_TT_SLOW = 600000
+    };
+
     struct ValueStruct {
-        qint64 lifeTime = LIFETIME_UNLIMITED;
-        qint64 lastUpdate;
         QVariant value;
-        bool wasValid = false;
+
+        qint64 _lifeTime = LIFETIME_UNLIMITED;
+        qint64 _lastUpdate = 0;
+        bool _wasValid = false;
+        VALUE_TREND _trend = VALUE_TREND_NONE;
+        qint64 _lastTrendUpdate = 0;
+        qint64 _trendLifeTime = VALUE_TT_NONE;
 
         bool isValid() {
-            if (lifeTime==LIFETIME_UNLIMITED) {
-                wasValid = true;
-            } else if (lastUpdate==0) {
-                wasValid = false;
+            if (_lifeTime==LIFETIME_UNLIMITED) {
+                _wasValid = true;
+            } else if (_lastUpdate==0) {
+                _wasValid = false;
             } else {
-                wasValid = QDateTime::currentMSecsSinceEpoch()<lastUpdate+lifeTime;
+                _wasValid = QDateTime::currentMSecsSinceEpoch()<_lastUpdate+_lifeTime;
             }
-            return wasValid;
+            return _wasValid;
         }
 
         bool compareTo(QVariant &val) {
             return value==val;
         }
 
+        VALUE_TREND valueTrend() {
+            if (QDateTime::currentMSecsSinceEpoch()<_lastTrendUpdate+_trendLifeTime) {
+                _trend = VALUE_TREND_NONE;
+            }
+
+            return _trend;
+        }
+
         void updateValue(QVariant val) {
+            switch(value.type()) {
+            case QVariant::Int:
+            case QVariant::UInt:
+            case QVariant::Double:
+            case QVariant::LongLong:
+            case QVariant::ULongLong:
+                if (val>value) {
+                    _trend = VALUE_TREND_INCREASING;
+                } else if (val<value) {
+                    _trend = VALUE_TREND_DECREASING;
+                } else {
+                    _trend = VALUE_TREND_CONSTANT;
+                }
+                _lastTrendUpdate = QDateTime::currentMSecsSinceEpoch();
+                break;
+            default:
+                break;
+            }
+
             value = val;
-            lastUpdate = QDateTime::currentMSecsSinceEpoch();
+            _lastUpdate = QDateTime::currentMSecsSinceEpoch();
         }
     };
 
@@ -144,12 +189,13 @@ private:
     QMqttSubscription* m_topicSetSub;
     QMqttSubscription* m_bcSub;
 
-    QTimer m_validityTimer;
+    QTimer m_valueUpdateTimer;
     QTimer m_valueBCTimer;
 
 signals:
     void valueChanged(int index, QVariant value);
     void valueValidChanged(int index);
+    void valueTrendChanged(int index);
 
 public slots:
 
@@ -161,7 +207,7 @@ private slots:
 
     void _onMqttMessageReceived(QMqttMessage msg);
 
-    void onCheckValidity();
+    void onCheckValue();
 
     void onCheckBroadcasts();
 

@@ -23,6 +23,7 @@ SOURCES += \
 
 RESOURCES += qml.qrc \
     components/qml_components.qrc \
+    images.qrc \
     style/qml_style.qrc \
     translations.qrc
 

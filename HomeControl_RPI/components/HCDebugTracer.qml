@@ -5,4 +5,6 @@ Rectangle {
 
     border.color: "red"
     border.width: 1
+
+    color: "transparent"
 }

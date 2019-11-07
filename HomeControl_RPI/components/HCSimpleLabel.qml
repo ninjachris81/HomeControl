@@ -17,8 +17,12 @@ Item {
     property alias inputValidator: value.validator
     property int labelWidth: 160
     property bool formatAsFloat: false
+    property bool showTrend: false
+    property int trend: 0
 
     RowLayout {
+        //spacing: 0
+
         Label {
             id: label
 
@@ -50,6 +54,20 @@ Item {
 
         HCLabel {
             text: unit
+        }
+
+        Image {
+            id: trendIcon
+
+            visible: showTrend && trend!=0
+            source: trend==1 ? "qrc:/images/icons/arrow_right.png" :
+                        trend==2 ? "qrc:/images/icons/arrow_up.png" :
+                            trend==3 ? "qrc:/images/icons/arrow_down.png" : ""
+            opacity: trend==1 ? 0.1 : 1
+
+            fillMode: Image.PreserveAspectFit
+
+            Layout.preferredWidth: 18
         }
 
         CheckBox {

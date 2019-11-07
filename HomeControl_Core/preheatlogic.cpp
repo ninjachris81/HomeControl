@@ -36,37 +36,37 @@ void PreheatLogic::onMaintenance() {
     switch(mode) {
     case EnumsDeclarations::SETTING_MODE_AUTOMATIC:
 
-        if (preheatFrom <= currentHour && preheatTo >= currentHour) {
-            float preheatHc = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_HC_TEMP).toFloat();
-            float preheatWater = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_WATER_TEMP).toFloat();
+        if (isValidTankTemp()) {
+            if (preheatFrom <= currentHour && preheatTo >= currentHour) {
+                float preheatHc = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_HC_TEMP).toFloat();
+                float preheatWater = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_WATER_TEMP).toFloat();
 
-            if (m_tempController->valueIsValid(EnumsDeclarations::TEMPS_HC)) {
-                hcOn = m_tempController->value(EnumsDeclarations::TEMPS_HC).toDouble()<preheatHc;
-            } else {
-                qWarning() << "HC Value is invalid";
-            }
-
-            if (m_tempController->valueIsValid(EnumsDeclarations::TEMPS_WATER)) {
-                waterOn = m_tempController->value(EnumsDeclarations::TEMPS_WATER).toDouble()<preheatWater;
-            } else {
-                qWarning() << "Water Value is invalid";
-            }
-
-        } else {
-            int preheatStbFrom = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_FROM).toInt();
-            int preheatStbTo = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_TO).toInt();
-
-            if (preheatStbFrom <= currentHour && preheatStbTo >= currentHour) {
                 if (m_tempController->valueIsValid(EnumsDeclarations::TEMPS_HC)) {
-                    if (isValidTankTemp()) {
-                        hcOn = m_tempController->value(EnumsDeclarations::TEMPS_HC).toDouble()<m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_HC_STANDBY_TEMP).toFloat();
-                    } else {
-                        qDebug() << "Tank limit reached";
-                    }
+                    hcOn = m_tempController->value(EnumsDeclarations::TEMPS_HC).toDouble()<preheatHc;
+                } else {
+                    qWarning() << "HC Value is invalid";
                 }
+
+                if (m_tempController->valueIsValid(EnumsDeclarations::TEMPS_WATER)) {
+                    waterOn = m_tempController->value(EnumsDeclarations::TEMPS_WATER).toDouble()<preheatWater;
+                } else {
+                    qWarning() << "Water Value is invalid";
+                }
+
             } else {
-                qDebug() << "Not in time frame" << preheatFrom << preheatTo << currentHour;
+                int preheatStbFrom = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_FROM).toInt();
+                int preheatStbTo = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_STANDBY_TO).toInt();
+
+                if (preheatStbFrom <= currentHour && preheatStbTo >= currentHour) {
+                    if (m_tempController->valueIsValid(EnumsDeclarations::TEMPS_HC)) {
+                        hcOn = m_tempController->value(EnumsDeclarations::TEMPS_HC).toDouble()<m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_HC_STANDBY_TEMP).toFloat();
+                    }
+                } else {
+                    qDebug() << "Not in time frame" << preheatFrom << preheatTo << currentHour;
+                }
             }
+        } else {
+            qDebug() << "Tank limit reached";
         }
         break;
 

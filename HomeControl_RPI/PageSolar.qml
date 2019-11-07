@@ -29,6 +29,8 @@ HCPage {
             Layout.preferredHeight: 30
             Layout.fillWidth: true
 
+            showTrend: true
+
             model: DataBridge.tempControllerModel
             modelIndex: Enums.TEMPS_SOLAR_HC
             unit: "°"

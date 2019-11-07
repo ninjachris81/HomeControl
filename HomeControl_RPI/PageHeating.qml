@@ -75,6 +75,7 @@ HCPage {
                     model: DataBridge.settingsControllerModel
                     modelIndex: Enums.SETTINGS_HEATING_TEMP
                     unit: "°"
+
                     allowInput: true
                     inputMethodHints: Qt.ImhDigitsOnly
                     inputValidator: IntValidator { bottom: 10; top: 50 }
@@ -90,6 +91,7 @@ HCPage {
                     model: DataBridge.tempControllerModel
                     modelIndex: Enums.TEMPS_INSIDE
                     unit: "°"
+                    showTrend: true
                     allowInput: false
                     formatAsFloat: true
                 }

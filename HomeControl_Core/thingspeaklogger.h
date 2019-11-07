@@ -4,6 +4,12 @@
 #include <QObject>
 #include <QNetworkAccessManager>
 
+#ifndef QT_NO_SSL
+    #include <QSslError>
+#else
+    #warning No SSL Support
+#endif
+
 #include "appconfiguration.h"
 #include "controller/controllermanager.h"
 #include "controller/logiccontroller.h"
@@ -18,7 +24,7 @@ public:
     explicit ThingSpeakLogger(ControllerManager *controllerManager, AppConfiguration *appConfig, QObject *parent = nullptr);
 
 private:
-    QNetworkAccessManager m_nam;
+    QNetworkAccessManager *m_nam;
 
     TempController* m_tempController;
     RelayController* m_relayController;
@@ -32,10 +38,16 @@ private slots:
     void onTempValueChanged(int index, QVariant value);
     void onRelayValueChanged(int index, QVariant value);
 
+    void onFinished(QNetworkReply *reply);
+#ifndef QT_NO_SSL
+    void onSslErrors(QNetworkReply *reply, const QList<QSslError> &errors);
+#endif
+
 public slots:
     void onMaintenance();
 
     void onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd);
+
 };
 
 #endif // THINGSPEAKLOGGER_H

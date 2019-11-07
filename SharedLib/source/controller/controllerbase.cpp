@@ -7,9 +7,9 @@
 
 ControllerBase::ControllerBase(QObject *parent) : QObject(parent), m_topicValSub(nullptr), m_topicSetSub(nullptr), m_bcSub(nullptr)
 {
-    connect(&m_validityTimer, &QTimer::timeout, this, &ControllerBase::onCheckValidity);
-    m_validityTimer.setInterval(1000);
-    m_validityTimer.start();
+    connect(&m_valueUpdateTimer, &QTimer::timeout, this, &ControllerBase::onCheckValue);
+    m_valueUpdateTimer.setInterval(1000);
+    m_valueUpdateTimer.start();
 }
 
 AppConfiguration* ControllerBase::getConfig() {
@@ -52,10 +52,8 @@ void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig
     m_labels = getLabelList();
     for(int i=0;i<m_labels.count();i++) {
         ValueStruct t;
-        t.lifeTime = getValueLifetime(i);
-        t.lastUpdate =0;
+        t._lifeTime = getValueLifetime(i);
         t.value =  QVariant(getValueType(i));
-        t.wasValid = false;
         m_values.append(t);
     }
 
@@ -342,12 +340,17 @@ void ControllerBase::onSetReceived(int index, QVariant value) {
     publish(index);
 }
 
-void ControllerBase::onCheckValidity() {
+void ControllerBase::onCheckValue() {
     for (uint8_t i=0;i<m_values.count();i++) {
-        bool oldValid = m_values[i].wasValid;
+        bool oldValid = m_values[i]._wasValid;
 
         if (oldValid!=m_values[i].isValid()) {
             Q_EMIT(valueValidChanged(i));
+        }
+
+        VALUE_TREND oldTrend = m_values[i]._trend;
+        if (oldTrend!=m_values[i].valueTrend()) {
+            Q_EMIT(valueTrendChanged(i));
         }
     }
 }
