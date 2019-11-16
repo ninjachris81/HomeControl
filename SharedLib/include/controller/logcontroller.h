@@ -8,6 +8,9 @@
 #include "controllerbase.h"
 
 #include "../utils/qsqldatabasewrapper.h"
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(LG_LOG_CONTROLLER)
 
 #define LOG_PORT 8888
 
@@ -19,6 +22,10 @@ public:
     LogController(QObject *parent = nullptr);
 
     QString getName();
+
+    CONTROLLER_TYPE getType() {
+        return LOG_CONTROLLER;
+    }
 
     QStringList getTopicPath();
 

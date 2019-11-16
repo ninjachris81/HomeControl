@@ -5,6 +5,7 @@
 #include <QHostAddress>
 
 QString SettingsController::CONTROLLER_NAME = QStringLiteral("SettingsController");
+Q_LOGGING_CATEGORY(LG_SETTINGS_CONTROLLER, "SettingsController");
 
 SettingsController::SettingsController(QObject *parent) : ControllerBase(parent)
 {
@@ -86,7 +87,7 @@ void SettingsController::publishSettingsValue(EnumsDeclarations::MQTT_SETTINGS k
 }
 
 void SettingsController::onValueChanged(int index, QVariant value) {
-    qWarning() << Q_FUNC_INFO << index << value;
+    qCDebug(LG_SETTINGS_CONTROLLER) << Q_FUNC_INFO << index << value;
 
     if (m_mode==VALUE_OWNER_SERVER) {
         m_settings->setValue(getSettingsKey(index), value);
@@ -110,13 +111,13 @@ QVariant SettingsController::getSettingsValue(int index, QVariant defaultValue, 
         }
         return val;
     } else {
-        qWarning() << "Cannot convert value" << val << getValueType(index);
+        qCWarning(LG_SETTINGS_CONTROLLER) << "Cannot convert value" << val << getValueType(index);
         return m_values[index].value;
     }
 }
 
 void SettingsController::onConnectedChanged(bool connected) {
-    qDebug() << Q_FUNC_INFO << connected;
+    qCDebug(LG_SETTINGS_CONTROLLER) << Q_FUNC_INFO << connected;
 
     if (m_mode==VALUE_OWNER_SERVER) {
         if (connected) {

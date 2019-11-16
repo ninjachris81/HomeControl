@@ -2,6 +2,7 @@
 #define WATERLOGIC_H
 
 #include <QObject>
+#include <QLoggingCategory>
 
 #include "controller/controllermanager.h"
 #include "controller/tempcontroller.h"
@@ -11,6 +12,8 @@
 #include "controller/logcontroller.h"
 
 #define PREHEAT_LOGIC_INTERVAL 1000
+
+Q_DECLARE_LOGGING_CATEGORY(LG_PREHEAT_LOGIC)
 
 class PreheatLogic : public LogicController
 {

@@ -1,5 +1,7 @@
 #include "solarlogic.h"
 
+Q_LOGGING_CATEGORY(LG_SOLAR_LOGIC, "SolarLogic");
+
 SolarLogic::SolarLogic(ControllerManager *controllerManager, QObject *parent) : LogicController(controllerManager, SOLAR_LOGIC_INTERVAL, parent)
 {
     m_tempController = static_cast<TempController*>(controllerManager->getController(TempController::CONTROLLER_NAME));
@@ -18,7 +20,7 @@ void SolarLogic::onMaintenance() {
 }
 
 void SolarLogic::onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd) {
-    qDebug() << Q_FUNC_INFO << cmd;
+    qCDebug(LG_SOLAR_LOGIC) << Q_FUNC_INFO << cmd;
 
     //switch(cmd) {
     //case EnumsDeclarations::START_PREHEAT:

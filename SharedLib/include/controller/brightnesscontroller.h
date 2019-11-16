@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include "controllerbase.h"
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(LG_BRIGHTNESS_CONTROLLER)
 
 class BrightnessController : public ControllerBase
 {
@@ -11,6 +14,10 @@ public:
     explicit BrightnessController(QObject *parent = nullptr);
 
     QString getName();
+
+    CONTROLLER_TYPE getType() {
+        return BRIGHTNESS_CONTROLLER;
+    }
 
     QStringList getTopicPath();
 

@@ -2,6 +2,8 @@
 #define SOLARLOGIC_H
 
 #include <QObject>
+#include <QLoggingCategory>
+
 #include "controller/logiccontroller.h"
 #include "controller/tempcontroller.h"
 #include "controller/relaycontroller.h"
@@ -9,6 +11,8 @@
 #include "controller/brightnesscontroller.h"
 
 #define SOLAR_LOGIC_INTERVAL 5000
+
+Q_DECLARE_LOGGING_CATEGORY(LG_SOLAR_LOGIC)
 
 class SolarLogic : public LogicController
 {

@@ -2,6 +2,8 @@
 #define HEATINGLOGIC_H
 
 #include <QObject>
+#include <QLoggingCategory>
+
 #include "controller/controllermanager.h"
 #include "controller/logiccontroller.h"
 #include "controller/tempcontroller.h"
@@ -10,6 +12,8 @@
 
 //#define HEATING_TOGGLE_ON_DURATION 60000
 #define HEATING_LOGIC_INTERVAL 5000
+
+Q_DECLARE_LOGGING_CATEGORY(LG_HEATING_LOGIC)
 
 class HeatingLogic : public LogicController
 {

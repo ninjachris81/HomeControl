@@ -28,6 +28,11 @@ ControllerBase::VALUE_BC_INTERVAL ControllerBase::getValueBCInterval(int index) 
     return VALUE_BC_NONE;
 }
 
+qint64 ControllerBase::getValueTrendLifetime(int index) {
+    Q_UNUSED(index);
+    return VALUE_TT_NONE;
+}
+
 void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig, QMqttClient *mqttClient) {
     qDebug() << Q_FUNC_INFO;
 
@@ -54,6 +59,7 @@ void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig
         ValueStruct t;
         t._lifeTime = getValueLifetime(i);
         t.value =  QVariant(getValueType(i));
+        t._trendLifeTime = getValueTrendLifetime(i);
         m_values.append(t);
     }
 

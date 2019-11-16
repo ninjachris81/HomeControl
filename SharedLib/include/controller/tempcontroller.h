@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include "controllerbase.h"
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(LG_TEMP_CONTROLLER)
 
 class TempController : public ControllerBase
 {
@@ -11,6 +14,10 @@ public:
     explicit TempController(QObject *parent = nullptr);
 
     QString getName();
+
+    CONTROLLER_TYPE getType() {
+        return TEMP_CONTROLLER;
+    }
 
     QStringList getTopicPath();
 
@@ -21,6 +28,8 @@ public:
     QVariant::Type getDefaultValueType();
 
     qint64 getValueLifetime(int index = -1);
+
+    qint64 getValueTrendLifetime(int index = -1);
 
     bool isValueOwner(int index = -1);
 

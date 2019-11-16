@@ -27,6 +27,8 @@ DataBridge::DataBridge(AppConfiguration *appConfig, QObject *parent) : QObject(p
 
     m_logListModel = new LogSqlListModel(&m_logController, QSqlDatabase::database(LogController::DB_CONN_LOGS));
 
+    m_wfcManager = new WeatherForecastManager(appConfig->getString("WFC_API_KEY", ""));
+
     ControllerWrapper::registerTypes();
 }
 

@@ -2,6 +2,9 @@
 #define RELAYCONTROLLER_H
 
 #include "controllerbase.h"
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(LG_RELAY_CONTROLLER)
 
 class RelayController : public ControllerBase
 {
@@ -9,6 +12,10 @@ public:
     RelayController(QObject *parent = nullptr);
 
     QString getName();
+
+    CONTROLLER_TYPE getType() {
+        return RELAY_CONTROLLER;
+    }
 
     QStringList getTopicPath();
 

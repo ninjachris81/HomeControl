@@ -5,6 +5,8 @@ import QtQuick.Layouts 1.3
 
 import hc 1.0
 
+import "DateFormat.js" as DateFormat
+
 import "style"
 import "components"
 
@@ -15,6 +17,7 @@ HCPage {
 
     ColumnLayout {
         anchors.fill: parent
+        anchors.margins: 4
 
         HCValueLabel {
             Layout.preferredHeight: 30
@@ -35,6 +38,69 @@ HCPage {
             modelIndex: Enums.TEMPS_SOLAR_HC
             unit: "°"
             formatAsFloat: true
+        }
+
+        HCDividerH {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 2
+        }
+
+        GridView {
+            id: gridView
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            model: DataBridge.wfcManager.forecast.icons
+
+            delegate: Item {
+                width: gridView.width / 8
+                height: 50
+
+                Column {
+                    Image {
+                        source: DataBridge.wfcManager.forecast.icons[index]
+
+                        HCLabel {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            horizontalAlignment: Text.AlignHCenter
+
+                            text: DataBridge.wfcManager.forecast.temps[index].toFixed(0) + " °"
+                            font.pointSize: 8
+                        }
+                    }
+
+                    HCLabel {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        horizontalAlignment: Text.AlignHCenter
+
+                        text: DateFormat.strftime('%H:%M', new Date(DataBridge.wfcManager.forecast.dates[index] * 1000))
+                        font.pointSize: 8
+                    }
+
+                    HCLabel {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        horizontalAlignment: Text.AlignHCenter
+
+                        text: DateFormat.strftime('%a', new Date(DataBridge.wfcManager.forecast.dates[index] * 1000))
+                        font.pointSize: 8
+                    }
+                }
+            }
+        }
+
+        Connections {
+            target: DataBridge.wfcManager
+
+            onForecastChanged: {
+                console.log("FORECAST CHANGED " + DataBridge.wfcManager.forecast.icons.length)
+            }
+        }
+
+        Component.onCompleted: {
+            DataBridge.wfcManager.requestForecast();
         }
 
     }

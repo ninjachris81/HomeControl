@@ -2,6 +2,7 @@
 #include "include/constants_qt.h"
 
 QString TempController::CONTROLLER_NAME = QStringLiteral("TempController");
+Q_LOGGING_CATEGORY(LG_TEMP_CONTROLLER, "TempController");
 
 TempController::TempController(QObject *parent) : ControllerBase(parent)
 {
@@ -41,6 +42,19 @@ qint64 TempController::getValueLifetime(int index) {
     }
 }
 
+qint64 TempController::getValueTrendLifetime(int index) {
+    switch (index) {
+    case EnumsDeclarations::TEMPS_HC:
+    case EnumsDeclarations::TEMPS_TANK:
+    case EnumsDeclarations::TEMPS_WATER:
+    case EnumsDeclarations::TEMPS_INSIDE:
+    case EnumsDeclarations::TEMPS_SOLAR_HC:
+        return VALUE_TT_MID;
+    default:
+        return VALUE_TT_NONE;
+    }
+}
+
 bool TempController::isValueOwner(int index) {
     Q_UNUSED(index);
 
@@ -48,15 +62,15 @@ bool TempController::isValueOwner(int index) {
 }
 
 void TempController::onInit() {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(LG_TEMP_CONTROLLER) << Q_FUNC_INFO;
 }
 
 void TempController::onMqttConnected() {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(LG_TEMP_CONTROLLER) << Q_FUNC_INFO;
 }
 
 void TempController::onValueChanged(int index, QVariant value) {
-    qDebug() << Q_FUNC_INFO << index << value;
+    qCDebug(LG_TEMP_CONTROLLER) << Q_FUNC_INFO << index << value;
 
     /*
     switch(index) {

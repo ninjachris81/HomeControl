@@ -2,6 +2,8 @@
 #include <QDebug>
 #include <QDateTime>
 
+Q_LOGGING_CATEGORY(LG_PREHEAT_LOGIC, "PreheatLogic");
+
 PreheatLogic::PreheatLogic(ControllerManager *controllerManager, QObject *parent) : LogicController(controllerManager, PREHEAT_LOGIC_INTERVAL, parent)
 {
     m_tempController = static_cast<TempController*>(controllerManager->getController(TempController::CONTROLLER_NAME));
@@ -23,7 +25,7 @@ void PreheatLogic::startMaintenance() {
 
 
 void PreheatLogic::onMaintenance() {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(LG_PREHEAT_LOGIC) << Q_FUNC_INFO;
 
     int preheatFrom = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_FROM).toInt();
     int preheatTo = m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_TO).toInt();
@@ -44,13 +46,13 @@ void PreheatLogic::onMaintenance() {
                 if (m_tempController->valueIsValid(EnumsDeclarations::TEMPS_HC)) {
                     hcOn = m_tempController->value(EnumsDeclarations::TEMPS_HC).toDouble()<preheatHc;
                 } else {
-                    qWarning() << "HC Value is invalid";
+                    qCWarning(LG_PREHEAT_LOGIC) << "HC Value is invalid";
                 }
 
                 if (m_tempController->valueIsValid(EnumsDeclarations::TEMPS_WATER)) {
                     waterOn = m_tempController->value(EnumsDeclarations::TEMPS_WATER).toDouble()<preheatWater;
                 } else {
-                    qWarning() << "Water Value is invalid";
+                    qCWarning(LG_PREHEAT_LOGIC) << "Water Value is invalid";
                 }
 
             } else {
@@ -62,11 +64,11 @@ void PreheatLogic::onMaintenance() {
                         hcOn = m_tempController->value(EnumsDeclarations::TEMPS_HC).toDouble()<m_settingsController->value(EnumsDeclarations::SETTINGS_PREHEAT_HC_STANDBY_TEMP).toFloat();
                     }
                 } else {
-                    qDebug() << "Not in time frame" << preheatFrom << preheatTo << currentHour;
+                    qCDebug(LG_PREHEAT_LOGIC) << "Not in time frame" << preheatFrom << preheatTo << currentHour;
                 }
             }
         } else {
-            qDebug() << "Tank limit reached";
+            qCDebug(LG_PREHEAT_LOGIC) << "Tank limit reached";
         }
         break;
 
@@ -90,7 +92,7 @@ void PreheatLogic::onMaintenance() {
 }
 
 void PreheatLogic::startPreheat(qint64 duration) {
-    qDebug() << Q_FUNC_INFO << duration;
+    qCDebug(LG_PREHEAT_LOGIC) << Q_FUNC_INFO << duration;
 
     m_lastStartRequest = QDateTime::currentSecsSinceEpoch();
     m_lastStartDuration = duration;
@@ -101,7 +103,7 @@ void PreheatLogic::startPreheat(qint64 duration) {
 }
 
 void PreheatLogic::stopPreheat() {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(LG_PREHEAT_LOGIC) << Q_FUNC_INFO;
     m_lastStartRequest = 0;
     m_lastStartDuration = 0;
     m_settingsController->setValue(EnumsDeclarations::SETTINGS_PREHEAT_MODE, EnumsDeclarations::SETTING_MODE_AUTOMATIC, true);
@@ -110,7 +112,7 @@ void PreheatLogic::stopPreheat() {
 }
 
 void PreheatLogic::onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd) {
-    qDebug() << Q_FUNC_INFO << cmd;
+    qCDebug(LG_PREHEAT_LOGIC) << Q_FUNC_INFO << cmd;
 
     switch(cmd) {
     case EnumsDeclarations::CMD_START_PREHEAT:

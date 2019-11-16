@@ -104,11 +104,19 @@ void TempController::update() {
       onBroadcast();
       lastBroadcast = millis();
     } else {
+      /*
       for (uint8_t i=0;i<TEMP_COUNT;i++) {
         if (hasValidMapping[i]) {
           tempAdapter.updateTemperature(i);
         }
-      }
+      }*/
+
+      if (hasValidMapping[currentTempIndexToUpdate]) {
+        tempAdapter.updateTemperature(currentTempIndexToUpdate);
+      }      
+
+      currentTempIndexToUpdate++;
+      if (currentTempIndexToUpdate>=TEMP_COUNT) currentTempIndexToUpdate = 0;
     }
   }
 }

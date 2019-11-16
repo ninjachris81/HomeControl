@@ -28,6 +28,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    include/utils/weatherforecast.cpp \
+    include/utils/weatherforecastmanager.cpp \
     source/wrapper/infowrapper.cpp \
     source/controller/infocontroller.cpp \
     source/controller/switchcontroller.cpp \
@@ -63,6 +65,8 @@ HEADERS += \
         include/controller/settingscontroller.h \
         include/controller/logiccontroller.h \
         include/listmodel/controllerlistmodel.h \
+    include/utils/weatherforecast.h \
+    include/utils/weatherforecastmanager.h \
         include/wrapper/controllerwrapper.h \
     include/wrapper/infowrapper.h \
     include/wrapper/settingswrapper.h \

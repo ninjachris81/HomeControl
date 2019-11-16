@@ -9,7 +9,7 @@
 #include "TempAdapterDHT.h"
 #include <FloatProperty.h>
 
-#define TEMP_INTERVAL_MS 3000
+#define TEMP_INTERVAL_MS 2000
 
 #define TEMP_BC_INTERVAL_BC LIFETIME_MID/2
 
@@ -48,6 +48,8 @@ private:
   bool mappingInitialized = false;
 
   uint64_t lastBroadcast = 0;
+
+  uint8_t currentTempIndexToUpdate = 0;
 
   TempAdapterDHT tempAdapter;
   bool hasValidMapping[TEMP_COUNT];

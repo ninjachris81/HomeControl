@@ -3,8 +3,11 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QLoggingCategory>
 
 #include "controllerbase.h"
+
+Q_DECLARE_LOGGING_CATEGORY(LG_INFO_CONTROLLER)
 
 class InfoController : public ControllerBase
 {
@@ -13,6 +16,10 @@ public:
     explicit InfoController(QObject *parent = nullptr);
 
     QString getName();
+
+    CONTROLLER_TYPE getType() {
+        return INFO_CONTROLLER;
+    }
 
     QStringList getTopicPath();
 

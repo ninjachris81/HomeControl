@@ -18,6 +18,8 @@ QString LogController::CONTROLLER_NAME = QStringLiteral("LogController");
 QString LogController::DB_TABLE_LOGS = QStringLiteral("logs");
 QString LogController::DB_CONN_LOGS = QStringLiteral("HC_LOGS");
 
+Q_LOGGING_CATEGORY(LG_LOG_CONTROLLER, "LogController");
+
 LogController::LogController(QObject *parent) : ControllerBase(parent)
 {
 }
@@ -59,6 +61,8 @@ qint64 LogController::getValueLifetime(int index) {
 }
 
 void LogController::onInit() {
+    qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO;
+
     if (m_mode==ControllerBase::VALUE_OWNER_SERVER) {
         m_db = QSqlDatabase::addDatabase("QSQLITE" , DB_CONN_LOGS);
         m_db.setDatabaseName("hc_logs.db");
@@ -108,7 +112,7 @@ void LogController::onCmdReceived(EnumsDeclarations::MQTT_CMDS cmd) {
 }
 
 void LogController::clearLog(int typeFilter) {
-    qDebug() << Q_FUNC_INFO << typeFilter;
+    qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO << typeFilter;
 
     if (m_mode==ControllerBase::VALUE_OWNER_SERVER) {
         QSqlQuery query(m_db);
@@ -129,7 +133,7 @@ void LogController::clearLog(int typeFilter) {
 }
 
 bool LogController::checkTables() {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO;
 
     QStringList tables = m_db.tables();
 
@@ -149,7 +153,7 @@ bool LogController::checkTables() {
 }
 
 void LogController::onSettingsValueChanged(int index, QVariant value) {
-    qDebug() << Q_FUNC_INFO << index << value;
+    qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO << index << value;
 
     if (index==EnumsDeclarations::SETTINGS_CORE_HOST) {
         refreshLog();
@@ -166,7 +170,7 @@ void LogController::refreshLog() {
 }
 
 void LogController::addLog(EnumsDeclarations::MQTT_LOGS type, QString source, QString msg) {
-    qDebug() << Q_FUNC_INFO << type << msg;
+    qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO << type << msg;
 
     if (m_mode==VALUE_OWNER_SERVER) {
         insertRecord(QDateTime::currentDateTime(), type, source, msg);
@@ -178,7 +182,7 @@ void LogController::addLog(EnumsDeclarations::MQTT_LOGS type, QString source, QS
 
 void LogController::retrieveLog() {
     QString host = static_cast<SettingsController*>(m_parent->getController(SettingsController::CONTROLLER_NAME))->value(EnumsDeclarations::SETTINGS_CORE_HOST).toString();
-    qDebug() << Q_FUNC_INFO << host;
+    qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO << host;
 
     QTcpSocket socket;
     socket.connectToHost(host, LOG_PORT);
@@ -200,7 +204,7 @@ void LogController::retrieveLog() {
                 if (!doc.isNull() && !doc.isEmpty()) {
                     QJsonArray arr = doc.array();
 
-                    qDebug() << arr;
+                    qCDebug(LG_LOG_CONTROLLER) << arr;
 
                     for (int i=0;i<arr.count();i++) {
                         QJsonArray data = arr.at(i).toArray();
@@ -209,21 +213,21 @@ void LogController::retrieveLog() {
 
                     Q_EMIT(logDataChanged());
                 } else {
-                    qWarning() << "Doc is empty" << buffer.size();
+                    qCWarning(LG_LOG_CONTROLLER) << "Doc is empty" << buffer.size();
                 }
             } else {
-                qWarning() << "Result is empty";
+                qCWarning(LG_LOG_CONTROLLER) << "Result is empty";
             }
         } else {
-            qWarning() << "Timeout reading from" << host;
+            qCWarning(LG_LOG_CONTROLLER) << "Timeout reading from" << host;
         }
     } else {
-        qWarning() << "Timeout connecting to" << host;
+        qCWarning(LG_LOG_CONTROLLER) << "Timeout connecting to" << host;
     }
 }
 
 void LogController::onNewConnection() {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO;
 
     QTcpSocket *socket = m_tcpServer->nextPendingConnection();
 
@@ -249,11 +253,11 @@ void LogController::onNewConnection() {
 }
 
 void LogController::onValueChanged(int index, QVariant value) {
-    qWarning() << Q_FUNC_INFO << index << value;
+    qCWarning(LG_LOG_CONTROLLER) << Q_FUNC_INFO << index << value;
 }
 
 void LogController::onSetReceived(int index, QVariant value) {
-    qDebug() << Q_FUNC_INFO << index << value;
+    qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO << index << value;
 
     if (m_mode==VALUE_OWNER_SERVER) {
         // index = type
@@ -263,7 +267,7 @@ void LogController::onSetReceived(int index, QVariant value) {
             QString source = value.toString().left(i);
             QString msg = value.toString().mid(i+QString(MQTT_LOG_SOURCE_DIV).length());
 
-            qDebug() << source << msg;
+            qCDebug(LG_LOG_CONTROLLER) << source << msg;
 
             insertRecord(QDateTime::currentDateTime(), index, source, msg);
         } else {
@@ -275,7 +279,7 @@ void LogController::onSetReceived(int index, QVariant value) {
 }
 
 bool LogController::insertRecord(QDateTime date, int type, QString source, QString msg) {
-    qDebug() << Q_FUNC_INFO << m_db <<date << type << source << msg;
+    qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO << m_db <<date << type << source << msg;
 
     QSqlQuery query(m_db);
     query.prepare("INSERT INTO " + DB_TABLE_LOGS + " (date, type, source, msg) VALUES (:date, :type, :source, :msg)");
@@ -285,7 +289,7 @@ bool LogController::insertRecord(QDateTime date, int type, QString source, QStri
     query.bindValue(":msg", msg);
 
     if (!query.exec()) {
-        qWarning() << "Error while inserting log" << query.lastError().text();
+        qCWarning(LG_LOG_CONTROLLER) << "Error while inserting log" << query.lastError().text();
         return false;
     } else {
         return true;

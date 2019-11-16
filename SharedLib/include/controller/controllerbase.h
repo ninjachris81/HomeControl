@@ -17,6 +17,16 @@ class ControllerBase : public QObject
 {
     Q_OBJECT
 public:
+    enum CONTROLLER_TYPE {
+        BRIGHTNESS_CONTROLLER,
+        INFO_CONTROLLER,
+        LOG_CONTROLLER,
+        RELAY_CONTROLLER,
+        SETTINGS_CONTROLLER,
+        SWITCH_CONTROLLER,
+        TEMP_CONTROLLER
+    };
+
     enum VALUE_OWNER_MODE {
         VALUE_OWNER_SERVER,
         VALUE_OWNER_CLIENT,
@@ -70,8 +80,10 @@ public:
         }
 
         VALUE_TREND valueTrend() {
-            if (QDateTime::currentMSecsSinceEpoch()<_lastTrendUpdate+_trendLifeTime) {
-                _trend = VALUE_TREND_NONE;
+            if (_trendLifeTime>0) {
+                if (QDateTime::currentMSecsSinceEpoch()<_lastTrendUpdate+_trendLifeTime) {
+                    _trend = VALUE_TREND_NONE;
+                }
             }
 
             return _trend;
@@ -106,6 +118,8 @@ public:
 
     virtual QString getName() = 0;
 
+    virtual CONTROLLER_TYPE getType() = 0;
+
     virtual QStringList getTopicPath() = 0;
 
     virtual QStringList getLabelList() = 0;
@@ -115,6 +129,8 @@ public:
     virtual QVariant::Type getDefaultValueType();
 
     virtual qint64 getValueLifetime(int index = -1) = 0;
+
+    virtual qint64 getValueTrendLifetime(int index = -1);
 
     virtual VALUE_BC_INTERVAL getValueBCInterval(int index=-1);
 

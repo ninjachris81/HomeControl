@@ -2,6 +2,7 @@
 #include "include/constants_qt.h"
 
 QString SwitchController::CONTROLLER_NAME = QStringLiteral("SwitchController");
+Q_LOGGING_CATEGORY(LG_SWITCH_CONTROLLER, "SwitchController");
 
 SwitchController::SwitchController(QObject *parent) : ControllerBase (parent)
 {

@@ -1,7 +1,11 @@
 #ifndef SWITCHCONTROLLER_H
 #define SWITCHCONTROLLER_H
 
+#include <QObject>
 #include "controllerbase.h"
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(LG_SWITCH_CONTROLLER)
 
 class SwitchController : public ControllerBase
 {
@@ -9,6 +13,10 @@ public:
     SwitchController(QObject *parent = nullptr);
 
     QString getName();
+
+    CONTROLLER_TYPE getType() {
+        return SWITCH_CONTROLLER;
+    }
 
     QStringList getTopicPath();
 

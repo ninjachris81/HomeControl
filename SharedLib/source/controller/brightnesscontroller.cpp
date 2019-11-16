@@ -2,6 +2,7 @@
 #include "include/constants_qt.h"
 
 QString BrightnessController::CONTROLLER_NAME = QStringLiteral("BrightnessController");
+Q_LOGGING_CATEGORY(LG_BRIGHTNESS_CONTROLLER, "BrightnessController");
 
 BrightnessController::BrightnessController(QObject *parent) : ControllerBase(parent)
 {
@@ -44,15 +45,15 @@ bool BrightnessController::isValueOwner(int index) {
 }
 
 void BrightnessController::onInit() {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(LG_BRIGHTNESS_CONTROLLER) << Q_FUNC_INFO;
 }
 
 void BrightnessController::onMqttConnected() {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(LG_BRIGHTNESS_CONTROLLER) << Q_FUNC_INFO;
 }
 
 void BrightnessController::onValueChanged(int index, QVariant value) {
-    qDebug() << Q_FUNC_INFO << index << value;
+    qCDebug(LG_BRIGHTNESS_CONTROLLER) << Q_FUNC_INFO << index << value;
 
     switch(index) {
     case MQTT_PATH_BRIGHTNESSES_SOLAR:

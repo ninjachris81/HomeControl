@@ -1,6 +1,8 @@
 #include "heatinglogic.h"
 #include <QDateTime>
 
+Q_LOGGING_CATEGORY(LG_HEATING_LOGIC, "HeatingLogic");
+
 HeatingLogic::HeatingLogic(ControllerManager *controllerManager, QObject *parent) : LogicController(controllerManager, HEATING_LOGIC_INTERVAL, parent)
 {
     m_tempController = static_cast<TempController*>(controllerManager->getController(TempController::CONTROLLER_NAME));
@@ -34,7 +36,7 @@ void HeatingLogic::onMaintenance() {
                                 if (QDateTime::currentMSecsSinceEpoch()> m_lastHeatOff + toggleOnDuration) {
                                     // switch off
                                     m_lastHeatOff = QDateTime::currentMSecsSinceEpoch();
-                                    qDebug() << "Toggle off for" << toggleOnDuration;
+                                    qCDebug(LG_HEATING_LOGIC) << "Toggle off for" << toggleOnDuration;
                                 } else {
                                     heatingPumpOn = true;
                                 }
@@ -46,16 +48,16 @@ void HeatingLogic::onMaintenance() {
                             heatingPumpOn = insideTemp<heatingTemp;
                         }
                     } else {
-                        qWarning() << "Tank temp too low";
+                        qCWarning(LG_HEATING_LOGIC) << "Tank temp too low";
                     }
                 } else {
-                    qWarning() << "Out of valid time";
+                    qCWarning(LG_HEATING_LOGIC) << "Out of valid time";
                 }
             } else {
-                qWarning() << "Out of valid month";
+                qCWarning(LG_HEATING_LOGIC) << "Out of valid month";
             }
         } else {
-            qWarning() << "Inside temp is not valid";
+            qCWarning(LG_HEATING_LOGIC) << "Inside temp is not valid";
         }
         break;
     case EnumsDeclarations::SETTING_MODE_MANUAL:
@@ -104,7 +106,7 @@ bool HeatingLogic::isValidTankTemp() {
 }
 
 void HeatingLogic::onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd) {
-    qDebug() << Q_FUNC_INFO << cmd;
+    qCDebug(LG_HEATING_LOGIC) << Q_FUNC_INFO << cmd;
 
     //switch(cmd) {
     //case EnumsDeclarations::START_PREHEAT:

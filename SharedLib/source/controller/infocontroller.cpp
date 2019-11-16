@@ -4,6 +4,7 @@
 #include "include/controller/controllermanager.h"
 
 QString InfoController::CONTROLLER_NAME = QStringLiteral("InfoController");
+Q_LOGGING_CATEGORY(LG_INFO_CONTROLLER, "InfoController");
 
 InfoController::InfoController(QObject *parent) : ControllerBase(parent)
 {
@@ -35,7 +36,7 @@ qint64 InfoController::getValueLifetime(int index) {
 }
 
 void InfoController::onInit() {
-    qDebug() << Q_FUNC_INFO << m_mode;
+    qCDebug(LG_INFO_CONTROLLER) << Q_FUNC_INFO << m_mode;
 
     if (m_mode==ControllerBase::VALUE_OWNER_SERVER) {
         connect(&m_systemTimeTimer, &QTimer::timeout, [this]() {
@@ -47,14 +48,14 @@ void InfoController::onInit() {
 }
 
 void InfoController::onMqttConnected() {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(LG_INFO_CONTROLLER) << Q_FUNC_INFO;
 }
 
 void InfoController::onValueChanged(int index, QVariant value) {
-    qDebug() << Q_FUNC_INFO << index << value;
+    qCDebug(LG_INFO_CONTROLLER) << Q_FUNC_INFO << index << value;
 
     if (m_mode==ControllerBase::VALUE_OWNER_CLIENT) {
-        qDebug() << "Server time:" << value.toString();
+        qCDebug(LG_INFO_CONTROLLER) << "Server time:" << value.toString();
 
         if (QDateTime::currentDateTime().secsTo(QDateTime::fromString(value.toString(), Qt::ISODate))>120) {
 
@@ -62,7 +63,7 @@ void InfoController::onValueChanged(int index, QVariant value) {
                 m_timeIsOffset = true;
                 Q_EMIT(timeIsOffsetChanged(true));
             }
-            qWarning() << "Server and Client time/date is out of sync";
+            qCWarning(LG_INFO_CONTROLLER) << "Server and Client time/date is out of sync";
         } else {
             if (m_timeIsOffset) {
                 m_timeIsOffset = false;

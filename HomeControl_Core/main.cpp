@@ -12,6 +12,7 @@
 #include "preheatlogic.h"
 #include "heatinglogic.h"
 #include "thingspeaklogger.h"
+#include "datalogger.h"
 
 int main(int argc, char *argv[])
 {
@@ -52,6 +53,14 @@ int main(int argc, char *argv[])
     PreheatLogic preheatLogic(&controllerManager);
     HeatingLogic heatLogic(&controllerManager);
     ThingSpeakLogger thingspeakLogger(&controllerManager, &appConfig);
+    DataLogger dataLogger(&controllerManager, &appConfig);
+
+    // Register values for dl
+    dataLogger.registerValue(&tempController, EnumsDeclarations::TEMPS_HC);
+    dataLogger.registerValue(&tempController, EnumsDeclarations::TEMPS_TANK);
+    dataLogger.registerValue(&tempController, EnumsDeclarations::TEMPS_WATER);
+    dataLogger.registerValue(&tempController, EnumsDeclarations::TEMPS_SOLAR_HC);
+    dataLogger.registerValue(&tempController, EnumsDeclarations::TEMPS_INSIDE);
 
     QObject::connect(&controllerManager, &ControllerManager::mqttConnected, [&logController]() {
         logController.addLog(EnumsDeclarations::LOGS_TYPE_STARTUP, DEV_ID_SERVER);

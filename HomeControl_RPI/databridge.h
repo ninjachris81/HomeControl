@@ -19,6 +19,8 @@
 #include "wrapper/logwrapper.h"
 #include "wrapper/infowrapper.h"
 
+#include "utils/weatherforecastmanager.h"
+
 class DataBridge : public QObject
 {
     Q_OBJECT
@@ -42,6 +44,8 @@ public:
 
     Q_PROPERTY(QVariantMap appConfigModel READ appConfigModel NOTIFY appConfigModelChanged)
 
+    Q_PROPERTY(WeatherForecastManager* wfcManager READ wfcManager NOTIFY wfcManagerChanged)
+
     bool isConnected();
 
     ControllerListModel *tempListModelController();
@@ -58,6 +62,8 @@ public:
     LogSqlListModel *logListModel();
 
     QVariantMap appConfigModel();
+
+    WeatherForecastManager* wfcManager() { return m_wfcManager; }
 
     Q_INVOKABLE QVariant getAppConfig(QString key, QVariant defaultValue);
     Q_INVOKABLE void setAppConfig(QString key, QVariant value);
@@ -89,6 +95,8 @@ private:
 
     LogSqlListModel *m_logListModel;
 
+    WeatherForecastManager *m_wfcManager;
+
 private slots:
     void onMqttConnected();
 
@@ -110,6 +118,7 @@ signals:
 
     void appConfigModelChanged();
 
+    void wfcManagerChanged();
 
 public slots:
 };

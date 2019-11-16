@@ -2,6 +2,7 @@
 #include "include/constants_qt.h"
 
 QString RelayController::CONTROLLER_NAME = QStringLiteral("RelayController");
+Q_LOGGING_CATEGORY(LG_RELAY_CONTROLLER, "RelayController");
 
 RelayController::RelayController(QObject *parent) : ControllerBase (parent)
 {
@@ -49,5 +50,5 @@ void RelayController::onInit() {
 }
 
 void RelayController::onValueChanged(int index, QVariant value) {
-    qDebug() << Q_FUNC_INFO << index << value;
+    qCDebug(LG_RELAY_CONTROLLER) << Q_FUNC_INFO << index << value;
 }

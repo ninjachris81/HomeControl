@@ -3,6 +3,9 @@
 
 #include "controllerbase.h"
 #include <QSettings>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(LG_SETTINGS_CONTROLLER)
 
 class SettingsController : public ControllerBase
 {
@@ -10,6 +13,10 @@ public:
     SettingsController(QObject *parent = nullptr);
 
     QString getName();
+
+    CONTROLLER_TYPE getType() {
+        return SETTINGS_CONTROLLER;
+    }
 
     QStringList getTopicPath();
 
