@@ -9,6 +9,10 @@ WeatherForecast::WeatherForecast(QObject *parent) : QObject(parent)
 bool WeatherForecast::fromJson(QByteArray data) {
     qCDebug(LG_WEATHERFORECAST()) << Q_FUNC_INFO << data;
 
+    m_dates.clear();
+    m_temps.clear();
+    m_icons.clear();
+
     QJsonDocument doc = QJsonDocument::fromJson(data);
 
     if (!doc.isNull()) {
