@@ -75,8 +75,10 @@ bool HeatingLogic::isValidMonth() {
     int currentMonth = QDate::currentDate().month();
     if (to<from) {
         to+=12;
-        //was wrong: currentMonth+=12;
+        currentMonth+=12;
     }
+
+    qDebug() << Q_FUNC_INFO << currentMonth << from << to;
 
     return currentMonth>=from && currentMonth<=to;
 }

@@ -13,5 +13,7 @@
         <file>qmldir</file>
         <file>HCToastManager.qml</file>
         <file>HCGroupBox.qml</file>
+        <file>HCKeyboard.qml</file>
+        <file>HCKeyboardManager.qml</file>
     </qresource>
 </RCC>

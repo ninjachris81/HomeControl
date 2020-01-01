@@ -40,15 +40,42 @@ Item {
             text: formatAsFloat ? Number(labelValue).toLocaleString(Qt.locale(), "f", 1) : labelValue
             color: isValid ? "black" : "red"
 
-            readOnly: !allowInput
+            readOnly: true
 
             font.pointSize: Style.fontPointSize-2
 
-            onAccepted: {
-                if (typeof(inputHandler)=="function") {
-                    inputHandler(text);
+            MouseArea {
+                anchors.fill: parent
+                anchors.leftMargin: -6
+                anchors.rightMargin: -26
+                anchors.topMargin: -4
+                anchors.bottomMargin: -4
+
+                enabled: allowInput
+
+                Rectangle {
+                    anchors.fill: parent
+
+                    visible: parent.enabled
+
+                    border.color: "black"
+                    opacity: 0.1
+
+                    radius: 2
                 }
-                //labelValue = text
+
+                onClicked: {
+                    HCKeyboardManager.invoke(value.text, function(newText) {
+                        value.text = newText
+
+                        if (typeof(inputHandler)=="function") {
+                            inputHandler(value.text);
+                        } else {
+                            console.warn("No input handler")
+                        }
+                    },
+                    value.inputMethodHints, value.validator, value.font)
+                }
             }
         }
 

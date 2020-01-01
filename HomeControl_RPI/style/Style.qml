@@ -10,4 +10,6 @@ QtObject {
 
     property int fontPointSize: 14
 
+    property int fontPointSizeKeyboard: 48
+
 }
