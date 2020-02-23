@@ -7,3 +7,4 @@
 /HomeControl_RPI/constant_strings.h
 /HomeControl_Admin_RPI/constant_strings.h
 *.qm
+/MqttClientESP_Temp/credentials.h
