@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QTimer>
-#include <appconfiguration.h>
+#include "utils/appconfiguration.h"
 
 class ScreenSaverFilter : public QObject
 {

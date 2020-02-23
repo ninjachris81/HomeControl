@@ -2,8 +2,8 @@
 #define CONTROLLERWRAPPER_H
 
 #include <QObject>
-#include "../controller/controllerbase.h"
-#include "../constants_qt.h"
+#include "controller/controllerbase.h"
+#include "constants_qt.h"
 #include <QQmlEngine>
 
 class ControllerWrapper : public QObject {

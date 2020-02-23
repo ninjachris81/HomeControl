@@ -1,9 +1,9 @@
 
-#define CONFIG_4_RELAY_BOARD 0        // ESP
+#define CONFIG_4_RELAY_BOARD 0        // Generic ESP
 #define CONFIG_TEMP_BOARD 1           // D1 R1
 
 
-#define ACTIVE_CONFIG CONFIG_TEMP_BOARD
+#define ACTIVE_CONFIG CONFIG_4_RELAY_BOARD
 
 #define WIFI_CHANNEL 2
 
@@ -15,7 +15,7 @@
 
 #if ACTIVE_CONFIG == CONFIG_4_RELAY_BOARD
   #warning Relay Board Configuration
-  #define RELAY_COUNT 3
+  #define RELAY_COUNT 4
   #define TEMP_COUNT 0
   #define PIN_DIGITAL_TEMP_SENSORS 0
   #define DEVICE_NAME DEV_ID_4RELAY_BOARD

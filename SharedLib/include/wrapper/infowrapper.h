@@ -6,7 +6,7 @@
 #include <QQmlEngine>
 #include <QtGlobal>
 #include <QDateTime>
-#include "../controller/infocontroller.h"
+#include "controller/infocontroller.h"
 
 class InfoWrapper : public ControllerWrapper
 {

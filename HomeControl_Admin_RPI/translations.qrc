@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>languages/hc.de.qm</file>
+        <file>languages/hc.en.qm</file>
+    </qresource>
+</RCC>

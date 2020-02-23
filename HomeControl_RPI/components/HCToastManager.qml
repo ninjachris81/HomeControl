@@ -1,7 +1,7 @@
 pragma Singleton
 import QtQuick 2.0
 
-import "../style"
+import StyleDef 1.0
 
 Item {
     property Item toastComponent

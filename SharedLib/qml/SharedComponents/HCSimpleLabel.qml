@@ -3,7 +3,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 import QtQuick.VirtualKeyboard 2.1
 
-import "../style"
+import StyleDef 1.0
 
 Item {
 
@@ -19,12 +19,15 @@ Item {
     property bool formatAsFloat: false
     property bool showTrend: false
     property int trend: 0
+    property bool showLabel: true
 
     RowLayout {
         //spacing: 0
 
         Label {
             id: label
+
+            visible: showLabel
 
             Layout.preferredWidth: labelWidth
             text: labelText + ":"

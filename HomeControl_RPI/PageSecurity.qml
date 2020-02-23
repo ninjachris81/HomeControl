@@ -5,7 +5,8 @@ import QtQuick.Layouts 1.3
 
 import hc 1.0
 
-import "style"
+import StyleDef 1.0
+import SharedComponents 1.0
 import "components"
 
 HCPage {

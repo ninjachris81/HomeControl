@@ -1,4 +1,4 @@
-#include "weatherforecastmanager.h"
+#include "include/utils/weatherforecastmanager.h"
 
 Q_LOGGING_CATEGORY(LG_WEATHERFORECAST, "WeatherforeCast");
 

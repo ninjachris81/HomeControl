@@ -7,7 +7,7 @@
 
 #include "controllerbase.h"
 
-#include "../utils/qsqldatabasewrapper.h"
+#include "utils/qsqldatabasewrapper.h"
 #include <QLoggingCategory>
 
 Q_DECLARE_LOGGING_CATEGORY(LG_LOG_CONTROLLER)

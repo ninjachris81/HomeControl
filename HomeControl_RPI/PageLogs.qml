@@ -3,7 +3,8 @@ import QtQuick.Controls 2.4 as C2
 import QtQuick.Controls 1.4 as C1
 import QtQuick.Layouts 1.3
 
-import "style"
+import StyleDef 1.0
+import SharedComponents 1.0
 import "components"
 
 HCPage {

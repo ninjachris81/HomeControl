@@ -5,8 +5,8 @@
 #include <QObject>
 #include <QMap>
 #include "controllerbase.h"
-#include "../appconfiguration.h"
-#include "../constants_qt.h"
+#include "utils/appconfiguration.h"
+#include "constants_qt.h"
 
 class ControllerManager : public QObject
 {

@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include "listmodel/controllerlistmodel.h"
-#include "appconfiguration.h"
+#include "utils/appconfiguration.h"
 #include "controller/controllermanager.h"
 #include "controller/tempcontroller.h"
 #include "controller/logcontroller.h"

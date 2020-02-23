@@ -165,16 +165,21 @@
     </message>
     <message>
         <location filename="../constant_strings.h" line="33"/>
+        <source>Boiler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../constant_strings.h" line="34"/>
         <source>Solar Pump</source>
         <translation>Solarpumpe</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="34"/>
+        <location filename="../constant_strings.h" line="35"/>
         <source>Solar</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="35"/>
+        <location filename="../constant_strings.h" line="36"/>
         <source>Wintergarden</source>
         <translation>Wintergarten</translation>
     </message>
@@ -245,32 +250,32 @@
 <context>
     <name>PageHeating</name>
     <message>
-        <location filename="../PageHeating.qml" line="13"/>
+        <location filename="../PageHeating.qml" line="15"/>
         <source>Heating</source>
         <translation>Heizung</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="35"/>
+        <location filename="../PageHeating.qml" line="37"/>
         <source>Automatic</source>
         <translation>Automatisch</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="35"/>
+        <location filename="../PageHeating.qml" line="37"/>
         <source>Manual</source>
         <translation>Manuell</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="45"/>
+        <location filename="../PageHeating.qml" line="47"/>
         <source>Manual state</source>
         <translation>Manueller Status</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="181"/>
+        <location filename="../PageHeating.qml" line="185"/>
         <source>Month from</source>
         <translation>Monat von</translation>
     </message>
     <message>
-        <location filename="../PageHeating.qml" line="197"/>
+        <location filename="../PageHeating.qml" line="201"/>
         <source>Month to</source>
         <translation>Monat bis</translation>
     </message>
@@ -278,38 +283,38 @@
 <context>
     <name>PageLogs</name>
     <message>
-        <location filename="../PageLogs.qml" line="12"/>
+        <location filename="../PageLogs.qml" line="13"/>
         <source>Logs</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../PageLogs.qml" line="32"/>
-        <location filename="../PageLogs.qml" line="48"/>
+        <location filename="../PageLogs.qml" line="33"/>
+        <location filename="../PageLogs.qml" line="49"/>
         <source>All</source>
         <translation>Alle</translation>
     </message>
     <message>
-        <location filename="../PageLogs.qml" line="32"/>
+        <location filename="../PageLogs.qml" line="33"/>
         <source>Info</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../PageLogs.qml" line="32"/>
+        <location filename="../PageLogs.qml" line="33"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../PageLogs.qml" line="32"/>
+        <location filename="../PageLogs.qml" line="33"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../PageLogs.qml" line="65"/>
+        <location filename="../PageLogs.qml" line="66"/>
         <source>Refresh</source>
         <translation>Aktualisieren</translation>
     </message>
     <message>
-        <location filename="../PageLogs.qml" line="78"/>
+        <location filename="../PageLogs.qml" line="79"/>
         <source>Clear</source>
         <translation>Leeren</translation>
     </message>
@@ -317,7 +322,7 @@
 <context>
     <name>PageSecurity</name>
     <message>
-        <location filename="../PageSecurity.qml" line="14"/>
+        <location filename="../PageSecurity.qml" line="15"/>
         <source>Security</source>
         <translation>Sicherheit</translation>
     </message>
@@ -325,17 +330,17 @@
 <context>
     <name>PageSettings</name>
     <message>
-        <location filename="../PageSettings.qml" line="12"/>
+        <location filename="../PageSettings.qml" line="13"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../PageSettings.qml" line="15"/>
+        <location filename="../PageSettings.qml" line="16"/>
         <source>Local</source>
         <translation>Lokal</translation>
     </message>
     <message>
-        <location filename="../PageSettings.qml" line="71"/>
+        <location filename="../PageSettings.qml" line="72"/>
         <source>Server</source>
         <translation></translation>
     </message>
@@ -343,7 +348,7 @@
 <context>
     <name>PageSolar</name>
     <message>
-        <location filename="../PageSolar.qml" line="14"/>
+        <location filename="../PageSolar.qml" line="17"/>
         <source>Solar</source>
         <translation></translation>
     </message>
@@ -351,7 +356,7 @@
 <context>
     <name>PageWaterManagement</name>
     <message>
-        <location filename="../PageWaterManagement.qml" line="13"/>
+        <location filename="../PageWaterManagement.qml" line="14"/>
         <source>Water Management</source>
         <translation>Wasser Einstellungen</translation>
     </message>
@@ -360,27 +365,27 @@
         <translation type="obsolete">Vorheizen</translation>
     </message>
     <message>
-        <location filename="../PageWaterManagement.qml" line="32"/>
+        <location filename="../PageWaterManagement.qml" line="33"/>
         <source>Start preheat</source>
         <translation>Vorheizen starten</translation>
     </message>
     <message>
-        <location filename="../PageWaterManagement.qml" line="43"/>
+        <location filename="../PageWaterManagement.qml" line="44"/>
         <source>Stop preheat</source>
         <translation>Vorheizen stoppen</translation>
     </message>
     <message>
-        <location filename="../PageWaterManagement.qml" line="59"/>
+        <location filename="../PageWaterManagement.qml" line="60"/>
         <source>Current Mode</source>
         <translation>Aktueller Modus</translation>
     </message>
     <message>
-        <location filename="../PageWaterManagement.qml" line="68"/>
+        <location filename="../PageWaterManagement.qml" line="69"/>
         <source>Automatic</source>
         <translation>Automatisch</translation>
     </message>
     <message>
-        <location filename="../PageWaterManagement.qml" line="68"/>
+        <location filename="../PageWaterManagement.qml" line="69"/>
         <source>Manual</source>
         <translation>Manuell</translation>
     </message>
@@ -388,17 +393,17 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.qml" line="16"/>
+        <location filename="../main.qml" line="17"/>
         <source>Tabs</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="171"/>
+        <location filename="../main.qml" line="142"/>
         <source>INVALID TIME</source>
         <translation>ZEIT UNGÜLTIG</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="204"/>
+        <location filename="../main.qml" line="183"/>
         <source>Connected</source>
         <translation>Verbunden</translation>
     </message>

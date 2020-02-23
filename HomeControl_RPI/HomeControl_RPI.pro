@@ -16,7 +16,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    apptranslator.cpp \
         main.cpp \
     databridge.cpp \
     screensaverfilter.cpp
@@ -24,27 +23,27 @@ SOURCES += \
 RESOURCES += qml.qrc \
     components/qml_components.qrc \
     images.qrc \
-    style/qml_style.qrc \
+    styledef.qrc \
     translations.qrc
 
 TRANSLATIONS = languages/hc.en.ts  languages/hc.de.ts
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
+QML_IMPORT_PATH += qml
+QML_IMPORT_PATH += $$PWD/../SharedLib/qml
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =
+
+HEADERS += \
+    constant_strings.h \
+    databridge.h \
+    screensaverfilter.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = $$[QT_INSTALL_PREFIX]/opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-HEADERS += \
-    apptranslator.h \
-    constant_strings.h \
-    databridge.h \
-    screensaverfilter.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SharedLib-Desktop_Qt_5_12_0_MSVC2017_64bit2-Debug/release/ -lSharedLib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SharedLib-Desktop_Qt_5_12_0_MSVC2017_64bit2-Debug/debug/ -lSharedLib
@@ -53,4 +52,4 @@ else:unix: LIBS += -L$$[QT_INSTALL_LIBS] -lSharedLib
 INCLUDEPATH += $$PWD/../SharedLib/include
 DEPENDPATH += $$PWD/../SharedLib
 
-system(perl generate_ts.pl ..\SharedLib\include\constants.h constant_strings.h)
+system(perl ..\SharedLib\utils\generate_ts.pl ..\SharedLib\include\constants.h $$PWD\constant_strings.h)

@@ -6,8 +6,8 @@
 #include <QDateTime>
 #include <QTimer>
 
-#include "../appconfiguration.h"
-#include "../constants_qt.h"
+#include "utils/appconfiguration.h"
+#include "constants_qt.h"
 
 class ControllerManager;        // fwd dcl
 

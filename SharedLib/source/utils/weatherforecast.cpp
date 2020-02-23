@@ -1,5 +1,5 @@
-#include "weatherforecast.h"
-#include "weatherforecastmanager.h"
+#include "include/utils/weatherforecast.h"
+#include "include/utils/weatherforecastmanager.h"
 
 WeatherForecast::WeatherForecast(QObject *parent) : QObject(parent)
 {

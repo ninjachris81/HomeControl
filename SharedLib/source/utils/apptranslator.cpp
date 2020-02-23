@@ -1,4 +1,4 @@
-#include "apptranslator.h"
+#include "utils/apptranslator.h"
 
 #include <QDebug>
 #include <QLibraryInfo>

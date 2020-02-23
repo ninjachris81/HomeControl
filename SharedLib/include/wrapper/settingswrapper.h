@@ -5,9 +5,9 @@
 #include <QObject>
 #include <QQmlEngine>
 #include <QtGlobal>
-#include "../constants_qt.h"
+#include "constants_qt.h"
 
-#include "../controller/settingscontroller.h"
+#include "controller/settingscontroller.h"
 
 class SettingsWrapper : public ControllerWrapper {
     Q_OBJECT

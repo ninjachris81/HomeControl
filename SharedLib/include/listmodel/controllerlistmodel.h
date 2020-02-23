@@ -2,7 +2,7 @@
 #define CONTROLLERLISTMODEL_H
 
 #include <QAbstractListModel>
-#include "../controller/controllerbase.h"
+#include "controller/controllerbase.h"
 
 class ControllerListModel : public QAbstractListModel
 {

@@ -7,12 +7,15 @@
 QT += qml
 QT += mqtt
 QT += sql
+QT += quick
 
-QT       -= gui
+#QT       -= gui
 
 TARGET = SharedLib
 TEMPLATE = lib
 CONFIG += staticlib
+
+CONFIG += c++11
 
 DEFINES += SHAREDLIB_LIBRARY
 
@@ -28,13 +31,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    include/utils/weatherforecast.cpp \
-    include/utils/weatherforecastmanager.cpp \
+    source/utils/apptranslator.cpp \
+    source/utils/weatherforecast.cpp \
+    source/utils/weatherforecastmanager.cpp \
     source/wrapper/infowrapper.cpp \
     source/controller/infocontroller.cpp \
     source/controller/switchcontroller.cpp \
         source/sharedlib.cpp \
-        source/appconfiguration.cpp \
+        source/utils/appconfiguration.cpp \
         source/controller/controllerbase.cpp \
         source/controller/controllermanager.cpp \
         source/controller/relaycontroller.cpp \
@@ -55,7 +59,7 @@ HEADERS += \
     include/controller/infocontroller.h \
     include/controller/switchcontroller.h \
         include/sharedlib.h \
-        include/appconfiguration.h \
+        include/utils/appconfiguration.h \
         include/constants.h \
         include/constants_qt.h \
         include/controller/controllerbase.h \
@@ -75,9 +79,18 @@ HEADERS += \
     include/utils/qsqldatabasewrapper.h \
     include/sqllistmodel/sqlquerymodel.h \
     include/wrapper/logwrapper.h \
-    include/controller/brightnesscontroller.h
+    include/controller/brightnesscontroller.h \
+    include/utils/apptranslator.h
 
 unix {
     target.path = $$[QT_INSTALL_LIBS]
     INSTALLS += target
 }
+
+INCLUDEPATH += $$PWD/include
+
+RESOURCES += \
+    sharedcomponents.qrc
+
+DISTFILES += \
+    utils/generate_ts.pl

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/SharedComponents">
+        <file>../SharedLib/qml/SharedComponents/HCLabel.qml</file>
+        <file>../SharedLib/qml/SharedComponents/HCSimpleLabel.qml</file>
+        <file>../SharedLib/qml/SharedComponents/HCValueLabel.qml</file>
+        <file>../SharedLib/qml/SharedComponents/qmldir</file>
+    </qresource>
+</RCC>

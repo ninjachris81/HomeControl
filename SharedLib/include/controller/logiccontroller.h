@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include "controllermanager.h"
-#include "../constants_qt.h"
+#include "constants_qt.h"
 
 #include <QTimer>
 

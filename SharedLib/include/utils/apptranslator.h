@@ -5,7 +5,7 @@
 #include <QTranslator>
 #include <QGuiApplication>
 
-#include "appconfiguration.h"
+#include "utils/appconfiguration.h"
 
 class AppTranslator : public QObject
 {

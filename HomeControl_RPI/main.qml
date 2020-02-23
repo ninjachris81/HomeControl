@@ -4,7 +4,9 @@ import QtQuick.Controls 2.4
 
 import hc 1.0
 
-import "style"
+import StyleDef 1.0
+import SharedComponents 1.0
+
 import "components"
 
 ApplicationWindow {

@@ -1,10 +1,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "appconfiguration.h"
+#include "utils/appconfiguration.h"
 #include "databridge.h"
 #include "screensaverfilter.h"
-#include "apptranslator.h"
+#include "utils/apptranslator.h"
 
 #include "constant_strings.h"
 
@@ -15,6 +15,8 @@ int main(int argc, char *argv[])
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+    Q_INIT_RESOURCE(sharedcomponents);
 
     QGuiApplication app(argc, argv);
 
@@ -27,6 +29,9 @@ int main(int argc, char *argv[])
     DataBridge dataBridge(&appConfig);
 
     QQmlApplicationEngine engine;
+
+    engine.addImportPath(":/StyleDef/qml");
+    engine.addImportPath(":/SharedComponents/qml");
 
     engine.rootContext()->setContextProperty("DataBridge", &dataBridge);
 

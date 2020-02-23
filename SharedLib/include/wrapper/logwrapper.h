@@ -6,7 +6,7 @@
 #include <QtGlobal>
 
 #include "controllerwrapper.h"
-#include "../controller/logcontroller.h"
+#include "controller/logcontroller.h"
 
 class LogWrapper : public ControllerWrapper {
     Q_OBJECT

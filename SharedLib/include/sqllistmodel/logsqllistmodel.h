@@ -6,7 +6,7 @@
 #include <QSqlQuery>
 
 #include "sqlquerymodel.h"
-#include "../controller/logcontroller.h"
+#include "controller/logcontroller.h"
 
 class LogSqlListModel : public SqlQueryModel {
 Q_OBJECT
