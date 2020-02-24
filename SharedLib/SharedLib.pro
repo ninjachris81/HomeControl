@@ -31,6 +31,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    source/utils/fontloader.cpp \
     source/utils/apptranslator.cpp \
     source/utils/weatherforecast.cpp \
     source/utils/weatherforecastmanager.cpp \
@@ -69,6 +70,8 @@ HEADERS += \
         include/controller/settingscontroller.h \
         include/controller/logiccontroller.h \
         include/listmodel/controllerlistmodel.h \
+    include/utils/fontloader.h \
+    include/utils/version.h \
     include/utils/weatherforecast.h \
     include/utils/weatherforecastmanager.h \
         include/wrapper/controllerwrapper.h \
@@ -90,7 +93,10 @@ unix {
 INCLUDEPATH += $$PWD/include
 
 RESOURCES += \
-    sharedcomponents.qrc
+    sharedcomponents.qrc \
+    sharedfonts.qrc \
+    sharedimages.qrc
 
 DISTFILES += \
+    utils/build_inc.bat \
     utils/generate_ts.pl

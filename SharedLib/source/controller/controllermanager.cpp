@@ -132,6 +132,9 @@ QStringList ControllerManager::buildPath(QStringList paths, MQTT_MODE mode, int 
     case MQTT_MODE_SET:
         paths.append(MQTT_SET);
         break;
+    case MQTT_MODE_TRE:
+        paths.append(MQTT_TRE);
+        break;
     default:
         // nothing
         break;

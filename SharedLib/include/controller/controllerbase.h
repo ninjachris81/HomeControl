@@ -63,6 +63,7 @@ public:
         VALUE_TREND _trend = VALUE_TREND_NONE;
         qint64 _lastTrendUpdate = 0;
         qint64 _trendLifeTime = VALUE_TT_NONE;
+        bool _isFirstUpdate = true;
 
         bool isValid() {
             if (_lifeTime==LIFETIME_UNLIMITED) {
@@ -79,7 +80,26 @@ public:
             return value==val;
         }
 
+        // client
+        bool valueTrendReceived(int trend) {
+            _lastTrendUpdate = QDateTime::currentMSecsSinceEpoch();
+            VALUE_TREND newTrend = static_cast<VALUE_TREND>(trend);
+
+            qDebug() << Q_FUNC_INFO << trend << newTrend << _trend;
+
+            if (newTrend!=_trend) {
+                _trend = newTrend;
+                return true;
+            }
+
+            return false;
+        }
+
         VALUE_TREND valueTrend() {
+            return _trend;
+        }
+
+        VALUE_TREND calculateValueTrend() {
             if (_trendLifeTime>0) {
                 if (QDateTime::currentMSecsSinceEpoch()<_lastTrendUpdate+_trendLifeTime) {
                     _trend = VALUE_TREND_NONE;
@@ -89,28 +109,32 @@ public:
             return _trend;
         }
 
-        void updateValue(QVariant val) {
-            switch(value.type()) {
-            case QVariant::Int:
-            case QVariant::UInt:
-            case QVariant::Double:
-            case QVariant::LongLong:
-            case QVariant::ULongLong:
-                if (val>value) {
-                    _trend = VALUE_TREND_INCREASING;
-                } else if (val<value) {
-                    _trend = VALUE_TREND_DECREASING;
-                } else {
-                    _trend = VALUE_TREND_CONSTANT;
+        void updateValue(QVariant val, bool updateTrend) {
+            if (!_isFirstUpdate && updateTrend) {
+                switch(value.type()) {
+                case QVariant::Int:
+                case QVariant::UInt:
+                case QVariant::Double:
+                case QVariant::LongLong:
+                case QVariant::ULongLong:
+                    if (val>value) {
+                        _trend = VALUE_TREND_INCREASING;
+                    } else if (val<value) {
+                        _trend = VALUE_TREND_DECREASING;
+                    } else {
+                        _trend = VALUE_TREND_CONSTANT;
+                    }
+                    _lastTrendUpdate = QDateTime::currentMSecsSinceEpoch();
+                    break;
+                default:
+                    break;
                 }
-                _lastTrendUpdate = QDateTime::currentMSecsSinceEpoch();
-                break;
-            default:
-                break;
             }
 
             value = val;
             _lastUpdate = QDateTime::currentMSecsSinceEpoch();
+
+            _isFirstUpdate = false;
         }
     };
 
@@ -144,7 +168,9 @@ public:
 
     AppConfiguration* getConfig();
 
-    void publish(int index);
+    void publishValue(int index);
+
+    void publishTrend(int index);
 
     void publishCmd(EnumsDeclarations::MQTT_CMDS cmd);
 
@@ -206,6 +232,7 @@ private:
     QMqttSubscription* m_bcSub;
 
     QTimer m_valueUpdateTimer;
+    QTimer m_valueTrendTimer;
     QTimer m_valueBCTimer;
 
 signals:
@@ -224,6 +251,8 @@ private slots:
     void _onMqttMessageReceived(QMqttMessage msg);
 
     void onCheckValue();
+
+    void onCheckTrend();
 
     void onCheckBroadcasts();
 

@@ -13,7 +13,7 @@
     #warning No SSL Support
 #endif
 
-#include "appconfiguration.h"
+#include "utils/appconfiguration.h"
 #include "controller/controllermanager.h"
 #include "controller/logiccontroller.h"
 

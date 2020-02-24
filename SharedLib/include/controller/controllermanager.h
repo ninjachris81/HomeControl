@@ -15,7 +15,8 @@ public:
     enum MQTT_MODE {
         MQTT_MODE_NONE,
         MQTT_MODE_VAL,
-        MQTT_MODE_SET
+        MQTT_MODE_SET,
+        MQTT_MODE_TRE
     };
 
     enum MQTT_BROADCAST_TYPE {

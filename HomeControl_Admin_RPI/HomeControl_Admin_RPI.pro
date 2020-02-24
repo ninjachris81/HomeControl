@@ -50,4 +50,3 @@ INCLUDEPATH += $$PWD/../SharedLib/include
 DEPENDPATH += $$PWD/../SharedLib
 
 system(perl ..\SharedLib\utils\generate_ts.pl ..\SharedLib\include\constants.h $$PWD\constant_strings.h)
-

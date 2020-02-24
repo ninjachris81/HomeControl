@@ -16,6 +16,7 @@
 #define MQTT_WILDCARD "#"
 #define MQTT_VAL "val"
 #define MQTT_SET "set"
+#define MQTT_TRE "tre"
 #define MQTT_LOG_SOURCE_DIV "> "
 
 // DEVICE IDS
@@ -57,6 +58,9 @@
 
 #define MQTT_PATH_INFOS_SYSTEM_TIME 0
 #define INFOS_LABEL_SYSTEM_TIME "System time"
+
+#define MQTT_PATH_INFOS_SYSTEM_TEMP 1
+#define INFOS_LABEL_SYSTEM_TEMP "System temp"
 
 // SETTINGS
 #define MQTT_PATH_SETTINGS "settings"

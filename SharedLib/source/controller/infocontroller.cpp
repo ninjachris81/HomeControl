@@ -44,6 +44,14 @@ void InfoController::onInit() {
             setValue(EnumsDeclarations::INFOS_SYSTEM_TIME, QDateTime::currentDateTime().toString(Qt::ISODate));
         });
         m_systemTimeTimer.start(5000);
+
+#ifdef WIN32
+    // nothing
+#else
+        connect(&m_readSystemTempProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &InfoController::onReadSystemTemp);
+        startReadSystemTemp();
+#endif
+
     }
 }
 
@@ -76,3 +84,38 @@ void InfoController::onValueChanged(int index, QVariant value) {
 bool InfoController::timeIsOffset() {
     return m_timeIsOffset;
 }
+
+void InfoController::startReadSystemTemp() {
+    qDebug() << Q_FUNC_INFO;
+
+    m_readSystemTempProcess.start("vcgencmd measure_temp", QIODevice::ReadOnly);
+}
+
+void InfoController::onReadSystemTemp(int exitCode, QProcess::ExitStatus exitStatus) {
+    Q_UNUSED(exitCode)
+
+    qDebug() << Q_FUNC_INFO;
+
+    if (exitStatus==QProcess::NormalExit) {
+        QString output = m_readSystemTempProcess.readAll();
+
+        qDebug() << Q_FUNC_INFO << output;
+
+        int i = output.indexOf("'");
+
+        if (output.startsWith("temp=") && i>5) {
+            double tempVal = output.mid(5, i-5).toDouble();
+
+            setValue(EnumsDeclarations::INFOS_SYSTEM_TEMP, tempVal);
+
+            m_readSystemTempProcess.kill();
+
+            QTimer::singleShot(10000, this, &InfoController::startReadSystemTemp);
+        } else {
+            qWarning() << "Error while parsing temp string" << output;
+        }
+    } else {
+        qWarning() << "Error while reading system temp" << m_readSystemTempProcess.exitCode() << m_readSystemTempProcess.errorString();
+    }
+}
+

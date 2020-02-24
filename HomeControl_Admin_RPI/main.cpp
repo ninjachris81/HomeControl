@@ -4,17 +4,24 @@
 
 #include "utils/appconfiguration.h"
 #include "utils/apptranslator.h"
+#include "utils/fontloader.h"
+#include "utils/version.h"
 
 #include "databridge.h"
 
 int main(int argc, char *argv[])
 {
+    qDebug() << "Version" << Version::getVersion();
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     Q_INIT_RESOURCE(sharedcomponents);
+    Q_INIT_RESOURCE(sharedfonts);
+    Q_INIT_RESOURCE(sharedimages);
 
     QGuiApplication app(argc, argv);
+
+    FontLoader::loadFonts();
 
     AppConfiguration appConfig;
     AppTranslator appTranslator(&appConfig);

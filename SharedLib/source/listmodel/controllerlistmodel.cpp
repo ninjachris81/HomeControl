@@ -15,6 +15,8 @@ void ControllerListModel::onValueValidChanged(int index) {
 }
 
 void ControllerListModel::onValueTrendChanged(int index) {
+    qDebug() << Q_FUNC_INFO << index;
+
     QModelIndex itemIndex = this->index(index);
 
     Q_EMIT(dataChanged(itemIndex, itemIndex));

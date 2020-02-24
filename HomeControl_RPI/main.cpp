@@ -5,6 +5,7 @@
 #include "databridge.h"
 #include "screensaverfilter.h"
 #include "utils/apptranslator.h"
+#include "utils/fontloader.h"
 
 #include "constant_strings.h"
 
@@ -17,8 +18,12 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     Q_INIT_RESOURCE(sharedcomponents);
+    Q_INIT_RESOURCE(sharedfonts);
+    Q_INIT_RESOURCE(sharedimages);
 
     QGuiApplication app(argc, argv);
+
+    FontLoader::loadFonts();
 
     AppConfiguration appConfig;
     AppTranslator appTranslator(&appConfig);

@@ -69,6 +69,12 @@ void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig
         m_valueBCTimer.start();
     }
 
+    if (m_parent->isServer()) {
+        connect(&m_valueTrendTimer, &QTimer::timeout, this, &ControllerBase::onCheckTrend);
+        m_valueTrendTimer.setInterval(5000);
+        m_valueTrendTimer.start();
+    }
+
     connect(parent, &ControllerManager::mqttConnected, this, &ControllerBase::onMqttConnected);
     connect(parent, &ControllerManager::mqttDisconnected, this, &ControllerBase::onMqttDisconnected);
     connect(parent, &ControllerManager::mqttCmdReceived, this, &ControllerBase::_onCmdReceived);
@@ -161,7 +167,7 @@ void ControllerBase::setValue(int index, QVariant value, bool sendSet, bool igno
         if (!ignoreCompare) {
             if (m_values[index].compareTo(value)) {
                 //qDebug() << "Same value - ignoring set";
-                m_values[index].updateValue(value);
+                m_values[index].updateValue(value, m_parent->isServer());
                 return;
             }
         }
@@ -175,12 +181,12 @@ void ControllerBase::setValue(int index, QVariant value, bool sendSet, bool igno
             case QVariant::Double:
             case QVariant::Bool:
             case QVariant::String:
-                m_values[index].updateValue(value);
+                m_values[index].updateValue(value, m_parent->isServer());
                 break;
             case QVariant::StringList:
                 QStringList list = m_values[index].value.toStringList();
                 list.append(value.toString());
-                m_values[index].updateValue(list);
+                m_values[index].updateValue(list, m_parent->isServer());
                 break;
             }
 
@@ -221,6 +227,17 @@ void ControllerBase::onMqttConnected() {
         }
     }
 
+    if (!m_parent->isServer()) {
+        QStringList fullPath = ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_TRE, -1, true);
+
+        QMqttTopicFilter filter = QMqttTopicFilter(fullPath.join(MQTT_PATH_SEP));
+        if (filter.isValid()) {
+            qDebug() << "Subscribing to" << filter.filter();
+            m_topicValSub = m_mqttClient->subscribe(filter);
+            connect(m_topicValSub, &QMqttSubscription::messageReceived, this, &ControllerBase::_onMqttMessageReceived);
+        }
+    }
+
     onConnectedChanged(true);
 }
 
@@ -249,11 +266,21 @@ void ControllerBase::onInit() {
     qDebug() << Q_FUNC_INFO;
 }
 
-void ControllerBase::publish(int index) {
+void ControllerBase::publishValue(int index) {
     qDebug() << Q_FUNC_INFO << index << m_values.at(index).value;
 
     if (index<m_values.count()) {
         m_parent->publish(ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_VAL, index), m_values.at(index).value);
+    } else {
+        qWarning() << "Invalid index" << m_values.count() << index;
+    }
+}
+
+void ControllerBase::publishTrend(int index) {
+    qDebug() << Q_FUNC_INFO << index << m_values[index].calculateValueTrend();
+
+    if (index<m_values.count()) {
+        m_parent->publish(ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_TRE, index), m_values[index].calculateValueTrend());
     } else {
         qWarning() << "Invalid index" << m_values.count() << index;
     }
@@ -289,6 +316,17 @@ void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
             } else {
                 onUnmappedMqttValueReceived(topicPath, value);
             }
+        } else if (valSetMode==MQTT_TRE) {
+            if (!m_parent->isServer()) {
+                if (m_values.count()>index) {
+                    if (m_values[index].valueTrendReceived(value.toInt())) {
+                        qDebug() << Q_FUNC_INFO << "Trend changed" << index << m_values[index]._trend;
+                        Q_EMIT(valueTrendChanged(index));
+                    }
+                } else {
+                    qWarning() << "Invalid index for trend" << index;
+                }
+            }
         } else {
             qWarning() << "Invalid mode" << valSetMode;
         }
@@ -297,7 +335,7 @@ void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
 
 void ControllerBase::broadcastValues() {
     for (int i=0;i<m_values.count();i++) {
-        if (isValueOwner(i)) publish(i);
+        if (isValueOwner(i)) publishValue(i);
     }
 }
 
@@ -343,7 +381,7 @@ void ControllerBase::onSetReceived(int index, QVariant value) {
     qDebug() << Q_FUNC_INFO << index << value;
 
     setValue(index, value);
-    publish(index);
+    publishValue(index);
 }
 
 void ControllerBase::onCheckValue() {
@@ -352,19 +390,31 @@ void ControllerBase::onCheckValue() {
 
         if (oldValid!=m_values[i].isValid()) {
             Q_EMIT(valueValidChanged(i));
-        }
 
-        VALUE_TREND oldTrend = m_values[i]._trend;
-        if (oldTrend!=m_values[i].valueTrend()) {
-            Q_EMIT(valueTrendChanged(i));
+            // invalidate trend as well
+            if (!m_values[i].isValid()) {
+                m_values[i]._trend = VALUE_TREND_NONE;
+                Q_EMIT(valueTrendChanged(i));
+            }
         }
     }
 }
 
+void ControllerBase::onCheckTrend() {
+    qDebug() << Q_FUNC_INFO;
+
+    for (uint8_t i=0;i<m_values.count();i++) {
+        if (m_values[i].isValid() && getValueTrendLifetime(i)>VALUE_TT_NONE) {
+            publishTrend(i);
+        }
+    }
+}
+
+
 void ControllerBase::onCheckBroadcasts() {
     for (uint8_t i=0;i<m_values.count();i++) {
         if (isValueOwner(i) && m_values[i].isValid() && getValueBCInterval(i)!=VALUE_BC_NONE) {
-            publish(i);
+            publishValue(i);
         }
     }
 }

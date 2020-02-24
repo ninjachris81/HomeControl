@@ -148,4 +148,15 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>main</name>
+    <message>
+        <source>Preheat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standby</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

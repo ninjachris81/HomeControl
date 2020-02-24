@@ -6,11 +6,13 @@ import QtQuick.VirtualKeyboard 2.1
 import StyleDef 1.0
 
 Item {
+    id: root
 
     property string labelText: ""
     property var labelValue: ""
     property bool isValid: false
     property string unit: ""
+    property string labelSuffix: ":"
     property bool allowInput: false
     property var inputHandler
     property alias inputMethodHints: value.inputMethodHints
@@ -20,19 +22,46 @@ Item {
     property bool showTrend: false
     property int trend: 0
     property bool showLabel: true
+    property alias backgroundElement: backgroundItem
+    property int fontPointSize: 0
+
+    Rectangle {
+        id: backgroundItem
+
+        anchors.fill: parent
+
+        anchors.margins: -4
+
+        border.color: "black"
+        border.width: 1
+
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#ced9eb" }
+            GradientStop { position: 1.0; color: "white" }
+        }
+
+        visible: false
+        radius: 3
+    }
 
     RowLayout {
-        //spacing: 0
+        id: mainLayout
+
+        spacing: 2
+        anchors.fill: parent
 
         Label {
             id: label
 
+            Layout.fillWidth: true
+
             visible: showLabel
 
-            Layout.preferredWidth: labelWidth
-            text: labelText + ":"
+            text: labelText + labelSuffix
 
-            font.pointSize: Style.fontPointSize-2
+            elide: Text.ElideRight
+
+            font.pointSize: fontPointSize>0 ? fontPointSize : Style.fontPointSize-2
         }
 
         TextInput {
@@ -45,14 +74,16 @@ Item {
 
             readOnly: true
 
-            font.pointSize: Style.fontPointSize-2
+            font.pointSize: fontPointSize>0 ? fontPointSize : Style.fontPointSize-2
 
             MouseArea {
-                anchors.fill: parent
-                anchors.leftMargin: -6
-                anchors.rightMargin: -26
-                anchors.topMargin: -4
-                anchors.bottomMargin: -4
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+
+                width: value.width + unitLabel.width + mainLayout.spacing + (-anchors.margins * 2)
+
+                anchors.margins: -4
 
                 enabled: allowInput
 
@@ -83,7 +114,10 @@ Item {
         }
 
         HCLabel {
+            id: unitLabel
+
             text: unit
+            fontPointSize: root.fontPointSize>0 ? root.fontPointSize : Style.fontPointSize-2
         }
 
         Image {
@@ -97,7 +131,8 @@ Item {
 
             fillMode: Image.PreserveAspectFit
 
-            Layout.preferredWidth: 18
+            Layout.preferredWidth: root.height - 4
+            Layout.preferredHeight: root.height - 4
         }
 
         CheckBox {
@@ -106,7 +141,7 @@ Item {
             enabled: allowInput
             checked: labelValue ? labelValue : false
 
-            font.pointSize: Style.fontPointSize-2
+            font.pointSize: fontPointSize>0 ? fontPointSize : Style.fontPointSize-2
 
             onToggled: {
                 if (typeof(inputHandler)=="function") {

@@ -17,6 +17,7 @@ HCSimpleLabel {
             labelValue = model ? model.data(model.index(modelIndex, 0), 258) : ""
             isValid = model ? model.data(model.index(modelIndex, 0), 259) : false
             trend = model ? model.data(model.index(modelIndex, 0), 260) : 0
+
             valueChanged()
         }
     }
@@ -28,5 +29,4 @@ HCSimpleLabel {
     onModelIndexChanged: {
         if (model) labelText = model.data(model.index(modelIndex, 0), 257)
     }
-
 }

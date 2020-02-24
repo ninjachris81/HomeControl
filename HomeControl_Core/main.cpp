@@ -1,6 +1,6 @@
 #include <QCoreApplication>
 #include "controller/controllermanager.h"
-#include "appconfiguration.h"
+#include "utils/appconfiguration.h"
 #include "controller/tempcontroller.h"
 #include "controller/logcontroller.h"
 #include "controller/relaycontroller.h"
@@ -11,11 +11,16 @@
 
 #include "preheatlogic.h"
 #include "heatinglogic.h"
+#include "boilerlogic.h"
 #include "thingspeaklogger.h"
 #include "datalogger.h"
 
+#include "utils/version.h"
+
 int main(int argc, char *argv[])
 {
+    qDebug() << "Version" << Version::getVersion();
+
     QCoreApplication a(argc, argv);
 
     AppConfiguration appConfig;
@@ -52,6 +57,8 @@ int main(int argc, char *argv[])
 
     PreheatLogic preheatLogic(&controllerManager);
     HeatingLogic heatLogic(&controllerManager);
+    BoilerLogic boilerLogic(&controllerManager);
+
     ThingSpeakLogger thingspeakLogger(&controllerManager, &appConfig);
     DataLogger dataLogger(&controllerManager, &appConfig);
 

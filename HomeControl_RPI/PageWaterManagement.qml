@@ -86,7 +86,6 @@ HCPage {
                     unit: "°"
                     formatAsFloat: true
                     showTrend: true
-                    showLabel: false
                 }
 
                 HCValueLabel {

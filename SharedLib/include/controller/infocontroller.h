@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QLoggingCategory>
+#include <QProcess>
 
 #include "controllerbase.h"
 
@@ -44,13 +45,22 @@ protected:
 
     QTimer m_systemTimeTimer;
 
+    QTimer m_systemTempTimer;
+
     bool m_timeIsOffset = false;
+
+    QProcess m_readSystemTempProcess;
 
 signals:
 
+
     void timeIsOffsetChanged(bool isOffset);
 
+private slots:
+    void onReadSystemTemp(int exitCode, QProcess::ExitStatus exitStatus);
+
 public slots:
+    void startReadSystemTemp();
 
 };
 
