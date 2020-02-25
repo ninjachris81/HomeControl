@@ -33,7 +33,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     boilerlogic.h \
-    build.h \
     datalogger.h \
     preheatlogic.h \
     heatinglogic.h \

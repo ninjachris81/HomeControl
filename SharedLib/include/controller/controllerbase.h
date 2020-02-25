@@ -101,7 +101,7 @@ public:
 
         VALUE_TREND calculateValueTrend() {
             if (_trendLifeTime>0) {
-                if (QDateTime::currentMSecsSinceEpoch()<_lastTrendUpdate+_trendLifeTime) {
+                if (QDateTime::currentMSecsSinceEpoch()>_lastTrendUpdate+_trendLifeTime) {
                     _trend = VALUE_TREND_NONE;
                 }
             }

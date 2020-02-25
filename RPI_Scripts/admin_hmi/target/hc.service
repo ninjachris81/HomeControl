@@ -1,0 +1,26 @@
+[Unit]
+Description=HC Admin UI Service
+## make sure we only start the service after network is up
+Wants=network-online.target
+After=network.target graphical.target syslog.target
+
+[Service]
+## use 'Type=forking' if the service backgrounds itself
+## other values are Type=simple (default) and Type=oneshot
+#Type=forking
+Type=simple
+
+WorkingDirectory=/usr/local/qt5pi/opt/HomeControl_Admin_RPI
+
+## here we can set custom environment variables
+ExecStart=/home/pi/startHC.sh
+ExecStop=/home/pi/stopHC.sh
+
+# Useful during debugging; remove it once the service is working
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target
+
+

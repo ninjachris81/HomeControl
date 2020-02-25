@@ -182,6 +182,6 @@
 
 // LIFETIMES
 #define LIFETIME_UNLIMITED 0
-#define LIFETIME_SHORT  10000           // 10 sec
+#define LIFETIME_SHORT  30000           // 30 sec
 #define LIFETIME_MID    120000          // 2 min
 #define LIFETIME_LONG   900000          // 10 min

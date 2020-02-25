@@ -38,16 +38,20 @@ qint64 InfoController::getValueLifetime(int index) {
 void InfoController::onInit() {
     qCDebug(LG_INFO_CONTROLLER) << Q_FUNC_INFO << m_mode;
 
-    if (m_mode==ControllerBase::VALUE_OWNER_SERVER) {
+    if (m_parent->isServer()) {
+        qCDebug(LG_INFO_CONTROLLER) << "Connecting to system time";
+
         connect(&m_systemTimeTimer, &QTimer::timeout, [this]() {
-            qDebug() << "Sending system time";
+            qCDebug(LG_INFO_CONTROLLER) << "Sending system time";
             setValue(EnumsDeclarations::INFOS_SYSTEM_TIME, QDateTime::currentDateTime().toString(Qt::ISODate));
         });
         m_systemTimeTimer.start(5000);
 
 #ifdef WIN32
     // nothing
+        qCDebug(LG_INFO_CONTROLLER) << "Ignoring system temp on WIN32";
 #else
+        qCDebug(LG_INFO_CONTROLLER) << "Starting to read system temp";
         connect(&m_readSystemTempProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &InfoController::onReadSystemTemp);
         startReadSystemTemp();
 #endif
