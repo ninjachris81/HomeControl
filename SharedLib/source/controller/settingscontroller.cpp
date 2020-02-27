@@ -1,4 +1,6 @@
 #include "include/controller/settingscontroller.h"
+#include "include/controller/controllermanager.h"
+#include "include/controller/tempcontroller.h"
 #include "include/constants_qt.h"
 #include <QDebug>
 #include <QHostInfo>
@@ -7,7 +9,7 @@
 QString SettingsController::CONTROLLER_NAME = QStringLiteral("SettingsController");
 Q_LOGGING_CATEGORY(LG_SETTINGS_CONTROLLER, "SettingsController");
 
-SettingsController::SettingsController(QObject *parent) : ControllerBase(parent)
+SettingsController::SettingsController(QObject *parent) : ControllerBase(ControllerBase::VALUE_OWNER_SERVER, parent)
 {
 
 }
@@ -49,7 +51,7 @@ qint64 SettingsController::getValueLifetime(int index) {
 }
 
 void SettingsController::onInit() {
-    if (m_mode==VALUE_OWNER_SERVER) {
+    if (m_parent->isServer()) {
         m_settings = new QSettings("settings.ini", QSettings::IniFormat);
 
         publishSettingsValue(EnumsDeclarations::SETTINGS_PREHEAT_FROM, 7);
@@ -79,6 +81,8 @@ void SettingsController::onInit() {
         publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_HOUR_TO, 21);
 
         publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MIN_TEMP_TANK, 30);
+
+        publishSettingsValue(EnumsDeclarations::SETTINGS_TANK_OFFSET, 0);
     }
 }
 
@@ -89,9 +93,16 @@ void SettingsController::publishSettingsValue(EnumsDeclarations::MQTT_SETTINGS k
 void SettingsController::onValueChanged(int index, QVariant value) {
     qCDebug(LG_SETTINGS_CONTROLLER) << Q_FUNC_INFO << index << value;
 
-    if (m_mode==VALUE_OWNER_SERVER) {
+    if (m_parent->isServer()) {
         m_settings->setValue(getSettingsKey(index), value);
+
+        switch (index) {
+        case EnumsDeclarations::SETTINGS_TANK_OFFSET:
+            // TODO
+            break;
+        }
     }
+
 }
 
 QString SettingsController::getSettingsKey(int index) {
@@ -119,7 +130,7 @@ QVariant SettingsController::getSettingsValue(int index, QVariant defaultValue, 
 void SettingsController::onConnectedChanged(bool connected) {
     qCDebug(LG_SETTINGS_CONTROLLER) << Q_FUNC_INFO << connected;
 
-    if (m_mode==VALUE_OWNER_SERVER) {
+    if (m_parent->isServer()) {
         if (connected) {
             broadcastValues();
         }

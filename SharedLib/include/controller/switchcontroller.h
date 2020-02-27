@@ -28,8 +28,6 @@ public:
 
     qint64 getValueLifetime(int index = -1);
 
-    bool isValueOwner(int index = -1);
-
     static QString CONTROLLER_NAME;
 
     VALUE_BC_INTERVAL getValueBCInterval(int index=-1);

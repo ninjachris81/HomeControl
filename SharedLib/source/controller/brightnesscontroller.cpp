@@ -4,7 +4,7 @@
 QString BrightnessController::CONTROLLER_NAME = QStringLiteral("BrightnessController");
 Q_LOGGING_CATEGORY(LG_BRIGHTNESS_CONTROLLER, "BrightnessController");
 
-BrightnessController::BrightnessController(QObject *parent) : ControllerBase(parent)
+BrightnessController::BrightnessController(QObject *parent) : ControllerBase(ControllerBase::VALUE_OWNER_EXTERNAL_SENSOR, parent)
 {
 
 }
@@ -36,12 +36,6 @@ qint64 BrightnessController::getValueLifetime(int index) {
     default:
         return LIFETIME_UNLIMITED;
     }
-}
-
-bool BrightnessController::isValueOwner(int index) {
-    Q_UNUSED(index);
-
-    return false;
 }
 
 void BrightnessController::onInit() {

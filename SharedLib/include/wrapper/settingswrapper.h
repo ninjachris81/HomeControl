@@ -14,6 +14,8 @@ class SettingsWrapper : public ControllerWrapper {
 
 public:
     SettingsWrapper(SettingsController* controller);
+
+    Q_INVOKABLE void updateSetting(int index, QVariant newValue);
 };
 
 Q_DECLARE_METATYPE( SettingsWrapper* );

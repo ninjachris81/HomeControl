@@ -17,7 +17,6 @@ Item {
     property var inputHandler
     property alias inputMethodHints: value.inputMethodHints
     property alias inputValidator: value.validator
-    property int labelWidth: 160
     property bool formatAsFloat: false
     property bool showTrend: false
     property int trend: 0

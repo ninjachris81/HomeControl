@@ -5,7 +5,7 @@
 #include <QMetaEnum>
 
 
-ControllerBase::ControllerBase(QObject *parent) : QObject(parent), m_topicValSub(nullptr), m_topicSetSub(nullptr), m_bcSub(nullptr)
+ControllerBase::ControllerBase(VALUE_OWNER_MODE valueOwnerMode, QObject *parent) : QObject(parent), m_mode(valueOwnerMode), m_topicValSub(nullptr), m_topicSetSub(nullptr), m_bcSub(nullptr)
 {
     connect(&m_valueUpdateTimer, &QTimer::timeout, this, &ControllerBase::onCheckValue);
     m_valueUpdateTimer.setInterval(1000);
@@ -19,7 +19,11 @@ AppConfiguration* ControllerBase::getConfig() {
 bool ControllerBase::isValueOwner(int index) {
     Q_UNUSED(index);
 
-    return m_mode==VALUE_OWNER_SERVER;
+    switch(m_mode) {
+    case VALUE_OWNER_SERVER: return m_parent->isServer();
+    case VALUE_OWNER_CLIENT: return !m_parent->isServer();
+    case VALUE_OWNER_EXTERNAL_SENSOR: return false;
+    }
 }
 
 ControllerBase::VALUE_BC_INTERVAL ControllerBase::getValueBCInterval(int index) {
@@ -110,7 +114,7 @@ QVariant::Type ControllerBase::getValueType(int index) {
 }
 
 QString ControllerBase::getLabel(int index) {
-    if (index<m_labels.count()) {
+    if (_checkIndex(index)) {
         return m_labels.at(index);
     } else {
         return "Item " + QString::number(index);
@@ -118,28 +122,12 @@ QString ControllerBase::getLabel(int index) {
 }
 
 void ControllerBase::clearValue(int index) {
-    switch(getValueType(index)) {
-    case QVariant::Int:
-        m_values[index].value = 0;
-        break;
-    case QVariant::Double:
-        m_values[index].value = (double)0.0;
-        break;
-    case QVariant::Bool:
-        m_values[index].value = false;
-        break;
-    case QVariant::String:
-        m_values[index].value = "";
-        break;
-    case QVariant::StringList:
-        m_values[index].value = QStringList();
-        break;
-    }
+    m_values[index].clear();
 }
 
 QVariant ControllerBase::value(int index) {
-    if (index<m_values.count()) {
-        return m_values.at(index).value;
+    if (_checkIndex(index)) {
+        return m_values[index].value;
     } else {
         qWarning() << Q_FUNC_INFO << "Invalid index" << m_values.count() << index;
         return QVariant();
@@ -147,7 +135,7 @@ QVariant ControllerBase::value(int index) {
 }
 
 bool ControllerBase::valueIsValid(int index) {
-    if (index<m_values.count()) {
+    if (_checkIndex(index)) {
         return m_values[index].isValid();
     } else {
         qWarning() << Q_FUNC_INFO << "Invalid index" << m_values.count() << index;
@@ -160,9 +148,9 @@ QList<ControllerBase::ValueStruct> ControllerBase::values() {
 }
 
 void ControllerBase::setValue(int index, QVariant value, bool sendSet, bool ignoreCompare) {
-    qDebug() << Q_FUNC_INFO << index << value;
+    qDebug() << Q_FUNC_INFO << index << value << sendSet << ignoreCompare;
 
-    if (index<m_values.count()) {
+    if (_checkIndex(index)) {
         //qDebug() << m_values.at(index) << value;
         if (!ignoreCompare) {
             if (m_values[index].compareTo(value)) {
@@ -269,8 +257,8 @@ void ControllerBase::onInit() {
 void ControllerBase::publishValue(int index) {
     qDebug() << Q_FUNC_INFO << index << m_values.at(index).value;
 
-    if (index<m_values.count()) {
-        m_parent->publish(ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_VAL, index), m_values.at(index).value);
+    if (_checkIndex(index)) {
+        m_parent->publish(ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_VAL, index), m_values[index].value);
     } else {
         qWarning() << "Invalid index" << m_values.count() << index;
     }
@@ -279,7 +267,7 @@ void ControllerBase::publishValue(int index) {
 void ControllerBase::publishTrend(int index) {
     qDebug() << Q_FUNC_INFO << index << m_values[index].calculateValueTrend();
 
-    if (index<m_values.count()) {
+    if (_checkIndex(index)) {
         m_parent->publish(ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_TRE, index), m_values[index].calculateValueTrend());
     } else {
         qWarning() << "Invalid index" << m_values.count() << index;
@@ -311,14 +299,14 @@ void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
         } else if (valSetMode==MQTT_SET && !hasSetSupport()) {
             qWarning() << "Set request received, but no support";
         } else if (valSetMode==MQTT_VAL) {
-            if (m_values.count()>index) {
+            if (_checkIndex(index)) {
                 setValue(index, value);
             } else {
                 onUnmappedMqttValueReceived(topicPath, value);
             }
         } else if (valSetMode==MQTT_TRE) {
             if (!m_parent->isServer()) {
-                if (m_values.count()>index) {
+                if (_checkIndex(index)) {
                     if (m_values[index].valueTrendReceived(value.toInt())) {
                         qDebug() << Q_FUNC_INFO << "Trend changed" << index << m_values[index]._trend;
                         Q_EMIT(valueTrendChanged(index));
@@ -356,10 +344,10 @@ QVariant ControllerBase::parsePayload(QByteArray payload) {
     return QVariant();
 }
 
-
+/*
 void ControllerBase::setMode(ControllerBase::VALUE_OWNER_MODE thisMode) {
     m_mode = thisMode;
-}
+}*/
 
 void ControllerBase::onMqttUnknownMessageReceived(QStringList topicPath, QByteArray data) {
     qWarning() << Q_FUNC_INFO << topicPath << data;
@@ -416,6 +404,15 @@ void ControllerBase::onCheckBroadcasts() {
         if (isValueOwner(i) && m_values[i].isValid() && getValueBCInterval(i)!=VALUE_BC_NONE) {
             publishValue(i);
         }
+    }
+}
+
+bool ControllerBase::_checkIndex(int index) {
+    if (index<m_values.count()) {
+        return true;
+    } else {
+        qWarning() << "Invalid index" << m_values.count() << index;
+        return false;
     }
 }
 

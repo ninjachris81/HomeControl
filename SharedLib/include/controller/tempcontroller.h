@@ -31,8 +31,6 @@ public:
 
     qint64 getValueTrendLifetime(int index = -1);
 
-    bool isValueOwner(int index = -1);
-
     static QString CONTROLLER_NAME;
 
 protected:

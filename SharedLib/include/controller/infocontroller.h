@@ -10,6 +10,9 @@
 
 Q_DECLARE_LOGGING_CATEGORY(LG_INFO_CONTROLLER)
 
+#define SYSTEM_TIME_BC_INTERVAL 1000
+#define SYSTEM_TEMP_HC_INTERVAL 10000
+
 class InfoController : public ControllerBase
 {
     Q_OBJECT
@@ -35,6 +38,8 @@ public:
     static QString CONTROLLER_NAME;
 
     bool timeIsOffset();
+
+    VALUE_BC_INTERVAL getValueBCInterval(int index=-1);
 
 protected:
     void onInit();

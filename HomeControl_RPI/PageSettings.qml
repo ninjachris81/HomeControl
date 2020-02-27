@@ -37,7 +37,6 @@ HCPage {
                     HCSimpleLabel {
                         labelText: modelData
                         labelValue: DataBridge.appConfigModel[modelData]
-                        labelWidth: 300
 
                         isValid: true
                         allowInput: true
@@ -93,12 +92,11 @@ HCPage {
                     HCValueLabel {
                         model: DataBridge.settingsControllerModel
                         modelIndex: index
-                        labelWidth: 300
 
                         isValid: true
                         allowInput: true
                         inputHandler: function(newValue) {
-                            //DataBridge.setAppConfig(modelData, newValue)
+                            DataBridge.settings.updateSetting(modelData, newValue)
                         }
                     }
                 }

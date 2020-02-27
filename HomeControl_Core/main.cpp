@@ -31,26 +31,21 @@ int main(int argc, char *argv[])
     controllerManager.registerController(&tempController);
 
     LogController logController;
-    logController.setMode(ControllerBase::VALUE_OWNER_SERVER);
     controllerManager.registerController(&logController);
 
     RelayController relayController;
     controllerManager.registerController(&relayController);
 
     SettingsController settingsController;
-    settingsController.setMode(ControllerBase::VALUE_OWNER_SERVER);
     controllerManager.registerController(&settingsController);
 
     BrightnessController brightnessController;
-    brightnessController.setMode(ControllerBase::VALUE_OWNER_SERVER);
     controllerManager.registerController(&brightnessController);
 
     SwitchController switchController;
-    switchController.setMode(ControllerBase::VALUE_OWNER_SERVER);
     controllerManager.registerController(&switchController);
 
     InfoController infoController;
-    infoController.setMode(ControllerBase::VALUE_OWNER_SERVER);
     controllerManager.registerController(&infoController);
 
     controllerManager.init(&appConfig);

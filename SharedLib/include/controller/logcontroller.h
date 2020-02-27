@@ -37,8 +37,6 @@ public:
 
     QString getEnumName();
 
-    bool isValueOwner(int index = -1);
-
     void broadcastValues();
 
     void refreshLog();

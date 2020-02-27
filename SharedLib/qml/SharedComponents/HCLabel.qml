@@ -11,4 +11,6 @@ Label {
     font.pointSize: fontPointSize>0 ? fontPointSize : Style.fontPointSize-2
 
     elide: Text.ElideRight
+
+    verticalAlignment: Text.AlignVCenter
 }

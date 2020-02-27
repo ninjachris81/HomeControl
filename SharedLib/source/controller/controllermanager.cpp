@@ -173,7 +173,7 @@ QByteArray ControllerManager::getPayload(QVariant value) {
         qWarning() << "Cannot serialize" << value.typeName();
     }
 
-    qDebug() << "Payload" << returnData;
+    //qDebug() << "Payload" << returnData;
 
     return returnData;
 }

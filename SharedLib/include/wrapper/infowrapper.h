@@ -16,16 +16,22 @@ public:
 
     Q_PROPERTY(bool timeIsOffset READ timeIsOffset NOTIFY timeIsOffsetChanged)
 
-    Q_PROPERTY(QDateTime serverTime READ serverTime NOTIFY serverTimeChanged)
+    Q_PROPERTY(QDateTime systemTime READ systemTime NOTIFY systemTimeChanged)
+
+    Q_PROPERTY(double systemTemp READ systemTemp NOTIFY systemTempChanged)
 
     bool timeIsOffset();
 
-    QDateTime serverTime();
+    QDateTime systemTime();
+
+    double systemTemp();
 
 signals:
     void timeIsOffsetChanged();
 
-    void serverTimeChanged();
+    void systemTimeChanged();
+
+    void systemTempChanged();
 
 protected slots:
     void onTimeIsOffsetChanged(bool isOffset);

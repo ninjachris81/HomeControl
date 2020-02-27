@@ -16,17 +16,26 @@ void InfoWrapper::onTimeIsOffsetChanged(bool isOffset) {
 }
 
 void InfoWrapper::onValueChanged(int index, QVariant value) {
+    qDebug() << Q_FUNC_INFO << index << value;
+
     Q_UNUSED(value);
 
     switch (index) {
     case EnumsDeclarations::INFOS_SYSTEM_TIME:
-        Q_EMIT(serverTimeChanged());
+        Q_EMIT(systemTimeChanged());
         break;
+    case EnumsDeclarations::INFOS_SYSTEM_TEMP:
+        Q_EMIT(systemTempChanged());
     default:
         break;
     }
 }
 
-QDateTime InfoWrapper::serverTime() {
+QDateTime InfoWrapper::systemTime() {
     return QDateTime::fromString(m_controller->value(EnumsDeclarations::INFOS_SYSTEM_TIME).toString(), Qt::ISODate);
 }
+
+double InfoWrapper::systemTemp() {
+    return m_controller->value(EnumsDeclarations::INFOS_SYSTEM_TEMP).toDouble();
+}
+

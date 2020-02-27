@@ -30,7 +30,6 @@ Window {
             unit: "°"
             formatAsFloat: true
             showTrend: true
-            labelWidth: 400
             backgroundElement.visible: true
             labelSuffix: ""
         }
@@ -44,7 +43,6 @@ Window {
             modelIndex: Enums.TEMPS_WATER
             unit: "°"
             formatAsFloat: true
-            labelWidth: 400
             showTrend: true
             backgroundElement.visible: true
             labelSuffix: ""
@@ -59,7 +57,6 @@ Window {
             modelIndex: Enums.TEMPS_TANK
             unit: "°"
             formatAsFloat: true
-            labelWidth: 400
             showTrend: true
             trend: 1
             backgroundElement.visible: true
@@ -90,7 +87,6 @@ Window {
                 modelIndex: Enums.SETTINGS_PREHEAT_HC_TEMP
                 unit: "°"
                 fontPointSize: 9
-                labelWidth: 120
             }
 
             HCValueLabel {
@@ -101,7 +97,6 @@ Window {
                 modelIndex: Enums.SETTINGS_PREHEAT_WATER_TEMP
                 unit: "°"
                 fontPointSize: 9
-                labelWidth: 120
             }
 
             HCValueLabel {
@@ -112,7 +107,6 @@ Window {
                 modelIndex: Enums.SETTINGS_PREHEAT_FROM
                 unit: "h"
                 fontPointSize: 9
-                labelWidth: 120
             }
 
             HCValueLabel {
@@ -123,7 +117,6 @@ Window {
                 modelIndex: Enums.SETTINGS_PREHEAT_TO
                 unit: "h"
                 fontPointSize: 9
-                labelWidth: 120
             }
         }
 
@@ -147,7 +140,6 @@ Window {
                 modelIndex: Enums.SETTINGS_PREHEAT_HC_STANDBY_TEMP
                 unit: "°"
                 fontPointSize: 9
-                labelWidth: 100
             }
 
 
@@ -164,7 +156,6 @@ Window {
                 modelIndex: Enums.SETTINGS_PREHEAT_STANDBY_FROM
                 unit: "h"
                 fontPointSize: 9
-                labelWidth: 100
             }
 
             HCValueLabel {
@@ -175,7 +166,6 @@ Window {
                 modelIndex: Enums.SETTINGS_PREHEAT_STANDBY_TO
                 unit: "h"
                 fontPointSize: 9
-                labelWidth: 100
             }
         }
 
@@ -185,8 +175,71 @@ Window {
             Layout.preferredHeight: 2
         }
 
+        HCSpinBox {
+            Layout.preferredHeight: 30
+            Layout.fillWidth: true
+
+            from: -20
+            to: 20
+
+            model: DataBridge.settingsControllerModel
+            modelIndex: Enums.SETTINGS_TANK_OFFSET
+
+            //value: DataBridge.settingsControllerModel.data(DataBridge.settingsControllerModel.index(Enums.SETTINGS_TANK_OFFSET, 0), 258)
+            textFromValue: function(value, locale) {
+                return Number(value).toLocaleString(locale, "f", 1) + " °";
+            }
+
+            onValueModified: {
+                DataBridge.settings.updateSetting(Enums.SETTINGS_TANK_OFFSET, value)
+            }
+        }
+
         Item {
             Layout.fillHeight: true
+        }
+
+        RowLayout {
+            spacing: 0
+            Layout.margins: 10
+            Layout.preferredHeight: 30
+            Layout.fillWidth: true
+
+            HCLabel {
+                id: currentDateTime
+
+                Layout.preferredWidth: 580
+                Layout.preferredHeight: 30
+
+                color: DataBridge.infos.timeIsOffset ? "red" : Style.fontColor
+                text: ""
+                fontPointSize: 12
+
+                Timer {
+                    id: timer
+                    interval: 1000
+                    repeat: true
+                    running: true
+                    triggeredOnStart: true
+
+                    onTriggered: {
+                        currentDateTime.text =  Qt.formatDateTime(new Date(), Qt.SystemLocaleDate)
+                    }
+                }
+            }
+
+            HCSimpleLabel {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 30
+
+                labelValue: DataBridge.infos.systemTemp
+                unit: "°"
+                formatAsFloat: true
+                fontPointSize: 12
+                isValid: true
+                showTrend: false
+                labelText: qsTr("System Temperature")
+            }
         }
     }
 }

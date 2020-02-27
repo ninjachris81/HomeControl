@@ -20,7 +20,7 @@ QString LogController::DB_CONN_LOGS = QStringLiteral("HC_LOGS");
 
 Q_LOGGING_CATEGORY(LG_LOG_CONTROLLER, "LogController");
 
-LogController::LogController(QObject *parent) : ControllerBase(parent)
+LogController::LogController(QObject *parent) : ControllerBase(ControllerBase::VALUE_OWNER_SERVER, parent)
 {
 }
 
@@ -34,12 +34,6 @@ QStringList LogController::getTopicPath() {
 
 QStringList LogController::getLabelList() {
     CONVERT_LABEL_LIST(EnumsDeclarations::LOGS_TYPE_LABELS);
-}
-
-bool LogController::isValueOwner(int index) {
-    Q_UNUSED(index);
-
-    return true;
 }
 
 void LogController::broadcastValues() {
@@ -63,7 +57,7 @@ qint64 LogController::getValueLifetime(int index) {
 void LogController::onInit() {
     qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO;
 
-    if (m_mode==ControllerBase::VALUE_OWNER_SERVER) {
+    if (m_parent->isServer()) {
         m_db = QSqlDatabase::addDatabase("QSQLITE" , DB_CONN_LOGS);
         m_db.setDatabaseName("hc_logs.db");
         if (m_db.open()) {
@@ -114,7 +108,7 @@ void LogController::onCmdReceived(EnumsDeclarations::MQTT_CMDS cmd) {
 void LogController::clearLog(int typeFilter) {
     qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO << typeFilter;
 
-    if (m_mode==ControllerBase::VALUE_OWNER_SERVER) {
+    if (m_parent->isServer()) {
         QSqlQuery query(m_db);
 
         if (typeFilter==-1) {
@@ -172,7 +166,7 @@ void LogController::refreshLog() {
 void LogController::addLog(EnumsDeclarations::MQTT_LOGS type, QString source, QString msg) {
     qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO << type << msg;
 
-    if (m_mode==VALUE_OWNER_SERVER) {
+    if (m_parent->isServer()) {
         insertRecord(QDateTime::currentDateTime(), type, source, msg);
         Q_EMIT(logDataChanged());
     } else {
@@ -259,7 +253,7 @@ void LogController::onValueChanged(int index, QVariant value) {
 void LogController::onSetReceived(int index, QVariant value) {
     qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO << index << value;
 
-    if (m_mode==VALUE_OWNER_SERVER) {
+    if (m_parent->isServer()) {
         // index = type
 
         int i = value.toString().indexOf(MQTT_LOG_SOURCE_DIV);

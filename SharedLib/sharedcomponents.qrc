@@ -8,5 +8,6 @@
         <file>qml/SharedComponents/HCDebugTracer.qml</file>
         <file>qml/SharedComponents/HCKeyboard.qml</file>
         <file>qml/SharedComponents/HCKeyboardManager.qml</file>
+        <file>qml/SharedComponents/HCSpinBox.qml</file>
     </qresource>
 </RCC>

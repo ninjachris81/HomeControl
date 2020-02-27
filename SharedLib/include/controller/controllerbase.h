@@ -30,7 +30,8 @@ public:
     enum VALUE_OWNER_MODE {
         VALUE_OWNER_SERVER,
         VALUE_OWNER_CLIENT,
-        VALUE_OWNER_DEFAULT = VALUE_OWNER_CLIENT
+        VALUE_OWNER_EXTERNAL_SENSOR,
+        VALUE_OWNER_DEFAULT = VALUE_OWNER_SERVER
     };
 
     enum VALUE_BC_INTERVAL {
@@ -109,6 +110,26 @@ public:
             return _trend;
         }
 
+        void clear() {
+            switch(value.type()) {
+            case QVariant::Int:
+                value =  0;
+                break;
+            case QVariant::Double:
+                value = (double)0.0;
+                break;
+            case QVariant::Bool:
+                value = false;
+                break;
+            case QVariant::String:
+                value = "";
+                break;
+            case QVariant::StringList:
+                value = QStringList();
+                break;
+            }
+        }
+
         void updateValue(QVariant val, bool updateTrend) {
             if (!_isFirstUpdate && updateTrend) {
                 switch(value.type()) {
@@ -138,7 +159,7 @@ public:
         }
     };
 
-    explicit ControllerBase(QObject *parent = nullptr);
+    explicit ControllerBase(VALUE_OWNER_MODE valueOwnerMode, QObject *parent = nullptr);
 
     virtual QString getName() = 0;
 
@@ -190,7 +211,7 @@ public:
 
     static QVariant parsePayload(QByteArray payload);
 
-    void setMode(VALUE_OWNER_MODE thisMode);
+    //void setMode(VALUE_OWNER_MODE thisMode);
 
 protected:
     VALUE_OWNER_MODE m_mode = VALUE_OWNER_DEFAULT;
@@ -203,7 +224,7 @@ protected:
 
     QString m_topicName;
 
-    virtual bool hasSetSupport() {
+    virtual bool hasSetSupport() {      // others can set values
         return false;
     }
 
@@ -234,6 +255,8 @@ private:
     QTimer m_valueUpdateTimer;
     QTimer m_valueTrendTimer;
     QTimer m_valueBCTimer;
+
+    bool _checkIndex(int index);
 
 signals:
     void valueChanged(int index, QVariant value);

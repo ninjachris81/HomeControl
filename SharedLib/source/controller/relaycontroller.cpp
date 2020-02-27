@@ -4,7 +4,7 @@
 QString RelayController::CONTROLLER_NAME = QStringLiteral("RelayController");
 Q_LOGGING_CATEGORY(LG_RELAY_CONTROLLER, "RelayController");
 
-RelayController::RelayController(QObject *parent) : ControllerBase (parent)
+RelayController::RelayController(QObject *parent) : ControllerBase (ControllerBase::VALUE_OWNER_EXTERNAL_SENSOR, parent)
 {
 
 }
@@ -27,12 +27,6 @@ QVariant::Type RelayController::getDefaultValueType() {
 
 QString RelayController::getEnumName() {
     return "MQTT_RELAYS";
-}
-
-bool RelayController::isValueOwner(int index) {
-    Q_UNUSED(index);
-
-    return false;
 }
 
 qint64 RelayController::getValueLifetime(int index) {

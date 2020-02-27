@@ -4,7 +4,7 @@
 QString SwitchController::CONTROLLER_NAME = QStringLiteral("SwitchController");
 Q_LOGGING_CATEGORY(LG_SWITCH_CONTROLLER, "SwitchController");
 
-SwitchController::SwitchController(QObject *parent) : ControllerBase (parent)
+SwitchController::SwitchController(QObject *parent) : ControllerBase (ControllerBase::VALUE_OWNER_EXTERNAL_SENSOR, parent)
 {
 
 }
@@ -30,13 +30,8 @@ QString SwitchController::getEnumName() {
 }
 
 SwitchController::VALUE_BC_INTERVAL SwitchController::getValueBCInterval(int index) {
+    Q_UNUSED(index)
     return VALUE_BC_SLOW;
-}
-
-bool SwitchController::isValueOwner(int index) {
-    Q_UNUSED(index);
-
-    return false;
 }
 
 qint64 SwitchController::getValueLifetime(int index) {

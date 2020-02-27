@@ -11,5 +11,6 @@ QtObject {
     property string fontFamily: "DejaVu"
     property int fontPointSize: 30
     property int fontPointSizeKeyboard: 48
+    property string fontColor: "black"
 
 }

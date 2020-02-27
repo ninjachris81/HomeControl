@@ -146,7 +146,7 @@ ApplicationWindow {
                 anchors.fill: parent
 
                 onClicked: {
-                    HCToastManager.showToast("Server time: " + DataBridge.infos.serverTime)
+                    HCToastManager.showToast("Server time: " + DataBridge.infos.systemTime)
                 }
             }
         }

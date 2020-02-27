@@ -4,7 +4,7 @@
 QString TempController::CONTROLLER_NAME = QStringLiteral("TempController");
 Q_LOGGING_CATEGORY(LG_TEMP_CONTROLLER, "TempController");
 
-TempController::TempController(QObject *parent) : ControllerBase(parent)
+TempController::TempController(QObject *parent) : ControllerBase(ControllerBase::VALUE_OWNER_EXTERNAL_SENSOR, parent)
 {
 
 }
@@ -54,12 +54,6 @@ qint64 TempController::getValueTrendLifetime(int index) {
     default:
         return VALUE_TT_NONE;
     }
-}
-
-bool TempController::isValueOwner(int index) {
-    Q_UNUSED(index);
-
-    return false;
 }
 
 void TempController::onInit() {
