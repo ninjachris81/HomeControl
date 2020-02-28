@@ -5,9 +5,9 @@
         <file>qml/SharedComponents/HCValueLabel.qml</file>
         <file>qml/SharedComponents/qmldir</file>
         <file>qml/SharedComponents/HCDividerH.qml</file>
-        <file>qml/SharedComponents/HCDebugTracer.qml</file>
         <file>qml/SharedComponents/HCKeyboard.qml</file>
         <file>qml/SharedComponents/HCKeyboardManager.qml</file>
         <file>qml/SharedComponents/HCSpinBox.qml</file>
+        <file>qml/SharedComponents/HCSwitchIndicator.qml</file>
     </qresource>
 </RCC>

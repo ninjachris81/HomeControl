@@ -39,14 +39,16 @@ static QString LOGS_TYPE_LABELS[] = {
 // INFOS
 enum MQTT_INFOS {
     INFOS_SYSTEM_TIME = MQTT_PATH_INFOS_SYSTEM_TIME,
-    INFOS_SYSTEM_TEMP = MQTT_PATH_INFOS_SYSTEM_TEMP
+    INFOS_SYSTEM_TEMP = MQTT_PATH_INFOS_SYSTEM_TEMP,
+    INFOS_BOILER_TARGET_TEMP = MQTT_PATH_INFOS_BOILER_TARGET_TEMP
 };
 
 Q_ENUMS(MQTT_INFOS)
 
 static QString INFOS_LABELS[] = {
     INFOS_LABEL_SYSTEM_TIME,
-    INFOS_LABEL_SYSTEM_TEMP
+    INFOS_LABEL_SYSTEM_TEMP,
+    INFOS_LABEL_BOILER_TARGET_TEMP
 };
 
 // SETTINGS
@@ -83,7 +85,11 @@ enum MQTT_SETTINGS {
 
 Q_ENUMS(MQTT_SETTINGS)
 
-static QVariant::Type __attribute__((used)) SETTINGS_TYPES[] =  {
+static QVariant::Type
+#ifdef __GNUG__
+__attribute__((used))
+#endif
+SETTINGS_TYPES[] =  {
     QVariant::Int,
     QVariant::Int,
     QVariant::Double,

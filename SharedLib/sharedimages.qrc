@@ -3,5 +3,9 @@
         <file>images/icons/arrow_down.png</file>
         <file>images/icons/arrow_right.png</file>
         <file>images/icons/arrow_up.png</file>
+        <file>images/icons/motor_prop.png</file>
+        <file>images/icons/flame_off.png</file>
+        <file>images/icons/flame_on.png</file>
+        <file>images/particles/glowdot.png</file>
     </qresource>
 </RCC>

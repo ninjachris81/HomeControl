@@ -167,20 +167,21 @@ void ControllerBase::setValue(int index, QVariant value, bool sendSet, bool igno
             m_parent->publish(ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_SET, index), value);
         } else {
             switch(getValueType(index)) {
-            case QVariant::Int:
-            case QVariant::Double:
-            case QVariant::Bool:
-            case QVariant::String:
-                m_values[index].updateValue(value, m_parent->isServer());
-                break;
-            case QVariant::StringList: {
-                QStringList list = m_values[index]._value.toStringList();
-                list.append(value.toString());
-                m_values[index].updateValue(list, m_parent->isServer());
-                break;
-            }
-            default:
-                break;
+                case QVariant::Int:
+                case QVariant::Double:
+                case QVariant::Bool:
+                case QVariant::String:
+                    m_values[index].updateValue(value, m_parent->isServer());
+                    break;
+                case QVariant::StringList: {
+                    QStringList list = m_values[index]._value.toStringList();
+                    list.append(value.toString());
+                    m_values[index].updateValue(list, m_parent->isServer());
+                    break;
+                }
+                default:
+                    qWarning() << "Unsupported data type" << getValueType(index);
+                    break;
             }
 
             onValueChanged(index, m_values[index]._value);

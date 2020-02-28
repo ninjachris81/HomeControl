@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/SharedUtils">
+        <file>qml/SharedUtils/HCDebugTracer.qml</file>
+        <file>qml/SharedUtils/qmldir</file>
+        <file>qml/SharedUtils/HCModelValueBool.qml</file>
+    </qresource>
+</RCC>

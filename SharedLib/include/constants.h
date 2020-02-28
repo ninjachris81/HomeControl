@@ -62,6 +62,9 @@
 #define MQTT_PATH_INFOS_SYSTEM_TEMP 1
 #define INFOS_LABEL_SYSTEM_TEMP "System temp"
 
+#define MQTT_PATH_INFOS_BOILER_TARGET_TEMP 2
+#define INFOS_LABEL_BOILER_TARGET_TEMP "Boilder target temp"
+
 // SETTINGS
 #define MQTT_PATH_SETTINGS "settings"
 

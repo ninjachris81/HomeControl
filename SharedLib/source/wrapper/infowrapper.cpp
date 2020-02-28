@@ -26,6 +26,10 @@ void InfoWrapper::onValueChanged(int index, QVariant value) {
         break;
     case EnumsDeclarations::INFOS_SYSTEM_TEMP:
         Q_EMIT(systemTempChanged());
+        break;
+    case EnumsDeclarations::INFOS_BOILER_TARGET_TEMP:
+        Q_EMIT(boilerTargetTempChanged());
+        break;
     default:
         break;
     }
@@ -39,3 +43,6 @@ double InfoWrapper::systemTemp() {
     return m_controller->value(EnumsDeclarations::INFOS_SYSTEM_TEMP).toDouble();
 }
 
+double InfoWrapper::boilerTargetTemp() {
+    return m_controller->value(EnumsDeclarations::INFOS_BOILER_TARGET_TEMP).toDouble();
+}

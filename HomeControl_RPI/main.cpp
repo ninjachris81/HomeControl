@@ -8,33 +8,17 @@
 #include "utils/fontloader.h"
 
 #include "constant_strings.h"
+#include "sharedlib.h"
 
 #include <QTimer>
 
 int main(int argc, char *argv[])
 {
-    QStringList m_icons;
-    QList<int> m_dates;
-    QList<double> m_temps;
-    QList<int> m_clouds;
-
-    m_icons.append("");
-    m_dates.append(2);
-    m_temps.append(2);
-    m_clouds.append(1);
-
-    qDebug() << (m_temps.count()>0 && (m_dates.count()==m_temps.count()==m_icons.count()==m_clouds.count()));
-
-    return 0;
-
-
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-    Q_INIT_RESOURCE(sharedcomponents);
-    Q_INIT_RESOURCE(sharedfonts);
-    Q_INIT_RESOURCE(sharedimages);
+    INIT_RESOURCES();
 
     QGuiApplication app(argc, argv);
 
@@ -52,6 +36,7 @@ int main(int argc, char *argv[])
 
     engine.addImportPath(":/StyleDef/qml");
     engine.addImportPath(":/SharedComponents/qml");
+    engine.addImportPath(":/SharedUtils/qml");
 
     engine.rootContext()->setContextProperty("DataBridge", &dataBridge);
 

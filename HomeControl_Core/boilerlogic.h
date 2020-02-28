@@ -9,6 +9,8 @@
 #include "controller/tempcontroller.h"
 #include "controller/relaycontroller.h"
 #include "controller/settingscontroller.h"
+#include "controller/infocontroller.h"
+
 #include "utils/weatherforecastmanager.h"
 #include "utils/appconfiguration.h"
 
@@ -26,6 +28,7 @@ private:
     SettingsController* m_settingsController;
     TempController* m_tempController;
     RelayController* m_relayController;
+    InfoController* m_infoController;
 
     WeatherForecastManager* m_wfcManager;
     QTimer m_wfcTimer;

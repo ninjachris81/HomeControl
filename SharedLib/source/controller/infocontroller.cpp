@@ -40,7 +40,11 @@ ControllerBase::VALUE_BC_INTERVAL InfoController::getValueBCInterval(int index) 
     case EnumsDeclarations::INFOS_SYSTEM_TIME:
     case EnumsDeclarations::INFOS_SYSTEM_TEMP:
         return VALUE_BC_FAST;
+    case EnumsDeclarations::INFOS_BOILER_TARGET_TEMP:
+        return VALUE_BC_NONE;
     }
+
+    return VALUE_BC_NONE;
 }
 
 void InfoController::onInit() {

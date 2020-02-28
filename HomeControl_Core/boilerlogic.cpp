@@ -8,6 +8,7 @@ BoilerLogic::BoilerLogic(ControllerManager *controllerManager, AppConfiguration 
     m_tempController = static_cast<TempController*>(controllerManager->getController(TempController::CONTROLLER_NAME));
     m_relayController = static_cast<RelayController*>(controllerManager->getController(RelayController::CONTROLLER_NAME));
     m_settingsController = static_cast<SettingsController*>(controllerManager->getController(SettingsController::CONTROLLER_NAME));
+    m_infoController = static_cast<InfoController*>(controllerManager->getController(InfoController::CONTROLLER_NAME));
 
     m_wfcManager = new WeatherForecastManager(appConfig->getString("WFC_API_KEY", ""));
     m_wfcTimer.setInterval(30 * 60000);     // every 30 minutes
@@ -22,6 +23,7 @@ BoilerLogic::~BoilerLogic() {
 
 void BoilerLogic::onMaintenance() {
     bool boilerOn = false;
+    double targetTemp = 0;
 
     if (m_tempController->value(EnumsDeclarations::TEMPS_TANK).isValid()) {
         bool sunExpected = false;
@@ -52,7 +54,7 @@ void BoilerLogic::onMaintenance() {
         int sunExpSubstract = m_settingsController->value(EnumsDeclarations::SETTINGS_SUN_EXP_SUBSTRACT).toInt();
         int scheduledTempDelta = getScheduledTempDelta();
 
-        double targetTemp = minTemp + scheduledTempDelta + (sunExpected ? -sunExpSubstract : 0);
+        targetTemp = minTemp + scheduledTempDelta + (sunExpected ? -sunExpSubstract : 0);
 
         qCDebug(LG_BOILER_LOGIC) << "Target temp" << targetTemp << minTemp << scheduledTempDelta;
 
@@ -64,6 +66,7 @@ void BoilerLogic::onMaintenance() {
 
     boilerOn = false;       // TODO REMOVE ME !!!!!!
 
+    m_infoController->setValue(EnumsDeclarations::INFOS_BOILER_TARGET_TEMP, targetTemp);
 
     m_relayController->setValue(EnumsDeclarations::RELAYS_BOILER, boilerOn, true);
 }

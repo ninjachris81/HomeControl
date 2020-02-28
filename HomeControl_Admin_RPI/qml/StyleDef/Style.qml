@@ -9,7 +9,7 @@ QtObject {
     property int buttonHeight: 80
 
     property string fontFamily: "DejaVu"
-    property int fontPointSize: 30
+    property int fontPointSize: 25
     property int fontPointSizeKeyboard: 48
     property string fontColor: "black"
 

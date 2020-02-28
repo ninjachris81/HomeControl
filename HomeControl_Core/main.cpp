@@ -58,11 +58,16 @@ int main(int argc, char *argv[])
     DataLogger dataLogger(&controllerManager, &appConfig);
 
     // Register values for dl
+    // temps
     dataLogger.registerValue(&tempController, EnumsDeclarations::TEMPS_HC);
     dataLogger.registerValue(&tempController, EnumsDeclarations::TEMPS_TANK);
     dataLogger.registerValue(&tempController, EnumsDeclarations::TEMPS_WATER);
     dataLogger.registerValue(&tempController, EnumsDeclarations::TEMPS_SOLAR_HC);
     dataLogger.registerValue(&tempController, EnumsDeclarations::TEMPS_INSIDE);
+    // relays
+    dataLogger.registerValue(&relayController, EnumsDeclarations::RELAYS_HC_PUMP);
+    dataLogger.registerValue(&relayController, EnumsDeclarations::RELAYS_HEATING_PUMP);
+    dataLogger.registerValue(&relayController, EnumsDeclarations::RELAYS_BOILER);
 
     QObject::connect(&controllerManager, &ControllerManager::mqttConnected, [&logController]() {
         logController.addLog(EnumsDeclarations::LOGS_TYPE_STARTUP, DEV_ID_SERVER);

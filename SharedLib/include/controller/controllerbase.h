@@ -150,7 +150,6 @@ public:
                     _lastTrendUpdate = QDateTime::currentMSecsSinceEpoch();
                     break;
                 default:
-                    qWarning() << "Unsupported data type" << _value.typeName();
                     break;
                 }
             }

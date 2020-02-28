@@ -2,12 +2,11 @@ import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Layouts 1.3
 
-//import "SharedLib/qml"
-
 import hc 1.0
 
 import StyleDef 1.0
 import SharedComponents 1.0
+import SharedUtils 1.0
 
 Window {
     id: root
@@ -20,18 +19,76 @@ Window {
         anchors.fill: parent
         spacing: 0
 
-        HCValueLabel {
-            Layout.preferredHeight: 50
-            Layout.fillWidth: true
-            Layout.margins: 6
+        RowLayout {
+            spacing: 0
+            HCValueLabel {
+                Layout.preferredHeight: 50
+                Layout.fillWidth: true
+                Layout.margins: 6
 
-            model: DataBridge.tempControllerModel
-            modelIndex: Enums.TEMPS_HC
-            unit: "°"
-            formatAsFloat: true
-            showTrend: true
-            backgroundElement.visible: true
-            labelSuffix: ""
+                model: DataBridge.tempControllerModel
+                modelIndex: Enums.TEMPS_HC
+                unit: "°"
+                formatAsFloat: true
+                showTrend: true
+                backgroundElement.visible: true
+                labelSuffix: ""
+            }
+
+            HCSwitchIndicator {
+                Layout.preferredHeight: 50
+                Layout.preferredWidth: 50
+
+                style: "pump"
+
+                isOn: hcPumpBinding.value
+
+                HCModelValueBool {
+                    id: hcPumpBinding
+
+                    model: DataBridge.relayControllerModel
+                    modelIndex: Enums.RELAYS_HC_PUMP
+                }
+            }
+        }
+
+        RowLayout {
+            spacing: 0
+
+            HCValueLabel {
+                Layout.preferredHeight: 50
+                Layout.preferredWidth: 300
+                Layout.margins: 6
+
+                model: DataBridge.tempControllerModel
+                modelIndex: Enums.TEMPS_TANK
+                unit: "°"
+                formatAsFloat: true
+                showTrend: true
+                backgroundElement.visible: true
+                labelSuffix: ""
+            }
+
+            HCSimpleLabel {
+                Layout.preferredHeight: 50
+                Layout.fillWidth: true
+                Layout.margins: 6
+
+                labelText: qsTr("Boiler Target Temp")
+                labelValue: DataBridge.infos.boilerTargetTemp
+                unit: "°"
+                formatAsFloat: true
+                backgroundElement.visible: true
+                labelSuffix: ""
+                isValid: true
+            }
+
+            HCSwitchIndicator {
+                Layout.preferredHeight: 50
+                Layout.preferredWidth: 50
+
+                style: "flame"
+            }
         }
 
         HCValueLabel {
@@ -54,26 +111,10 @@ Window {
             Layout.margins: 6
 
             model: DataBridge.tempControllerModel
-            modelIndex: Enums.TEMPS_TANK
-            unit: "°"
-            formatAsFloat: true
-            showTrend: true
-            trend: 1
-            backgroundElement.visible: true
-            labelSuffix: ""
-        }
-
-        HCValueLabel {
-            Layout.preferredHeight: 50
-            Layout.fillWidth: true
-            Layout.margins: 6
-
-            model: DataBridge.tempControllerModel
             modelIndex: Enums.TEMPS_SOLAR_HC
             unit: "°"
             formatAsFloat: true
             showTrend: true
-            trend: 1
             backgroundElement.visible: true
             labelSuffix: ""
         }

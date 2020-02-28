@@ -20,18 +20,18 @@ public:
 
     Q_PROPERTY(double systemTemp READ systemTemp NOTIFY systemTempChanged)
 
+    Q_PROPERTY(double boilerTargetTemp READ boilerTargetTemp NOTIFY boilerTargetTempChanged)
+
     bool timeIsOffset();
-
     QDateTime systemTime();
-
     double systemTemp();
+    double boilerTargetTemp();
 
 signals:
     void timeIsOffsetChanged();
-
     void systemTimeChanged();
-
     void systemTempChanged();
+    void boilerTargetTempChanged();
 
 protected slots:
     void onTimeIsOffsetChanged(bool isOffset);

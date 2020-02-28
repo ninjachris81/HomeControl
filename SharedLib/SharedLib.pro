@@ -95,7 +95,8 @@ INCLUDEPATH += $$PWD/include
 RESOURCES += \
     sharedcomponents.qrc \
     sharedfonts.qrc \
-    sharedimages.qrc
+    sharedimages.qrc \
+    sharedutils.qrc
 
 DISTFILES += \
     utils/build_inc.bat \

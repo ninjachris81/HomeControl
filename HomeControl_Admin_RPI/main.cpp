@@ -7,6 +7,8 @@
 #include "utils/fontloader.h"
 #include "utils/version.h"
 
+#include "sharedlib.h"
+
 #include "databridge.h"
 
 int main(int argc, char *argv[])
@@ -15,9 +17,7 @@ int main(int argc, char *argv[])
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-    Q_INIT_RESOURCE(sharedcomponents);
-    Q_INIT_RESOURCE(sharedfonts);
-    Q_INIT_RESOURCE(sharedimages);
+    INIT_RESOURCES();
 
     QGuiApplication app(argc, argv);
 
@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
 
     engine.addImportPath(":/StyleDef/qml");
     engine.addImportPath(":/SharedComponents/qml");
+    engine.addImportPath(":/SharedUtils/qml");
 
     engine.rootContext()->setContextProperty("DataBridge", &dataBridge);
 
