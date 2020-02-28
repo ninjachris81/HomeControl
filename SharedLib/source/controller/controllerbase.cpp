@@ -24,6 +24,8 @@ bool ControllerBase::isValueOwner(int index) {
     case VALUE_OWNER_CLIENT: return !m_parent->isServer();
     case VALUE_OWNER_EXTERNAL_SENSOR: return false;
     }
+
+    return false;
 }
 
 ControllerBase::VALUE_BC_INTERVAL ControllerBase::getValueBCInterval(int index) {
@@ -62,7 +64,7 @@ void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig
     for(int i=0;i<m_labels.count();i++) {
         ValueStruct t;
         t._lifeTime = getValueLifetime(i);
-        t.value =  QVariant(getValueType(i));
+        t._value =  QVariant(getValueType(i));
         t._trendLifeTime = getValueTrendLifetime(i);
         m_values.append(t);
     }
@@ -127,7 +129,7 @@ void ControllerBase::clearValue(int index) {
 
 QVariant ControllerBase::value(int index) {
     if (_checkIndex(index)) {
-        return m_values[index].value;
+        return m_values[index]._value;
     } else {
         qWarning() << Q_FUNC_INFO << "Invalid index" << m_values.count() << index;
         return QVariant();
@@ -171,15 +173,18 @@ void ControllerBase::setValue(int index, QVariant value, bool sendSet, bool igno
             case QVariant::String:
                 m_values[index].updateValue(value, m_parent->isServer());
                 break;
-            case QVariant::StringList:
-                QStringList list = m_values[index].value.toStringList();
+            case QVariant::StringList: {
+                QStringList list = m_values[index]._value.toStringList();
                 list.append(value.toString());
                 m_values[index].updateValue(list, m_parent->isServer());
                 break;
             }
+            default:
+                break;
+            }
 
-            onValueChanged(index, m_values[index].value);
-            Q_EMIT(valueChanged(index, m_values[index].value));
+            onValueChanged(index, m_values[index]._value);
+            Q_EMIT(valueChanged(index, m_values[index]._value));
         }
     } else {
         qWarning() << "Invalid index" << m_values.count() << index;
@@ -255,10 +260,10 @@ void ControllerBase::onInit() {
 }
 
 void ControllerBase::publishValue(int index) {
-    qDebug() << Q_FUNC_INFO << index << m_values.at(index).value;
+    qDebug() << Q_FUNC_INFO << index << m_values.at(index)._value;
 
     if (_checkIndex(index)) {
-        m_parent->publish(ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_VAL, index), m_values[index].value);
+        m_parent->publish(ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_VAL, index), m_values[index]._value);
     } else {
         qWarning() << "Invalid index" << m_values.count() << index;
     }

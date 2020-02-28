@@ -43,15 +43,13 @@ int ControllerListModel::rowCount(const QModelIndex &parent) const {
 QVariant ControllerListModel::data(const QModelIndex &index, int role) const {
     if (index.isValid()) {
         if (role==ValueRole) {
-            return m_controller->values().at(index.row()).value;
+            return m_controller->value(index.row());
         } else if (role==LabelRole) {
             return m_controller->getLabel(index.row());
         } else if (role==IsValidRole) {
-            ControllerBase::ValueStruct val = m_controller->values().at(index.row());
-            return val.isValid();
+            return m_controller->values()[index.row()].isValid();
         } else if (role==TrendRole) {
-            ControllerBase::ValueStruct val = m_controller->values().at(index.row());
-            return val.valueTrend();
+            return m_controller->values()[index.row()].valueTrend();
         } else {
             return QVariant();
         }

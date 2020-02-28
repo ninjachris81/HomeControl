@@ -1,4 +1,7 @@
 #include "include/controller/tempcontroller.h"
+#include "include/controller/settingscontroller.h"
+#include "include/controller/controllermanager.h"
+
 #include "include/constants_qt.h"
 
 QString TempController::CONTROLLER_NAME = QStringLiteral("TempController");
@@ -62,6 +65,15 @@ void TempController::onInit() {
 
 void TempController::onMqttConnected() {
     qCDebug(LG_TEMP_CONTROLLER) << Q_FUNC_INFO;
+}
+
+QVariant TempController::value(int index) {
+    switch (index) {
+    case EnumsDeclarations::TEMPS_TANK:
+        return ControllerBase::value(index).toInt() + m_parent->getController(SettingsController::CONTROLLER_NAME)->value(EnumsDeclarations::SETTINGS_TANK_OFFSET).toDouble();
+    default:
+        return ControllerBase::value(index);
+    }
 }
 
 void TempController::onValueChanged(int index, QVariant value) {

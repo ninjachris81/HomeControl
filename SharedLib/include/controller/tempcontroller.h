@@ -33,6 +33,8 @@ public:
 
     static QString CONTROLLER_NAME;
 
+    QVariant value(int index);
+
 protected:
     void onInit();
 

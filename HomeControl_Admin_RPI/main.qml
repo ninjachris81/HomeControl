@@ -63,6 +63,21 @@ Window {
             labelSuffix: ""
         }
 
+        HCValueLabel {
+            Layout.preferredHeight: 50
+            Layout.fillWidth: true
+            Layout.margins: 6
+
+            model: DataBridge.tempControllerModel
+            modelIndex: Enums.TEMPS_SOLAR_HC
+            unit: "°"
+            formatAsFloat: true
+            showTrend: true
+            trend: 1
+            backgroundElement.visible: true
+            labelSuffix: ""
+        }
+
         // Preheat infos
 
         RowLayout {

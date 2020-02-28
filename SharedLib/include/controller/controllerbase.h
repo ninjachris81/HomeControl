@@ -56,8 +56,7 @@ public:
     };
 
     struct ValueStruct {
-        QVariant value;
-
+        QVariant _value;
         qint64 _lifeTime = LIFETIME_UNLIMITED;
         qint64 _lastUpdate = 0;
         bool _wasValid = false;
@@ -78,7 +77,7 @@ public:
         }
 
         bool compareTo(QVariant &val) {
-            return value==val;
+            return _value==val;
         }
 
         // client
@@ -111,36 +110,39 @@ public:
         }
 
         void clear() {
-            switch(value.type()) {
+            switch(_value.type()) {
             case QVariant::Int:
-                value =  0;
+                _value =  0;
                 break;
             case QVariant::Double:
-                value = (double)0.0;
+                _value = (double)0.0;
                 break;
             case QVariant::Bool:
-                value = false;
+                _value = false;
                 break;
             case QVariant::String:
-                value = "";
+                _value = "";
                 break;
             case QVariant::StringList:
-                value = QStringList();
+                _value = QStringList();
+                break;
+            default:
+                qWarning() << "Unsupported data type" << _value.typeName();
                 break;
             }
         }
 
         void updateValue(QVariant val, bool updateTrend) {
             if (!_isFirstUpdate && updateTrend) {
-                switch(value.type()) {
+                switch(_value.type()) {
                 case QVariant::Int:
                 case QVariant::UInt:
                 case QVariant::Double:
                 case QVariant::LongLong:
                 case QVariant::ULongLong:
-                    if (val>value) {
+                    if (val>_value) {
                         _trend = VALUE_TREND_INCREASING;
-                    } else if (val<value) {
+                    } else if (val<_value) {
                         _trend = VALUE_TREND_DECREASING;
                     } else {
                         _trend = VALUE_TREND_CONSTANT;
@@ -148,11 +150,12 @@ public:
                     _lastTrendUpdate = QDateTime::currentMSecsSinceEpoch();
                     break;
                 default:
+                    qWarning() << "Unsupported data type" << _value.typeName();
                     break;
                 }
             }
 
-            value = val;
+            _value = val;
             _lastUpdate = QDateTime::currentMSecsSinceEpoch();
 
             _isFirstUpdate = false;
@@ -185,6 +188,8 @@ public:
 
     virtual void broadcastValues();
 
+    virtual QVariant value(int index);
+
     void init(ControllerManager* parent, AppConfiguration* appConfig, QMqttClient *mqttClient);
 
     AppConfiguration* getConfig();
@@ -196,8 +201,6 @@ public:
     void publishCmd(EnumsDeclarations::MQTT_CMDS cmd);
 
     QList<ValueStruct> values();
-
-    QVariant value(int index);
 
     bool valueIsValid(int index);
 

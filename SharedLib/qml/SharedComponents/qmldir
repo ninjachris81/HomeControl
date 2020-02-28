@@ -4,4 +4,5 @@ HCValueLabel 1.0 HCValueLabel.qml
 HCDividerH 1.0 HCDividerH.qml
 HCDebugTracer 1.0 HCDebugTracer.qml
 HCSpinBox 1.0 HCSpinBox.qml
+HCKeyboard 1.0 HCKeyboard.qml
 singleton HCKeyboardManager 1.0 HCKeyboardManager.qml

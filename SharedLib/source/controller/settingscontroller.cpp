@@ -83,6 +83,11 @@ void SettingsController::onInit() {
         publishSettingsValue(EnumsDeclarations::SETTINGS_HEATING_MIN_TEMP_TANK, 30);
 
         publishSettingsValue(EnumsDeclarations::SETTINGS_TANK_OFFSET, 0);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_TEMP_EXP_THRESHOLD, 10);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_CLOUDS_EXP_THRESHOLD, 50);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_TANK_MIN_TEMP, 40);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_BOILER_SCHEDULE, "-15 -15 -15 -15 -5 0 5 5 5 5 -5 -5 -5 -5 -5 -5 0 0 0 0 0 -5 -15 -15");
+        publishSettingsValue(EnumsDeclarations::SETTINGS_SUN_EXP_SUBSTRACT, 5);
     }
 }
 
@@ -95,14 +100,15 @@ void SettingsController::onValueChanged(int index, QVariant value) {
 
     if (m_parent->isServer()) {
         m_settings->setValue(getSettingsKey(index), value);
-
+    } else {
         switch (index) {
         case EnumsDeclarations::SETTINGS_TANK_OFFSET:
-            // TODO
+            qCDebug(LG_SETTINGS_CONTROLLER) << Q_FUNC_INFO << "Emitting refresh signal";
+            ControllerBase* tempController = m_parent->getController(TempController::CONTROLLER_NAME);
+            Q_EMIT(tempController->valueChanged(EnumsDeclarations::TEMPS_TANK, tempController->value(EnumsDeclarations::TEMPS_TANK)));
             break;
         }
     }
-
 }
 
 QString SettingsController::getSettingsKey(int index) {
@@ -123,7 +129,7 @@ QVariant SettingsController::getSettingsValue(int index, QVariant defaultValue, 
         return val;
     } else {
         qCWarning(LG_SETTINGS_CONTROLLER) << "Cannot convert value" << val << getValueType(index);
-        return m_values[index].value;
+        return value(index);
     }
 }
 

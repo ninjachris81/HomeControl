@@ -49,7 +49,7 @@ Item {
         spacing: 2
         anchors.fill: parent
 
-        Label {
+        HCLabel {
             id: label
 
             Layout.fillWidth: true
@@ -58,9 +58,7 @@ Item {
 
             text: labelText + labelSuffix
 
-            elide: Text.ElideRight
-
-            font.pointSize: fontPointSize>0 ? fontPointSize : Style.fontPointSize-2
+            fontPointSize: root.fontPointSize>0 ? root.fontPointSize : Style.fontPointSize-2
         }
 
         TextInput {
@@ -74,6 +72,7 @@ Item {
             readOnly: true
 
             font.pointSize: fontPointSize>0 ? fontPointSize : Style.fontPointSize-2
+            font.family: Style.fontFamily
 
             MouseArea {
                 anchors.top: parent.top

@@ -64,9 +64,20 @@ HCPage {
                         HCLabel {
                             anchors.left: parent.left
                             anchors.right: parent.right
+                            anchors.top: parent.top
                             horizontalAlignment: Text.AlignHCenter
 
                             text: DataBridge.wfcManager.forecast.temps[index].toFixed(0) + " °"
+                            font.pointSize: 8
+                        }
+
+                        HCLabel {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.bottom: parent.bottom
+                            horizontalAlignment: Text.AlignHCenter
+
+                            text: DataBridge.wfcManager.forecast.clouds[index].toFixed(0) + " %"
                             font.pointSize: 8
                         }
                     }

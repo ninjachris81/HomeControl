@@ -9,20 +9,31 @@
 #include "controller/tempcontroller.h"
 #include "controller/relaycontroller.h"
 #include "controller/settingscontroller.h"
+#include "utils/weatherforecastmanager.h"
+#include "utils/appconfiguration.h"
 
-#define BOILER_LOGIC_INTERVAL 5000
+#define BOILER_LOGIC_INTERVAL 10000
 
 Q_DECLARE_LOGGING_CATEGORY(LG_BOILER_LOGIC)
 
 class BoilerLogic : public LogicController
 {
 public:
-    BoilerLogic(ControllerManager *controllerManager, QObject *parent = nullptr);
+    BoilerLogic(ControllerManager *controllerManager, AppConfiguration* appConfig, QObject *parent = nullptr);
+    ~BoilerLogic();
 
 private:
     SettingsController* m_settingsController;
     TempController* m_tempController;
     RelayController* m_relayController;
+
+    WeatherForecastManager* m_wfcManager;
+    QTimer m_wfcTimer;
+
+private slots:
+    void onRefreshWFC();
+
+    int getScheduledTempDelta();
 
 public slots:
     void onMaintenance();

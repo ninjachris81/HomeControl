@@ -23,7 +23,7 @@ void WeatherForecastManager::executeRequest() {
 
         QUrl url;
         url.setScheme("http");
-        url.setHost("openweathermap.org");
+        url.setHost("api.openweathermap.org");
         url.setPath("/data/2.5/forecast");
         url.setQuery("id=2825297&units=metric&appid=" + m_apiKey);
 
@@ -48,9 +48,10 @@ void WeatherForecastManager::onFinished(QNetworkReply *reply) {
         qCDebug(LG_WEATHERFORECAST) << "Finished request" << reply->url().toString() << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << content.length();
 
         if (m_currentForecast.fromJson(content)) {
-            Q_EMIT(forecastChanged());
+            qCDebug(LG_WEATHERFORECAST) << "Loaded data" << m_currentForecast.isValid();
         } else {
             qCWarning(LG_WEATHERFORECAST) << "Failed to load data";
         }
+        Q_EMIT(forecastChanged());
     }
 }

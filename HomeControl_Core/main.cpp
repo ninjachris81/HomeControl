@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 
     PreheatLogic preheatLogic(&controllerManager);
     HeatingLogic heatLogic(&controllerManager);
-    BoilerLogic boilerLogic(&controllerManager);
+    BoilerLogic boilerLogic(&controllerManager, &appConfig);
 
     ThingSpeakLogger thingspeakLogger(&controllerManager, &appConfig);
     DataLogger dataLogger(&controllerManager, &appConfig);
