@@ -7,5 +7,8 @@
         <file>images/icons/flame_off.png</file>
         <file>images/icons/flame_on.png</file>
         <file>images/particles/glowdot.png</file>
+        <file>images/icons/moon.png</file>
+        <file>images/icons/sun.png</file>
+        <file>images/icons/hour_glass.png</file>
     </qresource>
 </RCC>

@@ -30,6 +30,9 @@ void InfoWrapper::onValueChanged(int index, QVariant value) {
     case EnumsDeclarations::INFOS_BOILER_TARGET_TEMP:
         Q_EMIT(boilerTargetTempChanged());
         break;
+    case EnumsDeclarations::INFOS_SUN_EXPECTED:
+        Q_EMIT(sunExpectedChanged());
+        break;
     default:
         break;
     }
@@ -45,4 +48,8 @@ double InfoWrapper::systemTemp() {
 
 double InfoWrapper::boilerTargetTemp() {
     return m_controller->value(EnumsDeclarations::INFOS_BOILER_TARGET_TEMP).toDouble();
+}
+
+int InfoWrapper::sunExpected() {
+    return m_controller->value(EnumsDeclarations::INFOS_SUN_EXPECTED).toInt();
 }

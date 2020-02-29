@@ -88,6 +88,27 @@ Window {
                 Layout.preferredWidth: 50
 
                 style: "flame"
+
+                isOn: boilerOnBinding.value
+
+                HCModelValueBool {
+                    id: boilerOnBinding
+
+                    model: DataBridge.relayControllerModel
+                    modelIndex: Enums.RELAYS_BOILER
+                }
+
+                Image {
+                    width: 16
+                    height: 16
+
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+
+                    source: "qrc:/images/icons/" +
+                            (DataBridge.infos.sunExpected==Enums.BOOL_TRUE ? "sun.png" :
+                                    DataBridge.infos.sunExpected==Enums.BOOL_FALSE ? "moon.png" : "hour_glass.png")
+                }
             }
         }
 

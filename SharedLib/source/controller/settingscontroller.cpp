@@ -85,9 +85,9 @@ void SettingsController::onInit() {
         publishSettingsValue(EnumsDeclarations::SETTINGS_TANK_OFFSET, 0);
         publishSettingsValue(EnumsDeclarations::SETTINGS_TEMP_EXP_THRESHOLD, 10);
         publishSettingsValue(EnumsDeclarations::SETTINGS_CLOUDS_EXP_THRESHOLD, 50);
-        publishSettingsValue(EnumsDeclarations::SETTINGS_TANK_MIN_TEMP, 40);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_TANK_MIN_TEMP, 45);
         publishSettingsValue(EnumsDeclarations::SETTINGS_BOILER_SCHEDULE, "-15 -15 -15 -15 -5 0 5 5 5 5 -5 -5 -5 -5 -5 -5 0 0 0 0 0 -5 -15 -15");
-        publishSettingsValue(EnumsDeclarations::SETTINGS_SUN_EXP_SUBSTRACT, 5);
+        publishSettingsValue(EnumsDeclarations::SETTINGS_SUN_EXP_SUBSTRACT, 10);
     }
 }
 

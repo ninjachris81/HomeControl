@@ -63,7 +63,10 @@
 #define INFOS_LABEL_SYSTEM_TEMP "System temp"
 
 #define MQTT_PATH_INFOS_BOILER_TARGET_TEMP 2
-#define INFOS_LABEL_BOILER_TARGET_TEMP "Boilder target temp"
+#define INFOS_LABEL_BOILER_TARGET_TEMP "Boiler target temp"
+
+#define MQTT_PATH_INFOS_SUN_EXPECTED 3
+#define INFOS_LABEL_SUN_EXPECTED "Sun Expected"
 
 // SETTINGS
 #define MQTT_PATH_SETTINGS "settings"

@@ -24,6 +24,7 @@ BoilerLogic::~BoilerLogic() {
 void BoilerLogic::onMaintenance() {
     bool boilerOn = false;
     double targetTemp = 0;
+    EnumsDeclarations::VALIDATED_BOOL sunExpectedVB = EnumsDeclarations::BOOL_INVALID;
 
     if (m_tempController->value(EnumsDeclarations::TEMPS_TANK).isValid()) {
         bool sunExpected = false;
@@ -45,6 +46,8 @@ void BoilerLogic::onMaintenance() {
 
             sunExpected = avgTempTomorrow>=m_settingsController->value(EnumsDeclarations::SETTINGS_TEMP_EXP_THRESHOLD).toInt() && avgCloudsTomorrow<=m_settingsController->value(EnumsDeclarations::SETTINGS_CLOUDS_EXP_THRESHOLD).toInt();
             qCDebug(LG_BOILER_LOGIC) << "Sun expected" << sunExpected;
+
+            sunExpectedVB = sunExpected ? EnumsDeclarations::BOOL_TRUE : EnumsDeclarations::BOOL_FALSE;
         } else {
             qCWarning(LG_BOILER_LOGIC) << "No weather forecast available";
         }
@@ -67,6 +70,7 @@ void BoilerLogic::onMaintenance() {
     boilerOn = false;       // TODO REMOVE ME !!!!!!
 
     m_infoController->setValue(EnumsDeclarations::INFOS_BOILER_TARGET_TEMP, targetTemp);
+    m_infoController->setValue(EnumsDeclarations::INFOS_SUN_EXPECTED, sunExpectedVB);
 
     m_relayController->setValue(EnumsDeclarations::RELAYS_BOILER, boilerOn, true);
 }
