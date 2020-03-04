@@ -39,10 +39,9 @@ ControllerBase::VALUE_BC_INTERVAL InfoController::getValueBCInterval(int index) 
     switch (index) {
     case EnumsDeclarations::INFOS_SYSTEM_TIME:
     case EnumsDeclarations::INFOS_SYSTEM_TEMP:
-        return VALUE_BC_FAST;
     case EnumsDeclarations::INFOS_BOILER_TARGET_TEMP:
     case EnumsDeclarations::INFOS_SUN_EXPECTED:
-        return VALUE_BC_NONE;
+        return VALUE_BC_FAST;
     }
 
     return VALUE_BC_NONE;

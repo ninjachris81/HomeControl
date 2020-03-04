@@ -112,6 +112,33 @@ Window {
             }
         }
 
+        HCSpinBox {
+            Layout.preferredHeight: 30
+            Layout.fillWidth: true
+
+            from: -20
+            to: 20
+
+            model: DataBridge.settingsControllerModel
+            modelIndex: Enums.SETTINGS_TANK_OFFSET
+
+            //value: DataBridge.settingsControllerModel.data(DataBridge.settingsControllerModel.index(Enums.SETTINGS_TANK_OFFSET, 0), 258)
+            textFromValue: function(value, locale) {
+                return Number(value).toLocaleString(locale, "f", 1) + " °";
+            }
+
+            onValueModified: {
+                DataBridge.settings.updateSetting(Enums.SETTINGS_TANK_OFFSET, value)
+            }
+        }
+
+        HCDividerH {
+            Layout.topMargin: 6
+            Layout.fillWidth: true
+            Layout.preferredHeight: 2
+        }
+
+        /*
         HCValueLabel {
             Layout.preferredHeight: 50
             Layout.fillWidth: true
@@ -124,7 +151,7 @@ Window {
             showTrend: true
             backgroundElement.visible: true
             labelSuffix: ""
-        }
+        }*/
 
         HCValueLabel {
             Layout.preferredHeight: 50
@@ -252,24 +279,57 @@ Window {
             Layout.preferredHeight: 2
         }
 
-        HCSpinBox {
-            Layout.preferredHeight: 30
+        RowLayout {
+            HCValueLabel {
+                id: heatingTemp
+
+                Layout.preferredHeight: 50
+                Layout.preferredWidth: 300
+                Layout.margins: 6
+
+                model: DataBridge.settingsControllerModel
+                modelIndex: Enums.SETTINGS_HEATING_TEMP
+                unit: "°"
+                formatAsFloat: true
+                showTrend: true
+                backgroundElement.visible: true
+                labelSuffix: ""
+            }
+
+            HCValueLabel {
+                Layout.preferredHeight: 50
+                Layout.fillWidth: true
+
+                model: DataBridge.tempControllerModel
+                modelIndex: Enums.TEMPS_INSIDE
+                unit: "°"
+                formatAsFloat: true
+                showTrend: true
+                backgroundElement.visible: true
+                labelSuffix: ""
+            }
+
+            HCSwitchIndicator {
+                Layout.preferredHeight: 50
+                Layout.preferredWidth: 50
+
+                style: "pump"
+
+                isOn: heatingPumpBinding.value
+
+                HCModelValueBool {
+                    id: heatingPumpBinding
+
+                    model: DataBridge.relayControllerModel
+                    modelIndex: Enums.RELAYS_HEATING_PUMP
+                }
+            }
+        }
+
+        HCDividerH {
+            Layout.topMargin: 6
             Layout.fillWidth: true
-
-            from: -20
-            to: 20
-
-            model: DataBridge.settingsControllerModel
-            modelIndex: Enums.SETTINGS_TANK_OFFSET
-
-            //value: DataBridge.settingsControllerModel.data(DataBridge.settingsControllerModel.index(Enums.SETTINGS_TANK_OFFSET, 0), 258)
-            textFromValue: function(value, locale) {
-                return Number(value).toLocaleString(locale, "f", 1) + " °";
-            }
-
-            onValueModified: {
-                DataBridge.settings.updateSetting(Enums.SETTINGS_TANK_OFFSET, value)
-            }
+            Layout.preferredHeight: 2
         }
 
         Item {

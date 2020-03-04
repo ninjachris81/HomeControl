@@ -3,7 +3,7 @@
 #include "include/constants_qt.h"
 #include <QDebug>
 #include <QMetaEnum>
-
+#include <QMutexLocker>
 
 ControllerBase::ControllerBase(VALUE_OWNER_MODE valueOwnerMode, QObject *parent) : QObject(parent), m_mode(valueOwnerMode), m_topicValSub(nullptr), m_topicSetSub(nullptr), m_bcSub(nullptr)
 {
@@ -150,6 +150,8 @@ QList<ControllerBase::ValueStruct> ControllerBase::values() {
 }
 
 void ControllerBase::setValue(int index, QVariant value, bool sendSet, bool ignoreCompare) {
+    QMutexLocker locker(&m_setValueMutex);
+
     qDebug() << Q_FUNC_INFO << index << value << sendSet << ignoreCompare;
 
     if (_checkIndex(index)) {

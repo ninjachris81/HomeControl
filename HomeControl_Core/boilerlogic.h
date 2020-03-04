@@ -14,7 +14,7 @@
 #include "utils/weatherforecastmanager.h"
 #include "utils/appconfiguration.h"
 
-#define BOILER_LOGIC_INTERVAL 10000
+#define BOILER_LOGIC_INTERVAL 60000
 
 Q_DECLARE_LOGGING_CATEGORY(LG_BOILER_LOGIC)
 

@@ -5,6 +5,7 @@
 #include <QMqttClient>
 #include <QDateTime>
 #include <QTimer>
+#include <QMutex>
 
 #include "utils/appconfiguration.h"
 #include "constants_qt.h"
@@ -257,6 +258,8 @@ private:
     QTimer m_valueUpdateTimer;
     QTimer m_valueTrendTimer;
     QTimer m_valueBCTimer;
+
+    QMutex m_setValueMutex;
 
     bool _checkIndex(int index);
 

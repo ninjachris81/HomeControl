@@ -67,8 +67,6 @@ void BoilerLogic::onMaintenance() {
     }
 
 
-    boilerOn = false;       // TODO REMOVE ME !!!!!!
-
     m_infoController->setValue(EnumsDeclarations::INFOS_BOILER_TARGET_TEMP, targetTemp);
     m_infoController->setValue(EnumsDeclarations::INFOS_SUN_EXPECTED, sunExpectedVB);
 
