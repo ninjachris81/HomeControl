@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>DateFormat.js</file>
+        <file>InfoPopup.qml</file>
+        <file>TankInfoPopup.qml</file>
+        <file>DataLogView.qml</file>
+        <file>DataLogPopup.qml</file>
+    </qresource>
+</RCC>

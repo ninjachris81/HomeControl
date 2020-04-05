@@ -1,21 +1,20 @@
-#include "include/sqllistmodel/sqlquerymodel.h"
+#include "include/sqllistmodel/hcsqlquerymodel.h"
 #include <QSqlRecord>
 #include <QSqlField>
 #include <QDebug>
 #include <QSqlError>
-#include <QModelIndex>
 
-SqlQueryModel::SqlQueryModel(QSqlDatabase db, QObject *parent) :
+HCSqlQueryModel::HCSqlQueryModel(QSqlDatabase db, QObject *parent) :
     QSqlTableModel(parent, db)
 {
 }
 
-void SqlQueryModel::updateTable(const QString &tableName) {
+void HCSqlQueryModel::updateTable(const QString &tableName, const QString filter) {
     qDebug() << Q_FUNC_INFO << tableName;
 
     if (database().tables().contains(tableName)) {
         setTable(tableName);
-        setFilter("");
+        setFilter(filter);
         generateRoleNames();
         select();
 
@@ -26,7 +25,7 @@ void SqlQueryModel::updateTable(const QString &tableName) {
     }
 }
 
-void SqlQueryModel::generateRoleNames()
+void HCSqlQueryModel::generateRoleNames()
 {
     qDebug() << Q_FUNC_INFO << rowCount();
 
@@ -36,11 +35,14 @@ void SqlQueryModel::generateRoleNames()
     }
 }
 
-QVariant SqlQueryModel::data(const QModelIndex &index, int role) const
+QVariant HCSqlQueryModel::data(const QModelIndex &index, int role) const
 {
+    //qDebug() << Q_FUNC_INFO << index << role;
     QVariant value;
 
-    if(role < Qt::UserRole) {
+    if(role == Qt::DisplayRole) {
+        value = resolveDisplayData(index, role, QSqlQueryModel::data(index, Qt::DisplayRole));
+    } else if(role < Qt::UserRole) {
         value = QSqlQueryModel::data(index, role);
     }
     else {
@@ -51,11 +53,18 @@ QVariant SqlQueryModel::data(const QModelIndex &index, int role) const
     return value;
 }
 
-QVariant SqlQueryModel::resolveData(int colIndex, QVariant value) const {
+QVariant HCSqlQueryModel::resolveData(int colIndex, QVariant value) const {
     Q_UNUSED(colIndex);
 
     return value;
 }
+
+QVariant HCSqlQueryModel::resolveDisplayData(const QModelIndex &item, int role, QVariant value) const {
+    Q_UNUSED(value);
+
+    return QSqlQueryModel::data(item, role);
+}
+
 /*
 QVariant SqlQueryModel::data ( const QModelIndex & index, int role ) const
 {
