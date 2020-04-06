@@ -11,7 +11,7 @@ class HCSqlQueryModel : public QSqlTableModel
 public:
     explicit HCSqlQueryModel(QSqlDatabase db, QObject *parent=nullptr);
 
-    void updateTable(const QString &tableName, const QString filter);
+    void updateTable(const QString &tableName, const QString filter, const int sortCol, const Qt::SortOrder sortOrder);
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     QHash<int, QByteArray> roleNames() const {	return m_roleNames;	}

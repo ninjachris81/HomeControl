@@ -9,5 +9,7 @@
         <file>qml/SharedComponents/HCKeyboardManager.qml</file>
         <file>qml/SharedComponents/HCSpinBox.qml</file>
         <file>qml/SharedComponents/HCSwitchIndicator.qml</file>
+        <file>qml/SharedComponents/HCGroupBox.qml</file>
+        <file>qml/SharedComponents/HCButton.qml</file>
     </qresource>
 </RCC>

@@ -25,7 +25,8 @@ public:
         RELAY_CONTROLLER,
         SETTINGS_CONTROLLER,
         SWITCH_CONTROLLER,
-        TEMP_CONTROLLER
+        TEMP_CONTROLLER,
+        DATA_LOG_CONTROLLER
     };
 
     enum VALUE_OWNER_MODE {
@@ -67,8 +68,10 @@ public:
         bool _isFirstUpdate = true;
 
         bool isValid() {
-            if (_lifeTime==LIFETIME_UNLIMITED) {
+            if (_lifeTime==LIFETIME_ALWAYS_VALID) {
                 _wasValid = true;
+            } else if (_lifeTime==LIFETIME_UNLIMITED) {
+                _wasValid = _lastUpdate!=0;
             } else if (_lastUpdate==0) {
                 _wasValid = false;
             } else {

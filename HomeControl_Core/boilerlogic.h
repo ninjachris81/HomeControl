@@ -13,6 +13,7 @@
 
 #include "utils/weatherforecastmanager.h"
 #include "utils/appconfiguration.h"
+#include "utils/forecastutils.h"
 
 #define BOILER_LOGIC_INTERVAL 60000
 
@@ -22,7 +23,6 @@ class BoilerLogic : public LogicController
 {
 public:
     BoilerLogic(ControllerManager *controllerManager, AppConfiguration* appConfig, QObject *parent = nullptr);
-    ~BoilerLogic();
 
 private:
     SettingsController* m_settingsController;
@@ -31,12 +31,8 @@ private:
     InfoController* m_infoController;
 
     WeatherForecastManager* m_wfcManager;
-    QTimer m_wfcTimer;
 
 private slots:
-    void onRefreshWFC();
-
-    int getScheduledTempDelta();
 
 public slots:
     void onMaintenance();

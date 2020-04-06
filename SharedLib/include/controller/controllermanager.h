@@ -48,6 +48,10 @@ public:
 
     bool isServer();
 
+    AppConfiguration* appConfig() {
+        return m_appConfig;
+    }
+
 private:
     QMap<QString, ControllerBase*> m_controllers;
     AppConfiguration* m_appConfig;

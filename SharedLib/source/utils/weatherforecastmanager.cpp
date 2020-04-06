@@ -2,11 +2,16 @@
 
 Q_LOGGING_CATEGORY(LG_WEATHERFORECAST, "WeatherforeCast");
 
+WeatherForecastManager* WeatherForecastManager::m_instance = nullptr;
+
 WeatherForecastManager::WeatherForecastManager(QString apiKey, QObject *parent) : QObject(parent), m_apiKey(apiKey)
 {
+    WeatherForecastManager();
+}
 
+WeatherForecastManager::WeatherForecastManager(QObject *parent) {
+    connect(&m_timer, &QTimer::timeout, this, &WeatherForecastManager::onAutoRefresh);
     connect(&m_nam, &QNetworkAccessManager::finished, this, &WeatherForecastManager::onFinished);
-
 }
 
 void WeatherForecastManager::requestForecast() {
@@ -14,6 +19,27 @@ void WeatherForecastManager::requestForecast() {
 
     executeRequest();
 }
+
+void WeatherForecastManager::setApiKey(QString apiKey) {
+    m_apiKey = apiKey;
+}
+
+void WeatherForecastManager::enableAutoRefresh(int intervalMs) {
+    qCDebug(LG_WEATHERFORECAST) << Q_FUNC_INFO << intervalMs;
+    m_timer.setInterval(intervalMs);
+    m_timer.start();
+}
+
+void WeatherForecastManager::disableAutoRefresh() {
+    qCDebug(LG_WEATHERFORECAST) << Q_FUNC_INFO;
+    m_timer.stop();
+}
+
+void WeatherForecastManager::onAutoRefresh() {
+    qCDebug(LG_WEATHERFORECAST) << Q_FUNC_INFO;
+    requestForecast();
+}
+
 
 void WeatherForecastManager::executeRequest() {
     qCDebug(LG_WEATHERFORECAST) << Q_FUNC_INFO;

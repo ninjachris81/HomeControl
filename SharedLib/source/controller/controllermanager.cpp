@@ -1,5 +1,8 @@
 #include "include/controller/controllermanager.h"
 #include "include/constants_qt.h"
+
+#include "utils/databasemanager.h"
+
 #include <QDebug>
 #include <QTimer>
 
@@ -29,9 +32,13 @@ void ControllerManager::init(AppConfiguration *appConfig) {
     }
 
     m_mqttClient.connectToHost();
+
+    DatabaseManager::instance()->init(appConfig);
 }
 
 void ControllerManager::registerController(ControllerBase *controller) {
+    qDebug() << Q_FUNC_INFO << controller->getName();
+    controller->setParent(this);
     m_controllers.insert(controller->getName(), controller);
 }
 

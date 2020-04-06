@@ -132,13 +132,13 @@ bool LogController::checkTables() {
     QStringList tables = m_db.tables();
 
     if (!tables.contains(DB_TABLE_LOGS)) {
-        qDebug() << "Creating new table" << DB_TABLE_LOGS;
+        qCDebug(LG_LOG_CONTROLLER) << "Creating new table" << DB_TABLE_LOGS;
 
         QSqlQuery query(m_db);
         if (query.exec("CREATE TABLE " + DB_TABLE_LOGS + " (\"date\" UNSIGNED BIG INT NOT NULL, \"type\" TINYINT NOT NULL, \"source\" TEXT, \"msg\" TEXT)")) {
-            qDebug() << "Created new table" << DB_TABLE_LOGS;
+            qCDebug(LG_LOG_CONTROLLER) << "Created new table" << DB_TABLE_LOGS;
         } else {
-            qWarning() << "Failed to create new table" << query.lastError().text();
+            qCWarning(LG_LOG_CONTROLLER) << "Failed to create new table" << query.lastError().text();
             return false;
         }
     }
@@ -181,15 +181,13 @@ void LogController::retrieveLog() {
     QTcpSocket socket;
     socket.connectToHost(host, LOG_PORT);
     if (socket.waitForConnected(5000)) {
-        QThread::msleep(200);
+        socket.setReadBufferSize(1000 * 1024);
 
         if (socket.waitForReadyRead(5000)) {
 
-            QByteArray buffer; // = socket.readAll();
-            while (!socket.atEnd()) {
-                buffer.append(socket.read(4096));
-                qDebug() << buffer.size();
-            }
+            socket.waitForDisconnected(5000);
+
+            QByteArray buffer = socket.readAll();
 
             socket.close();
 

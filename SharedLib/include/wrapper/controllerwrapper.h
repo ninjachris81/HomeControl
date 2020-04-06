@@ -7,7 +7,7 @@
 #include <QQmlEngine>
 
 class ControllerWrapper : public QObject {
-    Q_OBJECT
+    //Q_OBJECT
 public:
     ControllerWrapper(ControllerBase* controller);
 

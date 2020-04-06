@@ -40,7 +40,7 @@ qint64 ControllerBase::getValueTrendLifetime(int index) {
 }
 
 void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig, QMqttClient *mqttClient) {
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO << getName();
 
     if (!getEnumName().isEmpty()) {
         int enumId = EnumsDeclarations::staticMetaObject.indexOfEnumerator(getEnumName().toStdString().c_str());
@@ -197,34 +197,8 @@ void ControllerBase::setValue(int index, QVariant value, bool sendSet, bool igno
 void ControllerBase::onMqttConnected() {
     qDebug() << Q_FUNC_INFO;
 
-    QStringList fullPath = ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_VAL, -1, true);
-
-    QMqttTopicFilter filter = QMqttTopicFilter(fullPath.join(MQTT_PATH_SEP));
-    if (filter.isValid()) {
-        qDebug() << "Subscribing to" << filter.filter();
-        m_topicValSub = m_mqttClient->subscribe(filter);
-        connect(m_topicValSub, &QMqttSubscription::messageReceived, this, &ControllerBase::_onMqttMessageReceived);
-    }
-
-    // connect to bc
-    QStringList bcPath = ControllerManager::buildPath(QStringList() << MQTT_PATH_BC);
-    m_bcSub = m_mqttClient->subscribe(QMqttTopicFilter(bcPath.join(MQTT_PATH_SEP)));
-    connect(m_bcSub, &QMqttSubscription::messageReceived, this, &ControllerBase::_onMqttMessageReceived);
-
-    if (hasSetSupport()) {
-        qDebug() << Q_FUNC_INFO << "Adding set support";
-        QStringList fullPath = ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_SET, -1, true);
-
-        QMqttTopicFilter filter = QMqttTopicFilter(fullPath.join(MQTT_PATH_SEP));
-        if (filter.isValid()) {
-            qDebug() << "Subscribing to" << filter.filter();
-            m_topicSetSub = m_mqttClient->subscribe(filter);
-            connect(m_topicSetSub, &QMqttSubscription::messageReceived, this, &ControllerBase::_onMqttMessageReceived);
-        }
-    }
-
-    if (!m_parent->isServer()) {
-        QStringList fullPath = ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_TRE, -1, true);
+    if (!m_topicPath.isEmpty()) {
+        QStringList fullPath = ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_VAL, -1, true);
 
         QMqttTopicFilter filter = QMqttTopicFilter(fullPath.join(MQTT_PATH_SEP));
         if (filter.isValid()) {
@@ -232,6 +206,36 @@ void ControllerBase::onMqttConnected() {
             m_topicValSub = m_mqttClient->subscribe(filter);
             connect(m_topicValSub, &QMqttSubscription::messageReceived, this, &ControllerBase::_onMqttMessageReceived);
         }
+
+        // connect to bc
+        QStringList bcPath = ControllerManager::buildPath(QStringList() << MQTT_PATH_BC);
+        m_bcSub = m_mqttClient->subscribe(QMqttTopicFilter(bcPath.join(MQTT_PATH_SEP)));
+        connect(m_bcSub, &QMqttSubscription::messageReceived, this, &ControllerBase::_onMqttMessageReceived);
+
+        if (hasSetSupport()) {
+            qDebug() << Q_FUNC_INFO << "Adding set support";
+            QStringList fullPath = ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_SET, -1, true);
+
+            QMqttTopicFilter filter = QMqttTopicFilter(fullPath.join(MQTT_PATH_SEP));
+            if (filter.isValid()) {
+                qDebug() << "Subscribing to" << filter.filter();
+                m_topicSetSub = m_mqttClient->subscribe(filter);
+                connect(m_topicSetSub, &QMqttSubscription::messageReceived, this, &ControllerBase::_onMqttMessageReceived);
+            }
+        }
+
+        if (!m_parent->isServer()) {
+            QStringList fullPath = ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_TRE, -1, true);
+
+            QMqttTopicFilter filter = QMqttTopicFilter(fullPath.join(MQTT_PATH_SEP));
+            if (filter.isValid()) {
+                qDebug() << "Subscribing to" << filter.filter();
+                m_topicValSub = m_mqttClient->subscribe(filter);
+                connect(m_topicValSub, &QMqttSubscription::messageReceived, this, &ControllerBase::_onMqttMessageReceived);
+            }
+        }
+    } else {
+        qWarning() << "Empty topic path for controller" << getName();
     }
 
     onConnectedChanged(true);
@@ -331,7 +335,7 @@ void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
 
 void ControllerBase::broadcastValues() {
     for (int i=0;i<m_values.count();i++) {
-        if (isValueOwner(i)) publishValue(i);
+        if (isValueOwner(i) && valueIsValid(i)) publishValue(i);
     }
 }
 

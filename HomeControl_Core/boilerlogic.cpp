@@ -10,15 +10,9 @@ BoilerLogic::BoilerLogic(ControllerManager *controllerManager, AppConfiguration 
     m_settingsController = static_cast<SettingsController*>(controllerManager->getController(SettingsController::CONTROLLER_NAME));
     m_infoController = static_cast<InfoController*>(controllerManager->getController(InfoController::CONTROLLER_NAME));
 
-    m_wfcManager = new WeatherForecastManager(appConfig->getString("WFC_API_KEY", ""));
-    m_wfcTimer.setInterval(30 * 60000);     // every 30 minutes
-    connect(&m_wfcTimer, &QTimer::timeout, this, &BoilerLogic::onRefreshWFC);
-    m_wfcTimer.start();
-    onRefreshWFC();
-}
-
-BoilerLogic::~BoilerLogic() {
-    delete m_wfcManager;
+    m_wfcManager = WeatherForecastManager::instance();
+    m_wfcManager->enableAutoRefresh(30 * 60000);
+    m_wfcManager->requestForecast();
 }
 
 void BoilerLogic::onMaintenance() {
@@ -44,25 +38,31 @@ void BoilerLogic::onMaintenance() {
             float avgCloudsTomorrow = m_wfcManager->forecast()->getAverageCloudsOfTimespan(from, to);
             qCDebug(LG_BOILER_LOGIC) << "Clouds tomorrow" << avgCloudsTomorrow;
 
-            sunExpected = avgTempTomorrow>=m_settingsController->value(EnumsDeclarations::SETTINGS_TEMP_EXP_THRESHOLD).toInt() && avgCloudsTomorrow<=m_settingsController->value(EnumsDeclarations::SETTINGS_CLOUDS_EXP_THRESHOLD).toInt();
+            m_infoController->setValue(EnumsDeclarations::INFOS_AVG_TEMP_FORECAST, static_cast<int>(avgTempTomorrow));
+            m_infoController->setValue(EnumsDeclarations::INFOS_AVG_CLOUDS_FORECAST, static_cast<int>(avgCloudsTomorrow));
+
+            sunExpected = ForecastUtils::calculateSunExpected(avgTempTomorrow, m_settingsController->value(EnumsDeclarations::SETTINGS_TEMP_EXP_THRESHOLD).toInt(), avgCloudsTomorrow, m_settingsController->value(EnumsDeclarations::SETTINGS_CLOUDS_EXP_THRESHOLD).toInt());
             qCDebug(LG_BOILER_LOGIC) << "Sun expected" << sunExpected;
 
             sunExpectedVB = sunExpected ? EnumsDeclarations::BOOL_TRUE : EnumsDeclarations::BOOL_FALSE;
         } else {
+            m_infoController->setValue(EnumsDeclarations::INFOS_AVG_TEMP_FORECAST, -1);
+            m_infoController->setValue(EnumsDeclarations::INFOS_AVG_CLOUDS_FORECAST, -1);
             qCWarning(LG_BOILER_LOGIC) << "No weather forecast available";
         }
 
         double currentTankTemp = m_tempController->value(EnumsDeclarations::TEMPS_TANK).toDouble();
         int minTemp = m_settingsController->value(EnumsDeclarations::SETTINGS_TANK_MIN_TEMP).toInt();
         int sunExpSubstract = m_settingsController->value(EnumsDeclarations::SETTINGS_SUN_EXP_SUBSTRACT).toInt();
-        int scheduledTempDelta = getScheduledTempDelta();
+        QString bs = m_settingsController->value(EnumsDeclarations::SETTINGS_BOILER_SCHEDULE).toString();
+        targetTemp = ForecastUtils::calculateTargetTemp(QTime::currentTime().hour(), bs, minTemp, sunExpected, sunExpSubstract);
 
-        targetTemp = minTemp + scheduledTempDelta + (sunExpected ? -sunExpSubstract : 0);
-
-        qCDebug(LG_BOILER_LOGIC) << "Target temp" << targetTemp << minTemp << scheduledTempDelta;
+        qCDebug(LG_BOILER_LOGIC) << "Target temp" << targetTemp << minTemp;
 
         boilerOn = currentTankTemp < targetTemp;
     } else {
+        m_infoController->setValue(EnumsDeclarations::INFOS_AVG_TEMP_FORECAST, -1);
+        m_infoController->setValue(EnumsDeclarations::INFOS_AVG_CLOUDS_FORECAST, -1);
         qCWarning(LG_BOILER_LOGIC) << "Tank temp is not valid";
     }
 
@@ -73,29 +73,7 @@ void BoilerLogic::onMaintenance() {
     m_relayController->setValue(EnumsDeclarations::RELAYS_BOILER, boilerOn, true);
 }
 
-int BoilerLogic::getScheduledTempDelta() {
-    qCDebug(LG_BOILER_LOGIC) << Q_FUNC_INFO;
 
-    QString bs = m_settingsController->value(EnumsDeclarations::SETTINGS_BOILER_SCHEDULE).toString();
-
-    if (!bs.isEmpty()) {
-        QStringList hours = bs.split(" ", QString::SkipEmptyParts);
-        if (hours.count()==24) {
-            return hours.at(QTime::currentTime().hour()).toInt();
-        } else {
-            qCWarning(LG_BOILER_LOGIC) << "Invalid boiler schedule" << bs << hours.count();
-        }
-    } else {
-        qCWarning(LG_BOILER_LOGIC) << "No boiler schedule set";
-    }
-
-    return 0;
-}
-
-void BoilerLogic::onRefreshWFC() {
-    qCDebug(LG_BOILER_LOGIC) << Q_FUNC_INFO;
-    m_wfcManager->requestForecast();
-}
 
 void BoilerLogic::onCommandReceived(EnumsDeclarations::MQTT_CMDS cmd) {
     qCDebug(LG_BOILER_LOGIC) << Q_FUNC_INFO << cmd;

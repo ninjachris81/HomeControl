@@ -8,6 +8,7 @@ QT += qml
 QT += mqtt
 QT += sql
 QT += quick
+QT += charts
 
 #QT       -= gui
 
@@ -31,10 +32,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    source/sqllistmodel/hcsqlquerymodel.cpp \
+    source/utils/databasemanager.cpp \
+    source/controller/dataloggercontroller.cpp \
+    source/sqllistmodel/dataloggersqllistmodel.cpp \
     source/utils/fontloader.cpp \
     source/utils/apptranslator.cpp \
+    source/utils/forecastutils.cpp \
     source/utils/weatherforecast.cpp \
     source/utils/weatherforecastmanager.cpp \
+    source/wrapper/dataloggerwrapper.cpp \
     source/wrapper/infowrapper.cpp \
     source/controller/infocontroller.cpp \
     source/controller/switchcontroller.cpp \
@@ -52,14 +59,17 @@ SOURCES += \
     source/controller/logcontroller.cpp \
     source/sqllistmodel/logsqllistmodel.cpp \
     source/utils/qsqldatabasewrapper.cpp \
-    source/sqllistmodel/sqlquerymodel.cpp \
     source/wrapper/logwrapper.cpp \
-    source/controller/brightnesscontroller.cpp
+    source/controller/brightnesscontroller.cpp \
+    source/utils/forecastutils.cpp
 
 HEADERS += \
+    include/controller/dataloggercontroller.h \
     include/controller/infocontroller.h \
     include/controller/switchcontroller.h \
+    include/sqllistmodel/dataloggersqllistmodel.h \
         include/sharedlib.h \
+    include/sqllistmodel/hcsqlquerymodel.h \
         include/utils/appconfiguration.h \
         include/constants.h \
         include/constants_qt.h \
@@ -70,20 +80,22 @@ HEADERS += \
         include/controller/settingscontroller.h \
         include/controller/logiccontroller.h \
         include/listmodel/controllerlistmodel.h \
+    include/utils/databasemanager.h \
     include/utils/fontloader.h \
     include/utils/version.h \
     include/utils/weatherforecast.h \
     include/utils/weatherforecastmanager.h \
         include/wrapper/controllerwrapper.h \
+    include/wrapper/dataloggerwrapper.h \
     include/wrapper/infowrapper.h \
     include/wrapper/settingswrapper.h \
     include/controller/logcontroller.h \
     include/sqllistmodel/logsqllistmodel.h \
     include/utils/qsqldatabasewrapper.h \
-    include/sqllistmodel/sqlquerymodel.h \
     include/wrapper/logwrapper.h \
     include/controller/brightnesscontroller.h \
-    include/utils/apptranslator.h
+    include/utils/apptranslator.h \
+    include/utils/forecastutils.h
 
 unix {
     target.path = $$[QT_INSTALL_LIBS]

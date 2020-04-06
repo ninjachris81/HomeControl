@@ -24,23 +24,12 @@ Item {
     property alias backgroundElement: backgroundItem
     property int fontPointSize: 0
 
-    Rectangle {
+    // TODO: change to loader
+    HCGroupBox {
         id: backgroundItem
 
         anchors.fill: parent
-
-        anchors.margins: -4
-
-        border.color: "black"
-        border.width: 1
-
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "#ced9eb" }
-            GradientStop { position: 1.0; color: "white" }
-        }
-
         visible: false
-        radius: 3
     }
 
     RowLayout {

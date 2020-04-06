@@ -18,7 +18,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     boilerlogic.cpp \
-    datalogger.cpp \
         main.cpp \
     preheatlogic.cpp \
     heatinglogic.cpp \
@@ -33,7 +32,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     boilerlogic.h \
-    datalogger.h \
     preheatlogic.h \
     heatinglogic.h \
     thingspeaklogger.h \

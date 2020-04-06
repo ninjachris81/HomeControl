@@ -8,12 +8,12 @@
 #include "controller/brightnesscontroller.h"
 #include "controller/switchcontroller.h"
 #include "controller/infocontroller.h"
+#include "controller/dataloggercontroller.h"
 
 #include "preheatlogic.h"
 #include "heatinglogic.h"
 #include "boilerlogic.h"
 #include "thingspeaklogger.h"
-#include "datalogger.h"
 
 #include "utils/version.h"
 
@@ -26,6 +26,8 @@ int main(int argc, char *argv[])
     AppConfiguration appConfig;
 
     ControllerManager controllerManager(true, &appConfig);
+
+    WeatherForecastManager::instance()->setApiKey(appConfig.getString("WFC_API_KEY", ""));
 
     TempController tempController;
     controllerManager.registerController(&tempController);
@@ -48,6 +50,9 @@ int main(int argc, char *argv[])
     InfoController infoController;
     controllerManager.registerController(&infoController);
 
+    DataLoggerController dataLoggerController;
+    controllerManager.registerController(&dataLoggerController);
+
     controllerManager.init(&appConfig);
 
     PreheatLogic preheatLogic(&controllerManager);
@@ -55,19 +60,18 @@ int main(int argc, char *argv[])
     BoilerLogic boilerLogic(&controllerManager, &appConfig);
 
     ThingSpeakLogger thingspeakLogger(&controllerManager, &appConfig);
-    DataLogger dataLogger(&controllerManager, &appConfig);
 
     // Register values for dl
     // temps
-    dataLogger.registerValue(&tempController, EnumsDeclarations::TEMPS_HC);
-    dataLogger.registerValue(&tempController, EnumsDeclarations::TEMPS_TANK);
-    dataLogger.registerValue(&tempController, EnumsDeclarations::TEMPS_WATER);
-    dataLogger.registerValue(&tempController, EnumsDeclarations::TEMPS_SOLAR_HC);
-    dataLogger.registerValue(&tempController, EnumsDeclarations::TEMPS_INSIDE);
+    dataLoggerController.registerValue(&tempController, EnumsDeclarations::TEMPS_HC);
+    dataLoggerController.registerValue(&tempController, EnumsDeclarations::TEMPS_TANK);
+    dataLoggerController.registerValue(&tempController, EnumsDeclarations::TEMPS_WATER);
+    dataLoggerController.registerValue(&tempController, EnumsDeclarations::TEMPS_SOLAR_HC);
+    dataLoggerController.registerValue(&tempController, EnumsDeclarations::TEMPS_INSIDE);
     // relays
-    dataLogger.registerValue(&relayController, EnumsDeclarations::RELAYS_HC_PUMP);
-    dataLogger.registerValue(&relayController, EnumsDeclarations::RELAYS_HEATING_PUMP);
-    dataLogger.registerValue(&relayController, EnumsDeclarations::RELAYS_BOILER);
+    dataLoggerController.registerValue(&relayController, EnumsDeclarations::RELAYS_HC_PUMP);
+    dataLoggerController.registerValue(&relayController, EnumsDeclarations::RELAYS_HEATING_PUMP);
+    dataLoggerController.registerValue(&relayController, EnumsDeclarations::RELAYS_BOILER);
 
     QObject::connect(&controllerManager, &ControllerManager::mqttConnected, [&logController]() {
         logController.addLog(EnumsDeclarations::LOGS_TYPE_STARTUP, DEV_ID_SERVER);

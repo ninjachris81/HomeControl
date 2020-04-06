@@ -68,6 +68,12 @@
 #define MQTT_PATH_INFOS_SUN_EXPECTED 3
 #define INFOS_LABEL_SUN_EXPECTED "Sun Expected"
 
+#define MQTT_PATH_INFOS_AVG_TEMP_FORECAST 4
+#define INFOS_LABEL_AVG_TEMP_FORECAST "Average Temp Forecast"
+
+#define MQTT_PATH_INFOS_AVG_CLOUDS_FORECAST 5
+#define INFOS_LABEL_AVG_CLOUDS_FORECAST "Average Clouds Forecast"
+
 // SETTINGS
 #define MQTT_PATH_SETTINGS "settings"
 
@@ -206,6 +212,7 @@
 
 // LIFETIMES
 #define LIFETIME_UNLIMITED 0
+#define LIFETIME_ALWAYS_VALID 1
 #define LIFETIME_SHORT  30000           // 30 sec
 #define LIFETIME_MID    120000          // 2 min
 #define LIFETIME_LONG   900000          // 10 min

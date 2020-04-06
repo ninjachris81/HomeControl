@@ -31,8 +31,13 @@ QVariant::Type InfoController::getDefaultValueType() {
 }
 
 qint64 InfoController::getValueLifetime(int index) {
-    Q_UNUSED(index)
-    return LIFETIME_MID;
+    switch (index) {
+        case EnumsDeclarations::INFOS_AVG_TEMP_FORECAST:
+        case EnumsDeclarations::INFOS_AVG_CLOUDS_FORECAST:
+            return LIFETIME_LONG;
+        default:
+            return LIFETIME_MID;
+    }
 }
 
 ControllerBase::VALUE_BC_INTERVAL InfoController::getValueBCInterval(int index) {
@@ -41,6 +46,8 @@ ControllerBase::VALUE_BC_INTERVAL InfoController::getValueBCInterval(int index) 
     case EnumsDeclarations::INFOS_SYSTEM_TEMP:
     case EnumsDeclarations::INFOS_BOILER_TARGET_TEMP:
     case EnumsDeclarations::INFOS_SUN_EXPECTED:
+    case EnumsDeclarations::INFOS_AVG_TEMP_FORECAST:
+    case EnumsDeclarations::INFOS_AVG_CLOUDS_FORECAST:
         return VALUE_BC_FAST;
     }
 

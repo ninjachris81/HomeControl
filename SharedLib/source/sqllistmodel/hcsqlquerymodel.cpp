@@ -9,13 +9,14 @@ HCSqlQueryModel::HCSqlQueryModel(QSqlDatabase db, QObject *parent) :
 {
 }
 
-void HCSqlQueryModel::updateTable(const QString &tableName, const QString filter) {
+void HCSqlQueryModel::updateTable(const QString &tableName, const QString filter, const int sortCol, const Qt::SortOrder sortOrder) {
     qDebug() << Q_FUNC_INFO << tableName;
 
     if (database().tables().contains(tableName)) {
         setTable(tableName);
         setFilter(filter);
         generateRoleNames();
+        setSort(sortCol, sortOrder);
         select();
 
         qDebug() << roleNames();

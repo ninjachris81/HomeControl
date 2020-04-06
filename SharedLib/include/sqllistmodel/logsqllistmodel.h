@@ -5,10 +5,10 @@
 #include <QSqlTableModel>
 #include <QSqlQuery>
 
-#include "sqlquerymodel.h"
+#include "hcsqlquerymodel.h"
 #include "controller/logcontroller.h"
 
-class LogSqlListModel : public SqlQueryModel {
+class LogSqlListModel : public HCSqlQueryModel {
 Q_OBJECT
 
 public:

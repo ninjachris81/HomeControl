@@ -32,6 +32,14 @@ Window {
         }
     }
 
+    InfoPopup {
+        id: solarLogPopup
+
+        contentItem: SolarLogPopup {
+            isActive: solarLogPopup.opened
+        }
+    }
+
     ColumnLayout {
         anchors.fill: parent
         spacing: 4
@@ -161,6 +169,13 @@ Window {
                 formatAsFloat: true
                 showTrend: true
                 labelSuffix: ""
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    solarLogPopup.open()
+                }
             }
         }
 

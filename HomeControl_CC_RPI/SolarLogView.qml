@@ -32,27 +32,9 @@ ColumnLayout {
         }
 
         LineSeries {
-            id: hcTempSeries
+            id: solarTempSeries
 
-            name: qsTr("HC Temp")
-
-            axisX: dateAxis
-            axisY: valueAxis
-        }
-
-        LineSeries {
-            id: insideTempSeries
-
-            name: qsTr("Inside Temp")
-
-            axisX: dateAxis
-            axisY: valueAxis
-        }
-
-        LineSeries {
-            id: tankTempSeries
-
-            name: qsTr("Tank Temp")
+            name: qsTr("Solar Temp")
 
             axisX: dateAxis
             axisY: valueAxis
@@ -60,6 +42,7 @@ ColumnLayout {
 
         ChartViewGestures {
         }
+
     }
 
     Timer {
@@ -69,13 +52,8 @@ ColumnLayout {
         triggeredOnStart: true
 
         onTriggered:  {
-            DataBridge.dataLogger.hcTempModel.refresh();
-            DataBridge.dataLogger.tankTempModel.refresh();
-            DataBridge.dataLogger.insideTempModel.refresh();
-
-            DataBridge.dataLogger.hcTempModel.updateSeries(hcTempSeries, null)
-            DataBridge.dataLogger.insideTempModel.updateSeries(insideTempSeries, null)
-            DataBridge.dataLogger.tankTempModel.updateSeries(tankTempSeries, dateAxis)
+            DataBridge.dataLogger.solarTempModel.refresh();
+            DataBridge.dataLogger.solarTempModel.updateSeries(solarTempSeries, dateAxis)
         }
     }
 }

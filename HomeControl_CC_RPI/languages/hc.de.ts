@@ -40,193 +40,221 @@
     </message>
     <message>
         <location filename="../constant_strings.h" line="8"/>
+        <source>Average Temp Forecast</source>
+        <translation>Vorhersage Durchschnittstemp</translation>
+    </message>
+    <message>
+        <location filename="../constant_strings.h" line="9"/>
+        <source>Average Clouds Forecast</source>
+        <translation>Vorhersage Bewölkung</translation>
+    </message>
+    <message>
+        <location filename="../constant_strings.h" line="10"/>
         <source>Preheat from</source>
         <translation>Vorheizen von</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="9"/>
+        <location filename="../constant_strings.h" line="11"/>
         <source>Preheat to</source>
         <translation>Vorheizen bis</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="10"/>
+        <location filename="../constant_strings.h" line="12"/>
         <source>Preheat HC Temp</source>
         <translation>Vorheizen WT Temp</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="11"/>
+        <location filename="../constant_strings.h" line="13"/>
         <source>Preheat Water Temp</source>
         <translation>Vorheizen Was. Temp</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="12"/>
+        <location filename="../constant_strings.h" line="14"/>
         <source>Preheat Mode</source>
         <translation>Vorheizmodus</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="13"/>
+        <location filename="../constant_strings.h" line="15"/>
         <source>Preheat Duration</source>
         <translation>Vorheizdauer</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="14"/>
+        <location filename="../constant_strings.h" line="16"/>
         <source>Heating Temp</source>
         <translation>Heizungstemperatur</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="15"/>
+        <location filename="../constant_strings.h" line="17"/>
         <source>Use toggle</source>
         <translation>Heizboost</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="16"/>
+        <location filename="../constant_strings.h" line="18"/>
         <source>Heating Mode</source>
         <translation>Heizmodus</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="17"/>
+        <location filename="../constant_strings.h" line="19"/>
         <source>Heating Manual State</source>
         <translation>Heizung Manuell</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="18"/>
+        <location filename="../constant_strings.h" line="20"/>
         <source>Core Host</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="19"/>
+        <location filename="../constant_strings.h" line="21"/>
         <source>HC Standby Temp</source>
         <translation>WT Standby Temp</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="20"/>
+        <location filename="../constant_strings.h" line="22"/>
         <source>Standby From</source>
         <translation>Standby von</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="21"/>
+        <location filename="../constant_strings.h" line="23"/>
         <source>Standby To</source>
         <translation>Standby bis</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="22"/>
+        <location filename="../constant_strings.h" line="24"/>
         <source>Month from</source>
         <translation>Monat von</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="23"/>
+        <location filename="../constant_strings.h" line="25"/>
         <source>Month to</source>
         <translation>Monat bis</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="24"/>
+        <location filename="../constant_strings.h" line="26"/>
         <source>Toggle duration</source>
         <translation>Toggle-Dauer</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="25"/>
+        <location filename="../constant_strings.h" line="27"/>
         <source>Heating from</source>
         <translation>Heizung von</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="26"/>
+        <location filename="../constant_strings.h" line="28"/>
         <source>Heating to</source>
         <translation>Heizung bis</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="27"/>
+        <location filename="../constant_strings.h" line="29"/>
         <source>Min Tank Temp</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="28"/>
+        <location filename="../constant_strings.h" line="30"/>
         <source>Tank Temp Offset</source>
         <translation>Tanktemp Korrektur</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="29"/>
+        <location filename="../constant_strings.h" line="31"/>
         <source>Temp Expected Threshold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="30"/>
+        <location filename="../constant_strings.h" line="32"/>
         <source>Clouds Expected Threshold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="31"/>
+        <location filename="../constant_strings.h" line="33"/>
         <source>Tank Min Temp</source>
         <translation>Mindesttemp Tank</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="32"/>
+        <location filename="../constant_strings.h" line="34"/>
         <source>Boiler Schedule</source>
         <translation>Boiler Zeitplan</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="33"/>
+        <location filename="../constant_strings.h" line="35"/>
         <source>Substract target temp if sun expected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="34"/>
+        <location filename="../constant_strings.h" line="36"/>
         <source>Heat Changer</source>
         <translation>Wärmetauscher</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="35"/>
+        <location filename="../constant_strings.h" line="37"/>
         <source>Tank</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="36"/>
+        <location filename="../constant_strings.h" line="38"/>
         <source>Water</source>
         <translation>Wasser</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="37"/>
+        <location filename="../constant_strings.h" line="39"/>
         <source>Solar HC</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="38"/>
+        <location filename="../constant_strings.h" line="40"/>
         <source>Inside</source>
         <translation>Innen</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="39"/>
+        <location filename="../constant_strings.h" line="41"/>
         <source>HC Pump</source>
         <translation>WT Pumpe</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="40"/>
+        <location filename="../constant_strings.h" line="42"/>
         <source>Water Pump</source>
         <translation>Wasserpumpe</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="41"/>
+        <location filename="../constant_strings.h" line="43"/>
         <source>Heating Pump</source>
         <translation>Heizpumpe</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="42"/>
+        <location filename="../constant_strings.h" line="44"/>
         <source>Boiler</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="43"/>
+        <location filename="../constant_strings.h" line="45"/>
         <source>Solar Pump</source>
         <translation>Solarpumpe</translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="44"/>
+        <location filename="../constant_strings.h" line="46"/>
         <source>Solar</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="45"/>
+        <location filename="../constant_strings.h" line="47"/>
         <source>Wintergarden</source>
         <translation>Wintergarten</translation>
+    </message>
+</context>
+<context>
+    <name>DataLogView</name>
+    <message>
+        <location filename="../DataLogView.qml" line="37"/>
+        <source>HC Temp</source>
+        <translation>Wärmetauscher</translation>
+    </message>
+    <message>
+        <location filename="../DataLogView.qml" line="46"/>
+        <source>Inside Temp</source>
+        <translation>Innen</translation>
+    </message>
+    <message>
+        <location filename="../DataLogView.qml" line="55"/>
+        <source>Tank Temp</source>
+        <translation>Tank</translation>
     </message>
 </context>
 <context>
@@ -290,6 +318,14 @@
         <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
         <source>Dec</source>
         <translation>Dez</translation>
+    </message>
+</context>
+<context>
+    <name>InfoPopup</name>
+    <message>
+        <location filename="../InfoPopup.qml" line="40"/>
+        <source>Close</source>
+        <translation>Schließen</translation>
     </message>
 </context>
 <context>
@@ -392,6 +428,37 @@
     </message>
 </context>
 <context>
+    <name>SolarLogView</name>
+    <message>
+        <location filename="../SolarLogView.qml" line="37"/>
+        <source>Solar Temp</source>
+        <translation>Solartemperatur</translation>
+    </message>
+</context>
+<context>
+    <name>TankInfoPopup</name>
+    <message>
+        <location filename="../TankInfoPopup.qml" line="40"/>
+        <source>Hour of day</source>
+        <translation>Tageszeit</translation>
+    </message>
+    <message>
+        <location filename="../TankInfoPopup.qml" line="52"/>
+        <source>Tank Target Temperature</source>
+        <translation>Zieltemperatur Tank</translation>
+    </message>
+    <message>
+        <location filename="../TankInfoPopup.qml" line="178"/>
+        <source>Average Temp</source>
+        <translation>Durchschnittstemperatur</translation>
+    </message>
+    <message>
+        <location filename="../TankInfoPopup.qml" line="190"/>
+        <source>Average Clouds</source>
+        <translation>Durchschnittsbewölkung</translation>
+    </message>
+</context>
+<context>
     <name>main</name>
     <message>
         <source>INVALID TIME</source>
@@ -402,14 +469,19 @@
         <translation type="vanished">Verbunden</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="91"/>
+        <location filename="../main.qml" line="114"/>
         <source>Boiler Target Temp</source>
-        <translation type="unfinished"></translation>
+        <translation>Zieltemp Tank</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="244"/>
+        <location filename="../main.qml" line="241"/>
+        <source>Statistics</source>
+        <translation>Statistik</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="296"/>
         <source>System Temperature</source>
-        <translation type="unfinished"></translation>
+        <translation>Systemtemperatur</translation>
     </message>
 </context>
 </TS>

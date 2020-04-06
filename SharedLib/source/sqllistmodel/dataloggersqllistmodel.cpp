@@ -23,8 +23,7 @@ DataLoggerSqlListModel::DataLoggerSqlListModel(DataLoggerController* controller,
 
 void DataLoggerSqlListModel::_setQuery() {
     qCDebug(LG_DATA_LOG_CONTROLLER) << Q_FUNC_INFO << database();
-    updateTable(DataLoggerController::DB_TABLE_DATA_LOG, m_filter);
-    setSort(0, Qt::DescendingOrder);
+    updateTable(DataLoggerController::DB_TABLE_DATA_LOG, m_filter, 0, Qt::DescendingOrder);
 }
 
 void DataLoggerSqlListModel::onDataLogChanged() {
@@ -73,6 +72,7 @@ void DataLoggerSqlListModel::refresh() {
         qCDebug(LG_DATA_LOG_CONTROLLER) << Q_FUNC_INFO << "Fetching more";
         fetchMore();
     }
+    qCDebug(LG_DATA_LOG_CONTROLLER) << rowCount() << selectStatement() << orderByClause();
 }
 
 void DataLoggerSqlListModel::updateSeries(QAbstractSeries *series, QAbstractAxis *dtAxis) {
@@ -103,14 +103,16 @@ void DataLoggerSqlListModel::updateSeries(QAbstractSeries *series, QAbstractAxis
             m_data[i] = QPointF(data(dtIndex, Qt::DisplayRole).toDateTime().toMSecsSinceEpoch(), data(valIndex, Qt::DisplayRole).toDouble());
         }
 
-        if (dtAxis) {
-            const QModelIndex firstIndex = createIndex(0, 0);
-            QVariant fromDate = data(firstIndex, Qt::DisplayRole);
-            //qDebug() << "FROM" << fromDate;
+        qDebug() << m_data;
 
+        if (dtAxis) {
             const QModelIndex lastIndex = createIndex(rowCount()-1, 0);
-            QVariant toDate = data(lastIndex, Qt::DisplayRole);
-            //qDebug() << "TO" << toDate;
+            QVariant fromDate = data(lastIndex, Qt::DisplayRole);
+            qDebug() << "FROM" << fromDate;
+
+            const QModelIndex firstIndex = createIndex(0, 0);
+            QVariant toDate = data(firstIndex, Qt::DisplayRole);
+            qDebug() << "TO" << toDate;
 
             dtAxis->setMin(fromDate);
             dtAxis->setMax(toDate);

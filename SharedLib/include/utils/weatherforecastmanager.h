@@ -6,6 +6,7 @@
 #include <QLoggingCategory>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QTimer>
 
 #include "weatherforecast.h"
 
@@ -16,17 +17,34 @@ class WeatherForecastManager : public QObject
     Q_OBJECT
 public:
     explicit WeatherForecastManager(QString apiKey, QObject *parent = nullptr);
+    WeatherForecastManager(QObject *parent = nullptr);
 
     Q_PROPERTY(WeatherForecast* forecast READ forecast NOTIFY forecastChanged)
+
+    static WeatherForecastManager* m_instance;
+
+    static WeatherForecastManager* instance() {
+        if (m_instance==nullptr) {
+            m_instance = new WeatherForecastManager();
+        }
+
+        return m_instance;
+    }
+
+    void setApiKey(QString apiKey);
 
     WeatherForecast* forecast() {
         return &m_currentForecast;
     }
 
+    void enableAutoRefresh(int intervalMs);
+    void disableAutoRefresh();
+
     Q_INVOKABLE void requestForecast();
 
 private:
     QNetworkAccessManager m_nam;
+    QTimer m_timer;
 
     QString m_apiKey;
 
@@ -36,6 +54,7 @@ private:
 
 private slots:
     void onFinished(QNetworkReply *reply);
+    void onAutoRefresh();
 
 signals:
     void forecastChanged();

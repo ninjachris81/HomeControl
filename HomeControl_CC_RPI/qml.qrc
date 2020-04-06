@@ -7,5 +7,8 @@
         <file>TankInfoPopup.qml</file>
         <file>DataLogView.qml</file>
         <file>DataLogPopup.qml</file>
+        <file>SolarLogView.qml</file>
+        <file>SolarLogPopup.qml</file>
+        <file>ChartViewGestures.qml</file>
     </qresource>
 </RCC>

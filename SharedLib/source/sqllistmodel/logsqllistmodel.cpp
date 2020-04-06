@@ -1,23 +1,21 @@
 #include "include/sqllistmodel/logsqllistmodel.h"
 #include <QDebug>
-#include <QTimer>
 
-LogSqlListModel::LogSqlListModel(LogController *logController, QSqlDatabase db) : SqlQueryModel(db), m_logController(logController) {
-    qDebug() << db;
+LogSqlListModel::LogSqlListModel(LogController *logController, QSqlDatabase db) : HCSqlQueryModel(db), m_logController(logController) {
+    qCDebug(LG_LOG_CONTROLLER) << db;
 
     connect(m_logController, &LogController::logDataChanged, this, &LogSqlListModel::onLogChanged);
 
     if (!db.isOpen()) {
-        qWarning() << "Database is not open";
+        qCWarning(LG_LOG_CONTROLLER) << "Database is not open";
     } else {
         _setQuery();
     }
 }
 
 void LogSqlListModel::_setQuery() {
-    qDebug() << database();
-    updateTable(LogController::DB_TABLE_LOGS);
-    setSort(0, Qt::DescendingOrder);
+    qCDebug(LG_LOG_CONTROLLER) << database();
+    updateTable(LogController::DB_TABLE_LOGS, "", 0, Qt::DescendingOrder);
 }
 
 void LogSqlListModel::onLogChanged() {
