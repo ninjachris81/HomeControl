@@ -4,8 +4,6 @@
 LogSqlListModel::LogSqlListModel(LogController *logController, QSqlDatabase db) : HCSqlQueryModel(db), m_logController(logController) {
     qCDebug(LG_LOG_CONTROLLER) << db;
 
-    connect(m_logController, &LogController::logDataChanged, this, &LogSqlListModel::onLogChanged);
-
     if (!db.isOpen()) {
         qCWarning(LG_LOG_CONTROLLER) << "Database is not open";
     } else {
@@ -16,10 +14,6 @@ LogSqlListModel::LogSqlListModel(LogController *logController, QSqlDatabase db) 
 void LogSqlListModel::_setQuery() {
     qCDebug(LG_LOG_CONTROLLER) << database();
     updateTable(LogController::DB_TABLE_LOGS, "", 0, Qt::DescendingOrder);
-}
-
-void LogSqlListModel::onLogChanged() {
-    select();
 }
 
 QVariant LogSqlListModel::resolveData(int colIndex, QVariant value) const {

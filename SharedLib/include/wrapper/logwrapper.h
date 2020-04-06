@@ -8,15 +8,25 @@
 #include "controllerwrapper.h"
 #include "controller/logcontroller.h"
 
+#include "sqllistmodel/logsqllistmodel.h"
+
 class LogWrapper : public ControllerWrapper {
     Q_OBJECT
 
 public:
     LogWrapper(LogController* controller);
 
-    Q_INVOKABLE void refreshLog();
+    Q_PROPERTY(LogSqlListModel* logListModel READ logListModel NOTIFY logListModelChanged)
+
+    LogSqlListModel *logListModel();
 
     Q_INVOKABLE void clearLog(int logFilter);
+
+private:
+    LogSqlListModel *m_logListModel;
+
+signals:
+    void logListModelChanged();
 
 };
 

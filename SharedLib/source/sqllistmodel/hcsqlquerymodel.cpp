@@ -7,7 +7,21 @@
 HCSqlQueryModel::HCSqlQueryModel(QSqlDatabase db, QObject *parent) :
     QSqlTableModel(parent, db)
 {
+    connect(&m_checkOpenTimer, &QTimer::timeout, this, &HCSqlQueryModel::onCheckOpen);
+    m_checkOpenTimer.setInterval(2000);
+    m_checkOpenTimer.start();
 }
+
+void HCSqlQueryModel::onCheckOpen() {
+    if (!database().isOpen()) {
+        qWarning() << "Database is not open";
+    } else {
+        _setQuery();
+        m_checkOpenTimer.stop();
+        Q_EMIT(databaseOpen());
+    }
+}
+
 
 void HCSqlQueryModel::updateTable(const QString &tableName, const QString filter, const int sortCol, const Qt::SortOrder sortOrder) {
     qDebug() << Q_FUNC_INFO << tableName;
@@ -65,21 +79,3 @@ QVariant HCSqlQueryModel::resolveDisplayData(const QModelIndex &item, int role, 
 
     return QSqlQueryModel::data(item, role);
 }
-
-/*
-QVariant SqlQueryModel::data ( const QModelIndex & index, int role ) const
-{
-    qDebug() << index << role;
-
-    if(index.row() >= rowCount())
-    {
-        return QString("");
-    }
-
-    if(role < Qt::UserRole) {
-        return QSqlQueryModel::data(index, role);
-    } else {
-        // if no valid relationship was found
-        return QSqlQueryModel::data(this->index(index.row(), role - Qt::UserRole - 1), Qt::DisplayRole);
-    }
-}*/

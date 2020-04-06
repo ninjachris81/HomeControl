@@ -5,7 +5,6 @@ import QtQuick.Layouts 1.3
 
 import StyleDef 1.0
 import SharedComponents 1.0
-import "components"
 
 HCPage {
     id: root
@@ -13,7 +12,6 @@ HCPage {
     title: qsTr("Settings")
 
     HCGroupBox {
-        title: qsTr("Local")
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: gb2.left
@@ -68,7 +66,6 @@ HCPage {
     HCGroupBox {
         id: gb2
 
-        title: qsTr("Server")
         anchors.top: parent.top
         anchors.right: parent.right
         anchors.bottom: parent.bottom

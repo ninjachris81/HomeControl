@@ -1,11 +1,11 @@
 #include "include/wrapper/logwrapper.h"
+#include "utils/databasemanager.h"
+
 #include <QTimer>
 
 LogWrapper::LogWrapper(LogController* controller) : ControllerWrapper (controller) {
-}
 
-void LogWrapper::refreshLog() {
-    static_cast<LogController*>(m_controller)->refreshLog();
+    m_logListModel = new LogSqlListModel(controller, DatabaseManager::instance()->db());
 }
 
 void LogWrapper::clearLog(int logFilter) {
@@ -30,8 +30,8 @@ void LogWrapper::clearLog(int logFilter) {
     }
 
     m_controller->publishCmd(cmd);
+}
 
-    QTimer::singleShot(1000, [=]() {
-        refreshLog();
-    });
+LogSqlListModel* LogWrapper::logListModel() {
+    return m_logListModel;
 }

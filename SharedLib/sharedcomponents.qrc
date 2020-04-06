@@ -11,5 +11,10 @@
         <file>qml/SharedComponents/HCSwitchIndicator.qml</file>
         <file>qml/SharedComponents/HCGroupBox.qml</file>
         <file>qml/SharedComponents/HCButton.qml</file>
+        <file>qml/SharedComponents/HCOptionBox.qml</file>
+        <file>qml/SharedComponents/HCOptionBoxMonth.qml</file>
+        <file>qml/SharedComponents/HCPage.qml</file>
+        <file>qml/SharedComponents/HCSwitchButton.qml</file>
+        <file>qml/SharedComponents/HCToastManager.qml</file>
     </qresource>
 </RCC>

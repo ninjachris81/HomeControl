@@ -9,7 +9,6 @@ import "DateFormat.js" as DateFormat
 
 import StyleDef 1.0
 import SharedComponents 1.0
-import "components"
 
 HCPage {
     id: root

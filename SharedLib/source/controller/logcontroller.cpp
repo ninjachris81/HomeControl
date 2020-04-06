@@ -1,5 +1,5 @@
-#include "include/controller/logcontroller.h"
-#include "include/constants_qt.h"
+#include "controller/logcontroller.h"
+#include "constants_qt.h"
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlQuery>
@@ -11,12 +11,13 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-#include "include/controller/controllermanager.h"
-#include "include/controller/settingscontroller.h"
+#include "controller/controllermanager.h"
+#include "controller/settingscontroller.h"
+
+#include "utils/databasemanager.h"
 
 QString LogController::CONTROLLER_NAME = QStringLiteral("LogController");
 QString LogController::DB_TABLE_LOGS = QStringLiteral("logs");
-QString LogController::DB_CONN_LOGS = QStringLiteral("HC_LOGS");
 
 Q_LOGGING_CATEGORY(LG_LOG_CONTROLLER, "LogController");
 
@@ -57,33 +58,7 @@ qint64 LogController::getValueLifetime(int index) {
 void LogController::onInit() {
     qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO;
 
-    if (m_parent->isServer()) {
-        m_db = QSqlDatabase::addDatabase("QSQLITE" , DB_CONN_LOGS);
-        m_db.setDatabaseName("hc_logs.db");
-        if (m_db.open()) {
-            checkTables();
-        } else {
-            qWarning() << "Failed to open db" << m_db.lastError().text();
-        }
-
-        m_tcpServer = new QTcpServer();
-        connect(m_tcpServer, &QTcpServer::newConnection, this, &LogController::onNewConnection);
-        if (!m_tcpServer->listen(QHostAddress::Any, LOG_PORT)) {
-            qWarning() << "Failed to start log server on port" << LOG_PORT << m_tcpServer->errorString();
-        }
-
-    } else {
-        SettingsController* settingsController = static_cast<SettingsController*>(m_parent->getController(SettingsController::CONTROLLER_NAME));
-        connect(settingsController, &SettingsController::valueChanged, this, &LogController::onSettingsValueChanged);
-
-        m_db = QSqlDatabase::addDatabase("QSQLITE" , DB_CONN_LOGS);
-        m_db.setDatabaseName(":memory:");
-        if (m_db.open()) {
-            checkTables();
-        } else {
-            qWarning() << "Failed to open mem database" << m_db.lastError().text();
-        }
-    }
+    m_db = DatabaseManager::instance()->db();
 }
 
 void LogController::onCmdReceived(EnumsDeclarations::MQTT_CMDS cmd) {
@@ -126,122 +101,14 @@ void LogController::clearLog(int typeFilter) {
     }
 }
 
-bool LogController::checkTables() {
-    qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO;
-
-    QStringList tables = m_db.tables();
-
-    if (!tables.contains(DB_TABLE_LOGS)) {
-        qCDebug(LG_LOG_CONTROLLER) << "Creating new table" << DB_TABLE_LOGS;
-
-        QSqlQuery query(m_db);
-        if (query.exec("CREATE TABLE " + DB_TABLE_LOGS + " (\"date\" UNSIGNED BIG INT NOT NULL, \"type\" TINYINT NOT NULL, \"source\" TEXT, \"msg\" TEXT)")) {
-            qCDebug(LG_LOG_CONTROLLER) << "Created new table" << DB_TABLE_LOGS;
-        } else {
-            qCWarning(LG_LOG_CONTROLLER) << "Failed to create new table" << query.lastError().text();
-            return false;
-        }
-    }
-
-    return true;
-}
-
-void LogController::onSettingsValueChanged(int index, QVariant value) {
-    qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO << index << value;
-
-    if (index==EnumsDeclarations::SETTINGS_CORE_HOST) {
-        refreshLog();
-    }
-}
-
-void LogController::refreshLog() {
-    QSqlQuery query("DELETE FROM " + DB_TABLE_LOGS, m_db);
-    if (query.exec()) {
-        retrieveLog();
-    } else {
-        qWarning() << "Unable to truncate table" << query.lastError();
-    }
-}
-
 void LogController::addLog(EnumsDeclarations::MQTT_LOGS type, QString source, QString msg) {
     qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO << type << msg;
 
     if (m_parent->isServer()) {
         insertRecord(QDateTime::currentDateTime(), type, source, msg);
-        Q_EMIT(logDataChanged());
     } else {
         setValue(type, source + MQTT_LOG_SOURCE_DIV + msg, true, true);
     }
-}
-
-void LogController::retrieveLog() {
-    QString host = static_cast<SettingsController*>(m_parent->getController(SettingsController::CONTROLLER_NAME))->value(EnumsDeclarations::SETTINGS_CORE_HOST).toString();
-    qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO << host;
-
-    QTcpSocket socket;
-    socket.connectToHost(host, LOG_PORT);
-    if (socket.waitForConnected(5000)) {
-        socket.setReadBufferSize(1000 * 1024);
-
-        if (socket.waitForReadyRead(5000)) {
-
-            socket.waitForDisconnected(5000);
-
-            QByteArray buffer = socket.readAll();
-
-            socket.close();
-
-            if (!buffer.isEmpty()) {
-                QJsonDocument doc = QJsonDocument::fromBinaryData(buffer);
-                if (!doc.isNull() && !doc.isEmpty()) {
-                    QJsonArray arr = doc.array();
-
-                    qCDebug(LG_LOG_CONTROLLER) << arr;
-
-                    for (int i=0;i<arr.count();i++) {
-                        QJsonArray data = arr.at(i).toArray();
-                        insertRecord(QDateTime::fromSecsSinceEpoch(data.at(0).toInt()), data.at(1).toInt(), data.at(2).toString(), data.at(3).toString());
-                    }
-
-                    Q_EMIT(logDataChanged());
-                } else {
-                    qCWarning(LG_LOG_CONTROLLER) << "Doc is empty" << buffer.size();
-                }
-            } else {
-                qCWarning(LG_LOG_CONTROLLER) << "Result is empty";
-            }
-        } else {
-            qCWarning(LG_LOG_CONTROLLER) << "Timeout reading from" << host;
-        }
-    } else {
-        qCWarning(LG_LOG_CONTROLLER) << "Timeout connecting to" << host;
-    }
-}
-
-void LogController::onNewConnection() {
-    qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO;
-
-    QTcpSocket *socket = m_tcpServer->nextPendingConnection();
-
-    QJsonArray array;
-
-    QSqlQuery query("SELECT * FROM " + DB_TABLE_LOGS + " ORDER BY date DESC LIMIT 500", m_db);
-    while (query.next()) {
-        QJsonArray data;
-
-        data.append(QJsonValue(query.value("date").toLongLong()));
-        data.append(QJsonValue(query.value("type").toInt()));
-        data.append(QJsonValue(query.value("source").toString()));
-        data.append(QJsonValue(query.value("msg").toString()));
-
-        array.append(data);
-    }
-
-    QJsonDocument doc(array);
-    socket->write(doc.toBinaryData());
-    socket->flush();
-    socket->waitForBytesWritten();
-    socket->close();
 }
 
 void LogController::onValueChanged(int index, QVariant value) {
@@ -274,8 +141,8 @@ bool LogController::insertRecord(QDateTime date, int type, QString source, QStri
     qCDebug(LG_LOG_CONTROLLER) << Q_FUNC_INFO << m_db <<date << type << source << msg;
 
     QSqlQuery query(m_db);
-    query.prepare("INSERT INTO " + DB_TABLE_LOGS + " (date, type, source, msg) VALUES (:date, :type, :source, :msg)");
-    query.bindValue(":date", date.toSecsSinceEpoch());
+    query.prepare("INSERT INTO " + DB_TABLE_LOGS + " (ts, type, source, msg) VALUES (:date, :type, :source, :msg)");
+    query.bindValue(":date", date.toMSecsSinceEpoch());
     query.bindValue(":type", type);
     query.bindValue(":source", source);
     query.bindValue(":msg", msg);

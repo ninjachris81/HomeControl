@@ -1,6 +1,7 @@
 QT += quick
 QT += mqtt virtualkeyboard
 QT += sql
+QT += charts
 
 CONFIG += c++11
 
@@ -21,8 +22,6 @@ SOURCES += \
     screensaverfilter.cpp
 
 RESOURCES += qml.qrc \
-    components/qml_components.qrc \
-    images.qrc \
     styledef.qrc \
     translations.qrc
 

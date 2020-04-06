@@ -9,7 +9,6 @@
 
 QString DataLoggerController::CONTROLLER_NAME = QStringLiteral("DataLogController");
 QString DataLoggerController::DB_TABLE_DATA_LOG = QStringLiteral("data_log");
-QString DataLoggerController::DB_CONN_DATA_LOG = QStringLiteral("HC_VALUE_LOG");
 
 Q_LOGGING_CATEGORY(LG_DATA_LOG_CONTROLLER, "DataLogController");
 

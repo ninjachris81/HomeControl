@@ -9,7 +9,7 @@ WeatherForecastManager::WeatherForecastManager(QString apiKey, QObject *parent) 
     WeatherForecastManager();
 }
 
-WeatherForecastManager::WeatherForecastManager(QObject *parent) {
+WeatherForecastManager::WeatherForecastManager(QObject *parent) : QObject (parent) {
     connect(&m_timer, &QTimer::timeout, this, &WeatherForecastManager::onAutoRefresh);
     connect(&m_nam, &QNetworkAccessManager::finished, this, &WeatherForecastManager::onFinished);
 }

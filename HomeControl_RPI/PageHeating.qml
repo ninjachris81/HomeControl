@@ -7,8 +7,6 @@ import hc 1.0
 import StyleDef 1.0
 import SharedComponents 1.0
 
-import "components"
-
 HCPage {
     id: root
 

@@ -3,7 +3,6 @@
 
 #include <QSqlTableModel>
 #include <QSqlQuery>
-#include <QTimer>
 
 #include <QtCharts/QAbstractSeries>
 #include <QtCharts/QDateTimeAxis>
@@ -26,11 +25,8 @@ public:
 protected slots:
     void onDataLogChanged();
 
-    void onCheckOpen();
-
 protected:
     DataLoggerController* m_controller;
-    QTimer m_checkOpenTimer;
     QString m_filter;
 
     QVariant resolveData(int colIndex, QVariant value) const;

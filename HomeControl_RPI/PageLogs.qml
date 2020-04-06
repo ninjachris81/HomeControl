@@ -5,7 +5,6 @@ import QtQuick.Layouts 1.3
 
 import StyleDef 1.0
 import SharedComponents 1.0
-import "components"
 
 HCPage {
     id: root
@@ -33,7 +32,7 @@ HCPage {
                 model: [qsTr("All"), qsTr("Info"), qsTr("Error"), qsTr("Startup")]
 
                 onCurrentIndexChanged: {
-                    DataBridge.logListModel.setTypeFilter(currentIndex)
+                    DataBridge.logs.logListModel.setTypeFilter(currentIndex)
                 }
             }
 
@@ -50,14 +49,14 @@ HCPage {
 
                 onCurrentTextChanged: {
                     if (currentIndex==0) {
-                        DataBridge.logListModel.setSourceFilter("")
+                        DataBridge.logs.logListModel.setSourceFilter("")
                     } else {
-                        DataBridge.logListModel.setSourceFilter(sourceFilter.currentText)
+                        DataBridge.logs.logListModel.setSourceFilter(sourceFilter.currentText)
                     }
                 }
             }
 
-            C2.Button {
+            HCButton {
                 Layout.preferredHeight: Style.buttonHeight
                 Layout.preferredWidth: 200
 
@@ -70,7 +69,7 @@ HCPage {
                 }
             }
 
-            C2.Button {
+            HCButton {
                 Layout.preferredHeight: Style.buttonHeight
                 Layout.preferredWidth: 100
 
@@ -91,7 +90,7 @@ HCPage {
             Layout.fillWidth: true
 
             C1.TableViewColumn {
-                role: "col_date"
+                role: "col_ts"
                 title: "Date"
                 width: 200
             }
@@ -111,7 +110,7 @@ HCPage {
                 width: 400
             }
 
-            model: DataBridge.logListModel
+            model: DataBridge.logs.logListModel
         }
     }
 }

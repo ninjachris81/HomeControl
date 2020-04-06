@@ -36,9 +36,9 @@ SOURCES += \
     source/utils/databasemanager.cpp \
     source/controller/dataloggercontroller.cpp \
     source/sqllistmodel/dataloggersqllistmodel.cpp \
+    source/utils/databridgebase.cpp \
     source/utils/fontloader.cpp \
     source/utils/apptranslator.cpp \
-    source/utils/forecastutils.cpp \
     source/utils/weatherforecast.cpp \
     source/utils/weatherforecastmanager.cpp \
     source/wrapper/dataloggerwrapper.cpp \
@@ -81,6 +81,7 @@ HEADERS += \
         include/controller/logiccontroller.h \
         include/listmodel/controllerlistmodel.h \
     include/utils/databasemanager.h \
+    include/utils/databridgebase.h \
     include/utils/fontloader.h \
     include/utils/version.h \
     include/utils/weatherforecast.h \

@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QSqlDatabase>
-#include <QTcpServer>
 
 #include "controllerbase.h"
 
@@ -11,8 +10,6 @@
 #include <QLoggingCategory>
 
 Q_DECLARE_LOGGING_CATEGORY(LG_LOG_CONTROLLER)
-
-#define LOG_PORT 8888
 
 class LogController : public ControllerBase
 {
@@ -39,19 +36,14 @@ public:
 
     void broadcastValues();
 
-    void refreshLog();
-
     void addLog(EnumsDeclarations::MQTT_LOGS type, QString source, QString msg = "");
 
     static QString CONTROLLER_NAME;
-
-    static QString DB_CONN_LOGS;
 
     static QString DB_TABLE_LOGS;
 
 protected:
     QSqlDatabase m_db;
-    QTcpServer *m_tcpServer;
 
     bool hasSetSupport() {
         return true;
@@ -65,21 +57,9 @@ protected:
 
     bool insertRecord(QDateTime date, int type, QString source, QString msg);
 
-    bool checkTables();
-
-    void retrieveLog();
-
     void onCmdReceived(EnumsDeclarations::MQTT_CMDS cmd);
 
     void clearLog(int typeFilter = -1);
-
-protected slots:
-    void onNewConnection();
-
-    void onSettingsValueChanged(int index, QVariant value);
-
-signals:
-    void logDataChanged();
 
 };
 

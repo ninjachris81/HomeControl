@@ -19,7 +19,7 @@ ColumnLayout {
             id: dateAxis
 
             format: "hh:ss"
-            tickCount: 24
+            tickCount: 12
         }
 
         ValueAxis {

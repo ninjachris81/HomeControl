@@ -18,9 +18,6 @@ public:
 
     Q_INVOKABLE void setSourceFilter(QString source);
 
-protected slots:
-    void onLogChanged();
-
 protected:
     LogController* m_logController;
 

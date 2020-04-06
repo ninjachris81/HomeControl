@@ -13,10 +13,6 @@ DataLoggerSqlListModel::DataLoggerSqlListModel(DataLoggerController* controller,
     qCDebug(LG_DATA_LOG_CONTROLLER) << Q_FUNC_INFO << db;
 
     connect(m_controller, &DataLoggerController::dataLogDataChanged, this, &DataLoggerSqlListModel::onDataLogChanged);
-    connect(&m_checkOpenTimer, &QTimer::timeout, this, &DataLoggerSqlListModel::onCheckOpen);
-
-    m_checkOpenTimer.setInterval(5000);
-    m_checkOpenTimer.start();
 
     setLimit(4320);     // 1 day
 }
@@ -43,6 +39,7 @@ QVariant DataLoggerSqlListModel::resolveData(int colIndex, QVariant value) const
 }
 
 QVariant DataLoggerSqlListModel::resolveDisplayData(const QModelIndex &item, int role, QVariant value) const {
+    Q_UNUSED(role)
     //qCDebug(LG_DATA_LOG_CONTROLLER) << Q_FUNC_INFO << item << role << value;
 
     switch(item.column()) {
@@ -51,15 +48,6 @@ QVariant DataLoggerSqlListModel::resolveDisplayData(const QModelIndex &item, int
         return QDateTime::fromMSecsSinceEpoch(value.toLongLong());
     default:
         return value;
-    }
-}
-
-void DataLoggerSqlListModel::onCheckOpen() {
-    if (!database().isOpen()) {
-        qCWarning(LG_DATA_LOG_CONTROLLER) << "Database is not open";
-    } else {
-        _setQuery();
-        m_checkOpenTimer.stop();
     }
 }
 

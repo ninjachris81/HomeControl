@@ -39,8 +39,6 @@ public:
 
     static QString CONTROLLER_NAME;
 
-    static QString DB_CONN_DATA_LOG;
-
     static QString DB_TABLE_DATA_LOG;
 
 protected:

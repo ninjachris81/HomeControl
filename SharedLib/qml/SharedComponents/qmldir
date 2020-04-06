@@ -1,11 +1,18 @@
-HCLabel 1.0 HCLabel.qml
-HCSimpleLabel 1.0 HCSimpleLabel.qml
-HCValueLabel 1.0 HCValueLabel.qml
-HCDividerH 1.0 HCDividerH.qml
-HCSpinBox 1.0 HCSpinBox.qml
-HCSwitchIndicator 1.0 HCSwitchIndicator.qml
-HCGroupBox 1.0 HCGroupBox.qml
-HCButton 1.0 HCButton.qml
+HCLabel 1.0             HCLabel.qml
+HCSimpleLabel 1.0       HCSimpleLabel.qml
+HCValueLabel 1.0        HCValueLabel.qml
+HCDividerH 1.0          HCDividerH.qml
+HCSpinBox 1.0           HCSpinBox.qml
+HCSwitchIndicator 1.0   HCSwitchIndicator.qml
+HCGroupBox 1.0          HCGroupBox.qml
+HCButton 1.0            HCButton.qml
 
-HCKeyboard 1.0 HCKeyboard.qml
+HCKeyboard 1.0          HCKeyboard.qml
+
+HCOptionBox 1.0         HCOptionBox.qml
+HCOptionBoxMonth 1.0    HCOptionBoxMonth.qml
+HCPage 1.0              HCPage.qml
+HCSwitchButton 1.0      HCSwitchButton.qml
+HCToastManager 1.0      HCToastManager.qml
+
 singleton HCKeyboardManager 1.0 HCKeyboardManager.qml
