@@ -50,7 +50,7 @@ protected:
 
     QSqlDatabase m_db;
 
-    quint16 m_entryLimit;
+    int m_daysLimit;
 
     void onInit();
 
@@ -60,6 +60,8 @@ protected slots:
     void onLogData();
 
     void onCheckLimit();
+
+    void onExternalControllerValueChanged(ControllerBase* controller, int index);
 
 signals:
     void dataLogDataChanged();

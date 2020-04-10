@@ -14,7 +14,7 @@ DataLoggerSqlListModel::DataLoggerSqlListModel(DataLoggerController* controller,
 
     connect(m_controller, &DataLoggerController::dataLogDataChanged, this, &DataLoggerSqlListModel::onDataLogChanged);
 
-    setLimit(4320);     // 1 day
+    setLimit(1000);
 }
 
 void DataLoggerSqlListModel::_setQuery() {

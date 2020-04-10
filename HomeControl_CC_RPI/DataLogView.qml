@@ -18,7 +18,7 @@ ColumnLayout {
         DateTimeAxis {
             id: dateAxis
 
-            format: "hh:ss"
+            format: "hh:mm"
             tickCount: 12
         }
 
@@ -26,8 +26,8 @@ ColumnLayout {
             id: valueAxis
             gridVisible: true
             tickCount: 14
-            min: 0
-            max: 65
+            min: 5
+            max: 70
             titleText: ""
         }
 
@@ -38,6 +38,7 @@ ColumnLayout {
 
             axisX: dateAxis
             axisY: valueAxis
+            pointsVisible: true
         }
 
         LineSeries {
@@ -47,6 +48,7 @@ ColumnLayout {
 
             axisX: dateAxis
             axisY: valueAxis
+            pointsVisible: true
         }
 
         LineSeries {
@@ -56,6 +58,7 @@ ColumnLayout {
 
             axisX: dateAxis
             axisY: valueAxis
+            pointsVisible: true
         }
 
         ChartViewGestures {
