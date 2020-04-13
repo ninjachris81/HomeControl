@@ -40,6 +40,22 @@ Window {
         }
     }
 
+    InfoPopup {
+        id: hcLogPopup
+
+        contentItem: HCDataLogPopup {
+            isActive: hcLogPopup.opened
+        }
+    }
+
+    InfoPopup {
+        id: heatingLogPopup
+
+        contentItem: HeatingLogPopup {
+            isActive: heatingLogPopup.opened
+        }
+    }
+
     ColumnLayout {
         anchors.fill: parent
         spacing: 4
@@ -80,6 +96,13 @@ Window {
                         model: DataBridge.relayControllerModel
                         modelIndex: Enums.RELAYS_HC_PUMP
                     }
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    hcLogPopup.open()
                 }
             }
         }
@@ -227,6 +250,14 @@ Window {
                         model: DataBridge.relayControllerModel
                         modelIndex: Enums.RELAYS_HEATING_PUMP
                     }
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: {
+                    heatingLogPopup.open()
                 }
             }
         }

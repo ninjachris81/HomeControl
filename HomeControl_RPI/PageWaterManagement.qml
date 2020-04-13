@@ -67,7 +67,7 @@ HCPage {
                     options: [Enums.SETTING_MODE_AUTOMATIC, Enums.SETTING_MODE_MANUAL]
                     labels: [qsTr("Automatic"), qsTr("Manual")]
                     inputHandler: function(newValue) {
-                        DataBridge.settings.setValue(Enums.SETTINGS_PREHEAT_MODE, newValue)
+                        DataBridge.settings.updateSetting(Enums.SETTINGS_PREHEAT_MODE, newValue)
                     }
                     allowInput: false
                 }
@@ -127,7 +127,7 @@ HCPage {
                     inputMethodHints: Qt.ImhDigitsOnly
                     inputValidator: IntValidator { bottom: 10; top: 50 }
                     inputHandler: function(thisValue) {
-                        DataBridge.settings.setValue(modelIndex, thisValue);
+                        DataBridge.settings.updateSetting(modelIndex, thisValue);
                     }
                 }
 
@@ -142,7 +142,7 @@ HCPage {
                     inputMethodHints: Qt.ImhDigitsOnly
                     inputValidator: IntValidator { bottom: 10; top: 50 }
                     inputHandler: function(thisValue) {
-                        DataBridge.settings.setValue(modelIndex, thisValue);
+                        DataBridge.settings.updateSetting(modelIndex, thisValue);
                     }
                 }
 
@@ -157,7 +157,7 @@ HCPage {
                     inputMethodHints: Qt.ImhDigitsOnly
                     inputValidator: IntValidator { bottom: 0; top: 23 }
                     inputHandler: function(thisValue) {
-                        DataBridge.settings.setValue(modelIndex, thisValue);
+                        DataBridge.settings.updateSetting(modelIndex, thisValue);
                     }
                 }
 
@@ -172,7 +172,7 @@ HCPage {
                     inputMethodHints: Qt.ImhDigitsOnly
                     inputValidator: IntValidator { bottom: 0; top: 23 }
                     inputHandler: function(thisValue) {
-                        DataBridge.settings.setValue(modelIndex, thisValue);
+                        DataBridge.settings.updateSetting(modelIndex, thisValue);
                     }
                 }
 
@@ -188,7 +188,7 @@ HCPage {
                     inputMethodHints: Qt.ImhDigitsOnly
                     inputValidator: IntValidator { bottom: 10; top: 50 }
                     inputHandler: function(thisValue) {
-                        DataBridge.settings.setValue(modelIndex, thisValue);
+                        DataBridge.settings.updateSetting(modelIndex, thisValue);
                     }
                 }
 
@@ -209,7 +209,7 @@ HCPage {
                     inputMethodHints: Qt.ImhDigitsOnly
                     inputValidator: IntValidator { bottom: 0; top: 23 }
                     inputHandler: function(thisValue) {
-                        DataBridge.settings.setValue(modelIndex, thisValue);
+                        DataBridge.settings.updateSetting(modelIndex, thisValue);
                     }
                 }
 
@@ -224,7 +224,7 @@ HCPage {
                     inputMethodHints: Qt.ImhDigitsOnly
                     inputValidator: IntValidator { bottom: 0; top: 23 }
                     inputHandler: function(thisValue) {
-                        DataBridge.settings.setValue(modelIndex, thisValue);
+                        DataBridge.settings.updateSetting(modelIndex, thisValue);
                     }
                 }
 

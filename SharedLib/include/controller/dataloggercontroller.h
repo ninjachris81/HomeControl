@@ -45,7 +45,6 @@ protected:
     QMultiMap<ControllerBase*, int> m_Values;
     ControllerManager *m_controllerManager;
 
-    QTimer m_LogTimer;
     QTimer m_LimitTimer;
 
     QSqlDatabase m_db;
@@ -56,9 +55,9 @@ protected:
 
     void addEntry(ControllerBase::CONTROLLER_TYPE controllerType, int index, QVariant v, bool isValid);
 
-protected slots:
-    void onLogData();
+    double toDouble(QVariant value);
 
+protected slots:
     void onCheckLimit();
 
     void onExternalControllerValueChanged(ControllerBase* controller, int index);

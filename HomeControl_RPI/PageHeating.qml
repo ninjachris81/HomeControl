@@ -34,7 +34,7 @@ HCPage {
                     options: [Enums.SETTING_MODE_AUTOMATIC, Enums.SETTING_MODE_MANUAL]
                     labels: [qsTr("Automatic"), qsTr("Manual")]
                     inputHandler: function(newValue) {
-                        DataBridge.settings.setValue(Enums.SETTINGS_HEATING_MODE, newValue)
+                        DataBridge.settings.updateSetting(Enums.SETTINGS_HEATING_MODE, newValue)
                     }
                 }
 
@@ -49,7 +49,7 @@ HCPage {
 
                     visible: heatingModeOptionBox.currentValue===Enums.SETTING_MODE_MANUAL
                     inputHandler: function(newValue){
-                        DataBridge.settings.setValue(modelIndex, newValue)
+                        DataBridge.settings.updateSetting(modelIndex, newValue)
                     }
                 }
             }
@@ -80,7 +80,7 @@ HCPage {
                     inputMethodHints: Qt.ImhDigitsOnly
                     inputValidator: IntValidator { bottom: 10; top: 50 }
                     inputHandler: function(thisValue) {
-                        DataBridge.settings.setValue(modelIndex, thisValue);
+                        DataBridge.settings.updateSetting(modelIndex, thisValue);
                     }
                 }
 
@@ -113,7 +113,7 @@ HCPage {
                     modelIndex: Enums.SETTINGS_HEATING_USE_TOGGLE
                     allowInput: true
                     inputHandler: function(thisValue) {
-                        DataBridge.settings.setValue(modelIndex, thisValue);
+                        DataBridge.settings.updateSetting(modelIndex, thisValue);
                     }
                 }
 
@@ -132,7 +132,7 @@ HCPage {
                     inputMethodHints: Qt.ImhDigitsOnly
                     inputValidator: IntValidator { bottom: 5000; top: 999999 }
                     inputHandler: function(thisValue) {
-                        DataBridge.settings.setValue(modelIndex, thisValue);
+                        DataBridge.settings.updateSetting(modelIndex, thisValue);
                     }
                 }
             }
@@ -154,7 +154,7 @@ HCPage {
                     inputMethodHints: Qt.ImhDigitsOnly
                     inputValidator: IntValidator { bottom: 0; top: 23 }
                     inputHandler: function(thisValue) {
-                        DataBridge.settings.setValue(modelIndex, thisValue);
+                        DataBridge.settings.updateSetting(modelIndex, thisValue);
                     }
                 }
 
@@ -169,7 +169,7 @@ HCPage {
                     inputMethodHints: Qt.ImhDigitsOnly
                     inputValidator: IntValidator { bottom: 0; top: 23 }
                     inputHandler: function(thisValue) {
-                        DataBridge.settings.setValue(modelIndex, thisValue);
+                        DataBridge.settings.updateSetting(modelIndex, thisValue);
                     }
                 }
             }
@@ -191,7 +191,7 @@ HCPage {
                 modelIndex: Enums.SETTINGS_HEATING_MONTH_FROM
                 allowInput: true
                 inputHandler: function(thisValue, index) {
-                    DataBridge.settings.setValue(modelIndex, thisValue);
+                    DataBridge.settings.updateSetting(modelIndex, thisValue);
                 }
             }
 
@@ -207,7 +207,7 @@ HCPage {
                 modelIndex: Enums.SETTINGS_HEATING_MONTH_TO
                 allowInput: true
                 inputHandler: function(thisValue, index) {
-                    DataBridge.settings.setValue(modelIndex, thisValue);
+                    DataBridge.settings.updateSetting(modelIndex, thisValue);
                 }
             }
         }

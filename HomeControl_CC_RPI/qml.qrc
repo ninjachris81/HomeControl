@@ -5,10 +5,10 @@
         <file>DateFormat.js</file>
         <file>InfoPopup.qml</file>
         <file>TankInfoPopup.qml</file>
-        <file>DataLogView.qml</file>
         <file>DataLogPopup.qml</file>
-        <file>SolarLogView.qml</file>
         <file>SolarLogPopup.qml</file>
         <file>ChartViewGestures.qml</file>
+        <file>HCDataLogPopup.qml</file>
+        <file>HeatingLogPopup.qml</file>
     </qresource>
 </RCC>

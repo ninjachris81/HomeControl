@@ -52,10 +52,6 @@ void DataLoggerController::onInit() {
 
         m_daysLimit = m_parent->appConfig()->getInt("DATALOGGER_MAX_DAYS", 356);
 
-        m_LogTimer.setInterval(m_parent->appConfig()->getInt("DATALOGGER_INTERVAL_MS", 20000));
-        connect(&m_LogTimer, &QTimer::timeout, this, &DataLoggerController::onLogData);
-        m_LogTimer.start();
-
         m_LimitTimer.setInterval(120000);
         connect(&m_LimitTimer, &QTimer::timeout, this, &DataLoggerController::onCheckLimit);
         m_LimitTimer.start();
@@ -74,6 +70,8 @@ void DataLoggerController::registerValue(ControllerBase *controller, int valueIn
     connect(controller, &ControllerBase::valueIsValid, [=] (int index) {
         if (index==valueIndex) this->onExternalControllerValueChanged(controller, index);
     });
+
+    onExternalControllerValueChanged(controller, valueIndex);       // log once
 }
 
 void DataLoggerController::onExternalControllerValueChanged(ControllerBase* controller, int index) {
@@ -97,20 +95,19 @@ void DataLoggerController::onCheckLimit() {
     }
 }
 
-void DataLoggerController::onLogData() {
-    qCDebug(LG_DATA_LOG_CONTROLLER) << Q_FUNC_INFO;
-
-    QMapIterator<ControllerBase*, int> it(m_Values);
-
-    while(it.hasNext()) {
-        it.next();
-
-        QVariant v = it.key()->value(it.value());
-        addEntry(it.key()->getType(), it.value(), v, it.key()->valueIsValid(it.value()));
+double DataLoggerController::toDouble(QVariant value) {
+    switch (value.type()) {
+    case QVariant::DateTime:
+        return value.toDateTime().toMSecsSinceEpoch();
+    case QVariant::Bool:
+        return value.toBool() ? 1 : 0;
+    case QVariant::Int:
+    case QVariant::Double:
+        return value.toDouble();
+    default:
+        qCWarning(LG_DATA_LOG_CONTROLLER) << "Cannot convert value type" << value.typeName();
+        return 0;
     }
-
-    // LOG ONLY ONCE
-    m_LogTimer.stop();
 }
 
 void DataLoggerController::addEntry(ControllerBase::CONTROLLER_TYPE controllerType, int index, QVariant v, bool isValid) {
@@ -122,7 +119,7 @@ void DataLoggerController::addEntry(ControllerBase::CONTROLLER_TYPE controllerTy
     query.bindValue(":ts", QDateTime::currentMSecsSinceEpoch());
     query.bindValue(":controller", controllerType);
     query.bindValue(":value_index", index);
-    query.bindValue(":val", v);
+    query.bindValue(":val", toDouble(v));
     query.bindValue(":is_valid", isValid);
 
     if (!query.exec()) {
