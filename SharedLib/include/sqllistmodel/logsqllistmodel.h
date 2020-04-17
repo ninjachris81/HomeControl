@@ -21,6 +21,11 @@ public:
 protected:
     LogController* m_logController;
 
+    QString m_sourceFilter;
+    int m_typeFilter;
+
+    void updateFilter();
+
     QVariant resolveData(int colIndex, QVariant value) const;
 
     void _setQuery();

@@ -13,6 +13,6 @@ HCOptionBox 1.0         HCOptionBox.qml
 HCOptionBoxMonth 1.0    HCOptionBoxMonth.qml
 HCPage 1.0              HCPage.qml
 HCSwitchButton 1.0      HCSwitchButton.qml
-HCToastManager 1.0      HCToastManager.qml
 
+singleton HCToastManager 1.0      HCToastManager.qml
 singleton HCKeyboardManager 1.0 HCKeyboardManager.qml

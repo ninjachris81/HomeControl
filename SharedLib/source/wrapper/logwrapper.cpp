@@ -1,8 +1,6 @@
 #include "include/wrapper/logwrapper.h"
 #include "utils/databasemanager.h"
 
-#include <QTimer>
-
 LogWrapper::LogWrapper(LogController* controller) : ControllerWrapper (controller) {
 
     m_logListModel = new LogSqlListModel(controller, DatabaseManager::instance()->db());

@@ -19,7 +19,7 @@ void LogSqlListModel::_setQuery() {
 QVariant LogSqlListModel::resolveData(int colIndex, QVariant value) const {
     switch(colIndex) {
     case 0: {
-        QDateTime d = QDateTime::fromSecsSinceEpoch(value.toLongLong());
+        QDateTime d = QDateTime::fromMSecsSinceEpoch(value.toLongLong());
         if (QDateTime::currentDateTime().date().daysTo(d.date())==0) {
             return tr("Today") + ", " + d.time().toString();
         } else if (qAbs(QDateTime::currentDateTime().date().daysTo(d.date()))==1) {
@@ -40,19 +40,28 @@ QVariant LogSqlListModel::resolveData(int colIndex, QVariant value) const {
     }
 }
 
-void LogSqlListModel::setTypeFilter(int filter) {
-    if (filter==0) {
-        setFilter("");
-    } else {
-        setFilter("type=" + QString::number(filter-1));
+void LogSqlListModel::updateFilter() {
+    QString f = "";
+
+    if (m_typeFilter!=0) {
+        f = "type=" + QString::number(m_typeFilter-1);
     }
+
+    if (!m_sourceFilter.isEmpty()) {
+        if (!f.isEmpty()) f.append(" AND ");
+        f.append("source='" + m_sourceFilter + "'");
+    }
+
+    setFilter(f);
+}
+
+void LogSqlListModel::setTypeFilter(int filter) {
+    m_typeFilter = filter;
+    updateFilter();
 }
 
 void LogSqlListModel::setSourceFilter(QString filter) {
-    if (filter.isEmpty()) {
-        setFilter("");
-    } else {
-        setFilter("source='" +filter + "'");
-    }
+    m_sourceFilter = filter;
+    updateFilter();
 }
 

@@ -58,19 +58,6 @@ HCPage {
 
             HCButton {
                 Layout.preferredHeight: Style.buttonHeight
-                Layout.preferredWidth: 200
-
-                font.pointSize: Style.fontPointSize
-
-                text: qsTr("Refresh")
-
-                onClicked: {
-                    DataBridge.logs.refreshLog()
-                }
-            }
-
-            HCButton {
-                Layout.preferredHeight: Style.buttonHeight
                 Layout.preferredWidth: 100
 
                 font.pointSize: Style.fontPointSize
