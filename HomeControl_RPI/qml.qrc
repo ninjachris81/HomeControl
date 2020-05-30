@@ -9,5 +9,6 @@
         <file>PageSolar.qml</file>
         <file>PageSecurity.qml</file>
         <file>DateFormat.js</file>
+        <file>PagePV.qml</file>
     </qresource>
 </RCC>

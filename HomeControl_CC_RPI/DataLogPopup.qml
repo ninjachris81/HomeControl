@@ -18,8 +18,8 @@ ColumnLayout {
         DateTimeAxis {
             id: dateAxis
 
-            format: "hh:mm"
-            tickCount: 12
+            format: "ddd hh:mm"
+            tickCount: 14
         }
 
         ValueAxis {
@@ -98,5 +98,11 @@ ColumnLayout {
             if (model.minDate<minDate) minDate = model.minDate
             if (model.maxDate>maxDate) maxDate = model.maxDate
         }
+    }
+
+    Component.onCompleted: {
+        DataBridge.dataLogger.hcTempModel.daysLimit = 7
+        DataBridge.dataLogger.tankTempModel.daysLimit = 7
+        DataBridge.dataLogger.insideTempModel.daysLimit = 7
     }
 }

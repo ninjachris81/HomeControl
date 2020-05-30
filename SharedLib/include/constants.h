@@ -204,6 +204,18 @@
 #define MQTT_PATH_SWITCHES_WINTERGARDEN 0
 #define SWITCHES_LABEL_WINTERGARDEN "Wintergarden"
 
+// EXTERNAL PV
+#define MQTT_PATH_PVS "pvs"
+
+#define MQTT_PATH_PVS_MAMPS 0
+#define PVS_LABEL_MAMPS "mAmps"
+
+#define MQTT_PATH_PVS_TEMP 1
+#define PVS_LABEL_TEMP "Temp"
+
+#define MQTT_PATH_PVS_HUM 2
+#define PVS_LABEL_HUM "Humidity"
+
 // TYPES
 #define MQTT_ID_DOUBLE 'd'
 #define MQTT_ID_INTEGER 'i'

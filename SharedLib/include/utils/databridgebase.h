@@ -13,6 +13,7 @@
 #include "controller/switchcontroller.h"
 #include "controller/infocontroller.h"
 #include "controller/dataloggercontroller.h"
+#include "controller/pvcontroller.h"
 
 #include "wrapper/settingswrapper.h"
 #include "wrapper/logwrapper.h"
@@ -36,6 +37,7 @@ public:
     Q_PROPERTY(ControllerListModel* settingsControllerModel READ settingsListModelController NOTIFY settingsControllerModelChanged)
     Q_PROPERTY(ControllerListModel* brightnessControllerModel READ brightnessListModelController NOTIFY brightnessControllerModelChanged)
     Q_PROPERTY(ControllerListModel* switchControllerModel READ switchListModelController NOTIFY switchControllerModelChanged)
+    Q_PROPERTY(ControllerListModel* pvControllerModel READ pvListModelController NOTIFY pvControllerModelChanged)
 
     // wrappers
     Q_PROPERTY(SettingsWrapper* settings READ settingsControllerWrapper NOTIFY settingsControllerChanged)
@@ -54,6 +56,7 @@ public:
     ControllerListModel *settingsListModelController();
     ControllerListModel *brightnessListModelController();
     ControllerListModel *switchListModelController();
+    ControllerListModel *pvListModelController();
 
     SettingsWrapper *settingsControllerWrapper();
     LogWrapper *logControllerWrapper();
@@ -81,6 +84,7 @@ private:
     SwitchController m_switchController;
     InfoController m_infoController;
     DataLoggerController m_dataLoggerController;
+    PvController m_pvController;
 
     ControllerListModel *m_tempListModelController;
     ControllerListModel *m_logListModelController;
@@ -88,6 +92,7 @@ private:
     ControllerListModel *m_settingsListModelController;
     ControllerListModel *m_brightnessListModelController;
     ControllerListModel *m_switchListModelController;
+    ControllerListModel *m_pvListModelController;
 
     SettingsWrapper *m_settingsControllerWrapper;
     LogWrapper *m_logControllerWrapper;
@@ -108,6 +113,7 @@ signals:
     void settingsControllerModelChanged();
     void brightnessControllerModelChanged();
     void switchControllerModelChanged();
+    void pvControllerModelChanged();
 
     void settingsControllerChanged();
     void logControllerChanged();

@@ -13,6 +13,7 @@ DataBridgeBase::DataBridgeBase(AppConfiguration *appConfig, QObject *parent) : Q
     m_controllerManager.registerController(&m_switchController);
     m_controllerManager.registerController(&m_infoController);
     m_controllerManager.registerController(&m_dataLoggerController);
+    m_controllerManager.registerController(&m_pvController);
     m_controllerManager.init(appConfig);
 
     m_tempListModelController = new ControllerListModel(&m_tempController);
@@ -21,6 +22,7 @@ DataBridgeBase::DataBridgeBase(AppConfiguration *appConfig, QObject *parent) : Q
     m_settingsListModelController = new ControllerListModel(&m_settingsController);
     m_brightnessListModelController = new ControllerListModel(&m_brightnessController);
     m_switchListModelController = new ControllerListModel(&m_switchController);
+    m_pvListModelController = new ControllerListModel(&m_pvController);
 
     m_settingsControllerWrapper = new SettingsWrapper(&m_settingsController);
     m_logControllerWrapper = new LogWrapper(&m_logController);
@@ -64,6 +66,10 @@ ControllerListModel* DataBridgeBase::brightnessListModelController() {
 
 ControllerListModel* DataBridgeBase::switchListModelController() {
     return m_switchListModelController;
+}
+
+ControllerListModel* DataBridgeBase::pvListModelController() {
+    return m_pvListModelController;
 }
 
 SettingsWrapper *DataBridgeBase::settingsControllerWrapper() {

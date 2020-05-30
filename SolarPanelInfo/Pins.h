@@ -1,0 +1,2 @@
+#define PIN_VOLTAGE_IN A0
+#define PIN_TEMP_SENSOR 2

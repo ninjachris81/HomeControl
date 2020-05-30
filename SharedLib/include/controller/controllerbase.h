@@ -26,7 +26,8 @@ public:
         SETTINGS_CONTROLLER,
         SWITCH_CONTROLLER,
         TEMP_CONTROLLER,
-        DATA_LOG_CONTROLLER
+        DATA_LOG_CONTROLLER,
+        EXTERNAL_PV_CONTROLLER = 100        // starting from 100
     };
 
     enum VALUE_OWNER_MODE {
