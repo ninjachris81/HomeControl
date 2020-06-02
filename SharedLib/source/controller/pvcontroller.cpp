@@ -12,7 +12,7 @@
 QString PvController::CONTROLLER_NAME = QStringLiteral("PvController");
 Q_LOGGING_CATEGORY(LG_PV_CONTROLLER, "PvController");
 
-PvController::PvController(QObject *parent) : ControllerBase(ControllerBase::VALUE_OWNER_EXTERNAL_SENSOR, parent)
+PvController::PvController(QObject *parent) : ControllerBase(ControllerBase::VALUE_OWNER_SERVER, parent)
 {
     connect(&mCheckTimer, &QTimer::timeout, this, &PvController::onCheckDatabase);
     mCheckTimer.setInterval(10000);
@@ -51,7 +51,10 @@ qint64 PvController::getValueTrendLifetime(int index) {
 void PvController::onInit() {
     qCDebug(LG_PV_CONTROLLER) << Q_FUNC_INFO;
 
-    mCheckTimer.start();
+    if (m_parent->isServer()) {
+        qCDebug(LG_PV_CONTROLLER) << "Starting check timer";
+        mCheckTimer.start();
+    }
 }
 
 void PvController::onCheckDatabase() {
@@ -67,6 +70,7 @@ void PvController::onCheckDatabase() {
     if (query.exec()) {
         if (query.first()) {
             setValue(EnumsDeclarations::PVS_MAMPS, query.value(0));
+            publishValue(EnumsDeclarations::PVS_MAMPS);
         } else {
             qCWarning(LG_PV_CONTROLLER) << "no data available";
         }

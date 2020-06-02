@@ -1,6 +1,7 @@
 QT -= gui
 QT += mqtt
 QT += sql
+QT += websockets
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
@@ -22,7 +23,8 @@ SOURCES += \
     preheatlogic.cpp \
     heatinglogic.cpp \
     thingspeaklogger.cpp \
-    solarlogic.cpp
+    solarlogic.cpp \
+    websocketserver.cpp
 
 
 # Default rules for deployment.
@@ -35,7 +37,8 @@ HEADERS += \
     preheatlogic.h \
     heatinglogic.h \
     thingspeaklogger.h \
-    solarlogic.h
+    solarlogic.h \
+    websocketserver.h
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SharedLib-Desktop_Qt_5_12_0_MSVC2017_64bit2-Debug/release/ -lSharedLib

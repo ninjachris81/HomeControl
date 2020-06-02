@@ -9,6 +9,7 @@
 #include "controller/switchcontroller.h"
 #include "controller/infocontroller.h"
 #include "controller/dataloggercontroller.h"
+#include "controller/pvcontroller.h"
 
 #include "preheatlogic.h"
 #include "heatinglogic.h"
@@ -52,6 +53,9 @@ int main(int argc, char *argv[])
 
     DataLoggerController dataLoggerController;
     controllerManager.registerController(&dataLoggerController);
+
+    PvController pvController;
+    controllerManager.registerController(&pvController);
 
     controllerManager.init(&appConfig);
 

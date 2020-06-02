@@ -334,6 +334,8 @@ void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
 }
 
 void ControllerBase::broadcastValues() {
+    qDebug() << Q_FUNC_INFO;
+
     for (int i=0;i<m_values.count();i++) {
         if (isValueOwner(i) && valueIsValid(i)) publishValue(i);
     }

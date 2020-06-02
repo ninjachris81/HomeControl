@@ -1,0 +1,301 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	<!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">-->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	
+	<!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>-->
+	<script src="js/jquery-3.5.1.slim.min.js" type="text/javascript"></script>
+	
+	<!--<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>-->
+	<script src="js/popper.min.js" type="text/javascript"></script>
+	
+	<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>-->
+	<script src="js/bootstrap.min.js" type="text/javascript"></script>
+	<script src='js/knockout-min.js' type="text/javascript"></script>
+  
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>-->
+	<script src="js/mqttws31.min.js" type="text/javascript"></script>
+    <script src="js/hc.js" type="text/javascript"></script>
+    <title>
+        Home Control
+    </title>
+
+	
+	<style>
+		.animation_stopped {
+			animation: undefined;
+			opacity: 0.2;
+		}
+
+	</style>
+</head>
+<body style="background-color: black">
+
+	<div id="main_accordion" class="accordion">
+
+
+
+
+	  <div class="card">
+		<div class="card-header" id="heading1">
+		  <h2 class="mb-0">
+			<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#tab1" aria-expanded="false" aria-controls="tab1">
+			  Water Management
+			</button>
+		  </h2>
+		</div>
+
+		<div id="tab1" class="collapse" aria-labelledby="heading1" data-parent="#main_accordion">
+		  <div class="card-body">
+		  
+			<div id="basicTemps" class="card" class="d-block w-100">
+			  <div class="card-header">
+				Basic
+			  </div>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: tankReal }"></li>
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: hc }"></li>
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: water }"></li>
+			  </ul>
+			</div>
+
+			<div id="relayTemps" class="card" class="d-block w-100">
+			  <div class="card-header">
+				Relay
+			  </div>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-bool', data: hcPump }"></li>
+			  </ul>
+			</div>		  
+		  
+		  </div>
+		</div>
+	  </div>
+
+
+
+	  <div class="card">
+		<div class="card-header" id="heading2">
+		  <h2 class="mb-0">
+			<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#tab2" aria-expanded="false" aria-controls="tab2">
+			  Heating
+			</button>
+		  </h2>
+		</div>
+
+		<div id="tab2" class="collapse" aria-labelledby="heading2" data-parent="#main_accordion">
+		  <div class="card-body">
+		  
+			<div id="basicHeating" class="card" class="d-block w-100">
+			  <div class="card-header">
+				Basic
+			  </div>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: tankReal }"></li>
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: inside }"></li>
+			  </ul>
+			</div>
+		
+			<div id="relayHeating" class="card" class="d-block w-100">
+			  <div class="card-header">
+				Relay
+			  </div>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-bool', data: heatingPump }"></li>
+			  </ul>
+			</div>	  
+		  
+		  </div>
+		</div>
+	  </div>
+
+
+
+
+
+	  <div class="card">
+		<div class="card-header" id="heading3">
+		  <h2 class="mb-0">
+			<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#tab3" aria-expanded="false" aria-controls="tab3">
+			  Photo Voltaics
+			</button>
+		  </h2>
+		</div>
+
+		<div id="tab3" class="collapse" aria-labelledby="heading3" data-parent="#main_accordion">
+		  <div class="card-body">
+		  
+			<div id="basicPv" class="card" class="d-block w-100">
+			  <div class="card-header">
+				Basic
+			  </div>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: mamps }"></li>
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: temp }"></li>
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: hum }"></li>
+			  </ul>
+			</div>  
+		  
+		  </div>
+		</div>
+	  </div>
+
+	
+	
+	
+	  <div class="card">
+		<div class="card-header" id="heading4">
+		  <h2 class="mb-0">
+			<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#tab4" aria-expanded="false" aria-controls="tab4">
+			  Solar
+			</button>
+		  </h2>
+		</div>
+
+		<div id="tab4" class="collapse" aria-labelledby="heading4" data-parent="#main_accordion">
+		  <div class="card-body">
+		  
+			<div id="basicSolar" class="card" class="d-block w-100">
+			  <div class="card-header">
+				Basic
+			  </div>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: solarHc }"></li>
+			  </ul>
+			</div>
+		  
+		  </div>
+		</div>
+	  </div>	
+	  
+	  <!--
+	  <a class="carousel-control-prev" href="#main_carousel" role="button" data-slide="prev">
+		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		<span class="sr-only">Previous</span>
+	  </a>
+	  <a class="carousel-control-next" href="#main_carousel" role="button" data-slide="next">
+		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		<span class="sr-only">Next</span>
+	  </a>
+	  -->
+	</div>
+
+	<script type="text/html" id="value-template-text">
+		<p><span data-bind="text: label"></span>:&nbsp;<span data-bind="text: value"></span>&nbsp;<span data-bind="text: unit"></span></p>
+	</script>
+
+	<script type="text/html" id="value-template-bool">
+		<div class="align-items-center">
+			<span data-bind="text: label"></span>
+		  <div class="spinner-grow ml-auto" role="status" data-bind="css: { animation_stopped: value()==false }"></div>
+		  <!--<div class="spinner-grow ml-auto" style="animation: undefined; opacity: 0.2" role="status" data-bind="visible: !value"></div>-->
+		</div>
+	</script>
+
+<script>
+	const MQTT_BC_CMD_BC_ALL = "all";
+	
+	// TYPES
+	const MQTT_ID_DOUBLE = 'd';
+	const MQTT_ID_INTEGER = 'i';
+	const MQTT_ID_STRING = 's';
+	const MQTT_ID_BOOL = 'b';
+	
+	var controllers = {	"temps": new TempController("temps"), 
+						"pvs": new PvController("pvs"), 
+						"relays": new RelayController("relays"),
+						"infos": new InfoController("infos"),
+						"settings": new SettingsController("settings")
+						};
+
+	// Create a client instance
+	client = new Paho.MQTT.Client("rpi-server.fritz.box", 8081, "");
+
+	// set callback handlers
+	client.onConnectionLost = onConnectionLost;
+	client.onMessageArrived = onMessageArrived;
+
+	for (var c in controllers) {
+		controllers[c].init();
+	}
+	
+	for (var c in controllers) {
+		controllers[c].postInit();
+	}
+
+	//ko.applyBindings(controllers);
+	
+	ko.applyBindings(controllers["temps"].values, document.getElementById("basicTemps"));
+	ko.applyBindings(controllers["relays"].values, document.getElementById("relayTemps"));
+
+	ko.applyBindings(controllers["temps"].values, document.getElementById("basicHeating"));
+	ko.applyBindings(controllers["relays"].values, document.getElementById("relayHeating"));
+	
+	ko.applyBindings(controllers["pvs"].values, document.getElementById("basicPv"));
+	
+	ko.applyBindings(controllers["temps"].values, document.getElementById("basicSolar"));
+	
+	reconnect();
+	
+	function reconnect() {
+		// connect the client
+		client.connect({onSuccess:onConnect});
+	}
+	
+	// called when the client connects
+	function onConnect() {
+	  // Once a connection has been made, make a subscription and send a message.
+	  console.log("onConnect");
+	  
+	  for (var c in controllers) {
+		var topic = "hc/" + c + "/val/#";
+		console.log("Subscribing to " + topic);
+		client.subscribe(topic);
+	  }
+	  
+	  sendBroadcast(MQTT_BC_CMD_BC_ALL);
+	}
+	
+	function sendBroadcast(msg) {
+		sendMessage("hc/bc", msg, MQTT_ID_STRING);
+	}
+	
+	function sendMessage(path, value, valueType) {
+	  message = new Paho.MQTT.Message(valueType + value);
+	  message.destinationName = path;
+	  client.send(message);
+	}
+
+	// called when the client loses its connection
+	function onConnectionLost(responseObject) {
+	  if (responseObject.errorCode !== 0) {
+		console.log("onConnectionLost:"+responseObject.errorMessage);
+	  }
+	  
+	  setTimeout(function() { reconnect() }, 1000);
+	}
+
+	// called when a message arrives
+	function onMessageArrived(message) {
+	  //console.log("onMessageArrived:"+message.destinationName);
+	  //console.log("onMessageArrived:"+message.payloadString);
+	  
+	  var s = message.destinationName.substring(3);
+	  var topic = s.substring(0, s.indexOf("/"));
+	  var val_index = s.substring(s.lastIndexOf("/")+1);
+	  
+	  if (controllers[topic]) {
+		controllers[topic].handleMessage(parseInt(val_index), message.payloadString);
+	  } else {
+		console.warn("Controller not found: " + topic);
+	  }
+	  
+	}
+</script>
+
+</body>    
+
+</html>

@@ -14,7 +14,9 @@ public:
     enum ConfigurationKey {
         APP_VERSION,
         MQTT_HOST,
-        MQTT_PORT
+        MQTT_PORT,
+        WS_HOST,
+        WS_PORT
     };
     Q_ENUM(ConfigurationKey)
 
