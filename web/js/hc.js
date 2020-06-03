@@ -88,20 +88,26 @@ class TempController extends ControllerBase {
 }
 
 class PvController extends ControllerBase {
+	postInit() {
+		this.values["power"].value = ko.computed(function() {
+			return (this.values["mamps"].value() * 0.230).toFixed(2);
+		}, this);
+	}
+
 	getValueNames() {
-		return ["mamps", "temp", "hum"];
+		return ["mamps", "temp", "hum", "power"];
 	}
 	
 	getValueUnits() {
-		return ["mAmps", "°", "%"];
+		return ["mAmps", "°", "%", "W"];
 	}
 	
 	getValueLabels() {
-		return ["mAmps", "Temp", "Humidity"];
+		return ["mAmps", "Temp", "Humidity", "Power"];
 	}
 	
 	getValueDefaults() {
-		return [0, 0, 0];
+		return [0, 0, 0, 0];
 	}
 }
 

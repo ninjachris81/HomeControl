@@ -8,6 +8,9 @@
 
 #define PROP_MAMPS 0
 
+#define MIN_VALUE 0
+#define MAX_VALUE 1500
+
 class VoltageController : public AbstractIntervalTask, public Property<uint16_t>::ValueChangeListener {
 public:
   VoltageController();

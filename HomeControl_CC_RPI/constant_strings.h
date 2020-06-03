@@ -45,3 +45,6 @@
 #define CONST_RELAYS_LABEL_SOLAR_PUMP QT_TRANSLATE_NOOP("Constants", "Solar Pump");
 #define CONST_BRIGHTNESSES_LABEL_SOLAR QT_TRANSLATE_NOOP("Constants", "Solar");
 #define CONST_SWITCHES_LABEL_WINTERGARDEN QT_TRANSLATE_NOOP("Constants", "Wintergarden");
+#define CONST_PVS_LABEL_MAMPS QT_TRANSLATE_NOOP("Constants", "mAmps");
+#define CONST_PVS_LABEL_TEMP QT_TRANSLATE_NOOP("Constants", "Temp");
+#define CONST_PVS_LABEL_HUM QT_TRANSLATE_NOOP("Constants", "Humidity");

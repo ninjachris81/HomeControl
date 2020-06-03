@@ -12,6 +12,7 @@ Item {
     property var labelValue: ""
     property bool isValid: false
     property string unit: ""
+    property string unitSpacing: ""
     property string labelSuffix: ":"
     property bool allowInput: false
     property var inputHandler
@@ -103,7 +104,7 @@ Item {
         HCLabel {
             id: unitLabel
 
-            text: unit
+            text: unitSpacing + unit
             fontPointSize: root.fontPointSize>0 ? root.fontPointSize : Style.fontPointSize-2
         }
 

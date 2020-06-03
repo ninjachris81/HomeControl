@@ -11,6 +11,14 @@ QT_FORWARD_DECLARE_CLASS(QWebSocket)
 
 Q_DECLARE_LOGGING_CATEGORY(LG_WS_SERVER)
 
+
+
+/*
+ * CURRENTLY NOT IN USE !!!!!
+ *
+*/
+
+
 class WebsocketServer : public QObject
 {
     Q_OBJECT

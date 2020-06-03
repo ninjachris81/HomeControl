@@ -72,8 +72,12 @@ void VoltageController::update() {
    Serial.println(" mA RMS");
    */
 
-   mamps.setValue(nCurrentThruWire);
-   
+   if (nCurrentThruWire>=MIN_VALUE && nCurrentThruWire<=MAX_VALUE) {
+     mamps.setValue(nCurrentThruWire);
+   } else {
+    // read sensor error
+   }
+    
 }
 
 

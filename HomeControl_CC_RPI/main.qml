@@ -56,6 +56,14 @@ Window {
         }
     }
 
+    InfoPopup {
+        id: pvLogPopup
+
+        contentItem: PvLogPopup {
+            isActive: pvLogPopup.opened
+        }
+    }
+
     ColumnLayout {
         anchors.fill: parent
         spacing: 4
@@ -261,6 +269,53 @@ Window {
                 }
             }
         }
+
+
+
+        HCGroupBox {
+            Layout.preferredHeight: root.buttonHeight + 12
+            Layout.fillWidth: true
+
+            RowLayout {
+                anchors.fill: parent
+
+                HCValueLabel {
+                    id: pvMamps
+
+                    Layout.preferredHeight: root.buttonHeight
+                    Layout.preferredWidth: Style.screenWidth / 2
+                    Layout.margins: 6
+
+                    model: DataBridge.pvControllerModel
+                    modelIndex: Enums.PVS_MAMPS
+                    unit: "mAmps"
+                    unitSpacing: " "
+                    showTrend: true
+                    labelSuffix: ""
+                }
+
+                HCSimpleLabel {
+                    Layout.preferredHeight: root.buttonHeight
+                    Layout.fillWidth: true
+
+                    unit: "W"
+                    unitSpacing: " "
+                    formatAsFloat: true
+                    labelSuffix: ""
+                    isValid: true
+                    labelValue: pvMamps.labelValue * 0.230
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: {
+                    pvLogPopup.open()
+                }
+            }
+        }
+
 
         HCGroupBox {
             Layout.preferredHeight: root.buttonHeight + 12

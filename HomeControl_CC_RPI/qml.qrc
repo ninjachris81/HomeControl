@@ -10,5 +10,6 @@
         <file>ChartViewGestures.qml</file>
         <file>HCDataLogPopup.qml</file>
         <file>HeatingLogPopup.qml</file>
+        <file>PvLogPopup.qml</file>
     </qresource>
 </RCC>
