@@ -15,7 +15,7 @@ Window {
     width: Style.screenWidth
     height: Style.screenHeight
 
-    readonly property int buttonHeight: 100
+    readonly property int buttonHeight: 88
 
     InfoPopup {
         id: tankInfoPopup
@@ -187,19 +187,38 @@ Window {
             }
         }
 
+        // 3rd row
         HCGroupBox {
             Layout.preferredHeight: root.buttonHeight + 12
             Layout.fillWidth: true
 
-            HCValueLabel {
+            RowLayout {
                 anchors.fill: parent
 
-                model: DataBridge.tempControllerModel
-                modelIndex: Enums.TEMPS_SOLAR_HC
-                unit: "°"
-                formatAsFloat: true
-                showTrend: true
-                labelSuffix: ""
+                HCValueLabel {
+                    Layout.preferredHeight: root.buttonHeight
+                    Layout.preferredWidth: Style.screenWidth / 2
+                    Layout.margins: 6
+
+                    model: DataBridge.tempControllerModel
+                    modelIndex: Enums.TEMPS_SOLAR_HC
+                    unit: "°"
+                    formatAsFloat: true
+                    showTrend: true
+                    labelSuffix: ""
+                }
+
+                HCValueLabel {
+                    Layout.preferredHeight: root.buttonHeight
+                    Layout.fillWidth: true
+
+                    model: DataBridge.brightnessControllerModel
+                    modelIndex: Enums.BRIGHTNESSES_SOLAR
+                    unit: "%"
+                    showTrend: true
+                    labelSuffix: ""
+                    conversionFunction: function(v) { if (v && v>0) { return (4096 / (v)).toFixed(0); } else { return 0}};       // 12-bit
+                }
             }
 
             MouseArea {
@@ -316,6 +335,40 @@ Window {
             }
         }
 
+        HCGroupBox {
+            Layout.preferredHeight: root.buttonHeight + 12
+            Layout.fillWidth: true
+
+            RowLayout {
+                anchors.fill: parent
+
+                HCValueLabel {
+                    Layout.preferredHeight: root.buttonHeight
+                    Layout.preferredWidth: Style.screenWidth / 2
+                    Layout.margins: 6
+
+                    model: DataBridge.tempControllerModel
+                    modelIndex: Enums.TEMPS_OUTSIDE
+                    unit: "°"
+                    formatAsFloat: true
+                    showTrend: true
+                    labelSuffix: ""
+                }
+
+                HCValueLabel {
+                    Layout.preferredHeight: root.buttonHeight
+                    Layout.fillWidth: true
+
+                    model: DataBridge.humidityControllerModel
+                    modelIndex: Enums.HUMIDITIES_OUTSIDE
+                    unit: ""
+                    formatAsFloat: true
+                    showTrend: true
+                    labelSuffix: ""
+                }
+            }
+        }
+
 
         HCGroupBox {
             Layout.preferredHeight: root.buttonHeight + 12
@@ -336,6 +389,7 @@ Window {
             Layout.fillHeight: true
         }
 
+        // footer
         RowLayout {
             spacing: 0
             Layout.margins: 10

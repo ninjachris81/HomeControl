@@ -20,7 +20,16 @@ unsigned long sentCompleteTS = 0;
 
 void onConnectionEstablished() {}   // legacy
 
+uint8_t finishedCountNeeded = 0;
+
 void setup() {
+#if BRIGHTNESS_COUNT>0
+  finishedCountNeeded++;
+#endif
+#if TEMP_COUNT>0
+  finishedCountNeeded++;
+#endif
+  
   LOG_INIT();
 
   taskManager.registerTask(&mqttController);
@@ -37,6 +46,8 @@ void setup() {
 }
 
 void sleepRestart() {
+  LOG_PRINTLN(F("Restart"));
+
 #ifndef ESP32
   wdt_disable();
 #endif
@@ -56,19 +67,21 @@ void sleepRestart() {
 #endif
 }
 
+
+
 void loop() {
   taskManager.update();
 
-  bool isFinished = false;
+uint8_t finishedCount = 0;
 
 #if BRIGHTNESS_COUNT>0
-  if (!isFinished) isFinished = brightnessController.isFinished();
+  if (brightnessController.isFinished()) finishedCount++;
 #endif
 #if TEMP_COUNT>0
-  if (!isFinished) isFinished = tempController.isFinished();
+  if (tempController.isFinished()) finishedCount++;
 #endif
 
-  if (isFinished) {
+  if (finishedCount==finishedCountNeeded) {
     // still wait a bit until sent
     if (sentCompleteTS==0) {
       LOG_PRINTLN(F("All tasks complete"));
@@ -76,7 +89,6 @@ void loop() {
     }
 
     if (millis()>sentCompleteTS+SEND_WAIT_TIME_MS) {
-      LOG_PRINTLN(F("Restart"));
       sleepRestart();
     }
   } else {

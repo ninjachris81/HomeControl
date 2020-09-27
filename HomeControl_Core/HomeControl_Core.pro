@@ -22,6 +22,7 @@ SOURCES += \
         main.cpp \
     preheatlogic.cpp \
     heatinglogic.cpp \
+    pvlogic.cpp \
     thingspeaklogger.cpp \
     solarlogic.cpp \
     websocketserver.cpp
@@ -36,6 +37,7 @@ HEADERS += \
     boilerlogic.h \
     preheatlogic.h \
     heatinglogic.h \
+    pvlogic.h \
     thingspeaklogger.h \
     solarlogic.h \
     websocketserver.h

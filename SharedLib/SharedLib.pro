@@ -32,6 +32,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    source/controller/humiditycontroller.cpp \
     source/controller/pvcontroller.cpp \
     source/sqllistmodel/hcsqlquerymodel.cpp \
     source/utils/databasemanager.cpp \
@@ -66,6 +67,7 @@ SOURCES += \
 
 HEADERS += \
     include/controller/dataloggercontroller.h \
+    include/controller/humiditycontroller.h \
     include/controller/infocontroller.h \
     include/controller/pvcontroller.h \
     include/controller/switchcontroller.h \

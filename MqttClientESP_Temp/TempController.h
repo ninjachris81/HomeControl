@@ -11,6 +11,9 @@
 #elif TEMP_SENSOR == TEMP_SENSOR_LM75
   #include <Temperature_LM75_Derived.h>
   #warning LM75 SENSOR
+#elif TEMP_SENSOR == TEMP_SENSOR_DHT22
+  #include <DHT.h>
+  #warning DHT22 SENSOR
 #endif
 
 #define TEMPERATURE_RESOLUTION 9
@@ -31,6 +34,8 @@ private:
   DallasTemperature* sensors;
 #elif TEMP_SENSOR == TEMP_SENSOR_LM75
   Generic_LM75 temperature;
+#elif TEMP_SENSOR == TEMP_SENSOR_DHT22
+  DHT *dht;
 #endif
 
   bool hasSent = false;

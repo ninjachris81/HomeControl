@@ -205,119 +205,107 @@
     </message>
     <message>
         <location filename="../constant_strings.h" line="41"/>
+        <source>Outside</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../constant_strings.h" line="42"/>
         <source>HC Pump</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="42"/>
+        <location filename="../constant_strings.h" line="43"/>
         <source>Water Pump</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="43"/>
+        <location filename="../constant_strings.h" line="44"/>
         <source>Heating Pump</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="44"/>
+        <location filename="../constant_strings.h" line="45"/>
         <source>Boiler</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="45"/>
+        <location filename="../constant_strings.h" line="46"/>
         <source>Solar Pump</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="46"/>
+        <location filename="../constant_strings.h" line="47"/>
         <source>Solar</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../constant_strings.h" line="47"/>
+        <location filename="../constant_strings.h" line="48"/>
+        <source>Hum Outside</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../constant_strings.h" line="49"/>
         <source>Wintergarden</source>
         <translation></translation>
     </message>
+    <message>
+        <location filename="../constant_strings.h" line="50"/>
+        <source>mAmps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../constant_strings.h" line="51"/>
+        <source>Temp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../constant_strings.h" line="52"/>
+        <source>Humidity</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
-    <name>DataLogView</name>
+    <name>DataLogPopup</name>
     <message>
-        <location filename="../DataLogView.qml" line="37"/>
+        <location filename="../DataLogPopup.qml" line="37"/>
         <source>HC Temp</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DataLogView.qml" line="46"/>
+        <location filename="../DataLogPopup.qml" line="47"/>
         <source>Inside Temp</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DataLogView.qml" line="55"/>
+        <location filename="../DataLogPopup.qml" line="57"/>
         <source>Tank Temp</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>HCOptionBoxMonth</name>
+    <name>HCDataLogPopup</name>
     <message>
-        <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
-        <source>Jan</source>
-        <translation></translation>
+        <location filename="../HCDataLogPopup.qml" line="29"/>
+        <source>Minutes</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
-        <source>Feb</source>
-        <translation></translation>
+        <location filename="../HCDataLogPopup.qml" line="39"/>
+        <source>HC Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HeatingLogPopup</name>
+    <message>
+        <location filename="../HeatingLogPopup.qml" line="29"/>
+        <source>Minutes</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
-        <source>Mar</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
-        <source>Apr</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
-        <source>May</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
-        <source>Jun</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
-        <source>Jul</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
-        <source>Aug</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
-        <source>Sep</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
-        <source>Oct</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
-        <source>Nov</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../components/HCOptionBoxMonth.qml" line="4"/>
-        <source>Dec</source>
-        <translation></translation>
+        <location filename="../HeatingLogPopup.qml" line="39"/>
+        <source>Heating Duration</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -329,11 +317,19 @@
     </message>
 </context>
 <context>
-    <name>SolarLogView</name>
+    <name>PvLogPopup</name>
     <message>
-        <location filename="../SolarLogView.qml" line="37"/>
+        <location filename="../PvLogPopup.qml" line="37"/>
+        <source>mAmps</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SolarLogPopup</name>
+    <message>
+        <location filename="../SolarLogPopup.qml" line="37"/>
         <source>Solar Temp</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -362,17 +358,17 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.qml" line="114"/>
+        <location filename="../main.qml" line="145"/>
         <source>Boiler Target Temp</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="241"/>
+        <location filename="../main.qml" line="380"/>
         <source>Statistics</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="296"/>
+        <location filename="../main.qml" line="436"/>
         <source>System Temperature</source>
         <translation></translation>
     </message>

@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QSqlDatabase>
-#include "include/utils/appconfiguration.h"
+#include "appconfiguration.h"
 
 class DatabaseManager
 {

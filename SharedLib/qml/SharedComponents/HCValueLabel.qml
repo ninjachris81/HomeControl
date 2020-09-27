@@ -7,6 +7,7 @@ HCSimpleLabel {
 
     property var model
     property int modelIndex
+    property var conversionFunction: function(v) {return v}
 
     signal valueChanged
 
@@ -14,7 +15,7 @@ HCSimpleLabel {
         target: model
 
         onDataChanged: {
-            labelValue = model ? model.data(model.index(modelIndex, 0), 258) : ""
+            labelValue = conversionFunction(model ? model.data(model.index(modelIndex, 0), 258) : "")
             isValid = model ? model.data(model.index(modelIndex, 0), 259) : false
             trend = model ? model.data(model.index(modelIndex, 0), 260) : 0
 

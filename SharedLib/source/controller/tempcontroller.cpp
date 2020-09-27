@@ -41,6 +41,8 @@ qint64 TempController::getValueLifetime(int index) {
         return LIFETIME_MID;
     case EnumsDeclarations::TEMPS_TANK:
         return LIFETIME_LONG;
+    case EnumsDeclarations::TEMPS_OUTSIDE:
+        return LIFETIME_LONG;
     default:
         return LIFETIME_UNLIMITED;
     }
@@ -54,6 +56,8 @@ qint64 TempController::getValueTrendLifetime(int index) {
     case EnumsDeclarations::TEMPS_INSIDE:
     case EnumsDeclarations::TEMPS_SOLAR_HC:
         return VALUE_TT_MID;
+    case EnumsDeclarations::TEMPS_OUTSIDE:
+        return VALUE_TT_SLOW;
     default:
         return VALUE_TT_NONE;
     }

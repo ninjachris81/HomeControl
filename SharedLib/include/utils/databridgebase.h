@@ -14,6 +14,7 @@
 #include "controller/infocontroller.h"
 #include "controller/dataloggercontroller.h"
 #include "controller/pvcontroller.h"
+#include "controller/humiditycontroller.h"
 
 #include "wrapper/settingswrapper.h"
 #include "wrapper/logwrapper.h"
@@ -38,6 +39,7 @@ public:
     Q_PROPERTY(ControllerListModel* brightnessControllerModel READ brightnessListModelController NOTIFY brightnessControllerModelChanged)
     Q_PROPERTY(ControllerListModel* switchControllerModel READ switchListModelController NOTIFY switchControllerModelChanged)
     Q_PROPERTY(ControllerListModel* pvControllerModel READ pvListModelController NOTIFY pvControllerModelChanged)
+    Q_PROPERTY(ControllerListModel* humidityControllerModel READ humidityListModelController NOTIFY humidityControllerModelChanged)
 
     // wrappers
     Q_PROPERTY(SettingsWrapper* settings READ settingsControllerWrapper NOTIFY settingsControllerChanged)
@@ -57,6 +59,7 @@ public:
     ControllerListModel *brightnessListModelController();
     ControllerListModel *switchListModelController();
     ControllerListModel *pvListModelController();
+    ControllerListModel *humidityListModelController();
 
     SettingsWrapper *settingsControllerWrapper();
     LogWrapper *logControllerWrapper();
@@ -85,6 +88,7 @@ private:
     InfoController m_infoController;
     DataLoggerController m_dataLoggerController;
     PvController m_pvController;
+    HumidityController m_humidityController;
 
     ControllerListModel *m_tempListModelController;
     ControllerListModel *m_logListModelController;
@@ -93,6 +97,7 @@ private:
     ControllerListModel *m_brightnessListModelController;
     ControllerListModel *m_switchListModelController;
     ControllerListModel *m_pvListModelController;
+    ControllerListModel *m_humidityListModelController;
 
     SettingsWrapper *m_settingsControllerWrapper;
     LogWrapper *m_logControllerWrapper;
@@ -114,6 +119,7 @@ signals:
     void brightnessControllerModelChanged();
     void switchControllerModelChanged();
     void pvControllerModelChanged();
+    void humidityControllerModelChanged();
 
     void settingsControllerChanged();
     void logControllerChanged();
