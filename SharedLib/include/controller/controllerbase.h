@@ -28,6 +28,7 @@ public:
         TEMP_CONTROLLER,
         DATA_LOG_CONTROLLER,
         HUMIDITY_CONTROLLER,
+        CURRENT_CONTROLLER,
         EXTERNAL_PV_CONTROLLER = 100        // starting from 100
     };
 

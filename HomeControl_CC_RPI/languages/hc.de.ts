@@ -206,7 +206,7 @@
     <message>
         <location filename="../constant_strings.h" line="41"/>
         <source>Outside</source>
-        <translation type="unfinished">Außen</translation>
+        <translation>Außen</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="42"/>
@@ -226,7 +226,7 @@
     <message>
         <location filename="../constant_strings.h" line="45"/>
         <source>Boiler</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="46"/>
@@ -235,13 +235,13 @@
     </message>
     <message>
         <location filename="../constant_strings.h" line="47"/>
-        <source>Solar</source>
-        <translation></translation>
+        <source>Brightness</source>
+        <translation>Helligkeit</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="48"/>
         <source>Hum Outside</source>
-        <translation type="unfinished">Luftf. Außen</translation>
+        <translation>Luftf. Außen</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="49"/>
@@ -250,18 +250,23 @@
     </message>
     <message>
         <location filename="../constant_strings.h" line="50"/>
-        <source>mAmps</source>
-        <translation type="unfinished"></translation>
+        <source>Main Basement</source>
+        <translation>Keller</translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="51"/>
-        <source>Temp</source>
-        <translation type="unfinished"></translation>
+        <source>PV</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../constant_strings.h" line="52"/>
+        <source>Temp</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../constant_strings.h" line="53"/>
         <source>Humidity</source>
-        <translation type="unfinished">Luftfeuchtigkeit</translation>
+        <translation>Luftfeuchtigkeit</translation>
     </message>
 </context>
 <context>
@@ -269,17 +274,17 @@
     <message>
         <location filename="../DataLogPopup.qml" line="37"/>
         <source>HC Temp</source>
-        <translation type="unfinished">Wärmetauscher</translation>
+        <translation>Wärmetauscher</translation>
     </message>
     <message>
         <location filename="../DataLogPopup.qml" line="47"/>
         <source>Inside Temp</source>
-        <translation type="unfinished">Innen</translation>
+        <translation>Temp Innen</translation>
     </message>
     <message>
         <location filename="../DataLogPopup.qml" line="57"/>
         <source>Tank Temp</source>
-        <translation type="unfinished">Tank</translation>
+        <translation>Tank</translation>
     </message>
 </context>
 <context>
@@ -302,12 +307,12 @@
     <message>
         <location filename="../HCDataLogPopup.qml" line="29"/>
         <source>Minutes</source>
-        <translation type="unfinished">Minuten</translation>
+        <translation>Minuten</translation>
     </message>
     <message>
         <location filename="../HCDataLogPopup.qml" line="39"/>
         <source>HC Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>WT Dauer</translation>
     </message>
 </context>
 <context>
@@ -334,12 +339,17 @@
     <message>
         <location filename="../HeatingLogPopup.qml" line="29"/>
         <source>Minutes</source>
-        <translation type="unfinished">Minuten</translation>
+        <translation>Minuten</translation>
     </message>
     <message>
         <location filename="../HeatingLogPopup.qml" line="39"/>
         <source>Heating Duration</source>
-        <translation type="unfinished">Heizdauer</translation>
+        <translation>Heizdauer</translation>
+    </message>
+    <message>
+        <location filename="../HeatingLogPopup.qml" line="43"/>
+        <source>Boiler Duration</source>
+        <translation>Bioler Brenndauer</translation>
     </message>
 </context>
 <context>
@@ -454,7 +464,7 @@
     <message>
         <location filename="../PvLogPopup.qml" line="37"/>
         <source>mAmps</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -462,7 +472,7 @@
     <message>
         <location filename="../SolarLogPopup.qml" line="37"/>
         <source>Solar Temp</source>
-        <translation type="unfinished">Solartemperatur</translation>
+        <translation>Solartemperatur</translation>
     </message>
 </context>
 <context>
@@ -511,12 +521,12 @@
         <translation>Zieltemp Tank</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="380"/>
+        <location filename="../main.qml" line="387"/>
         <source>Statistics</source>
         <translation>Statistik</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="436"/>
+        <location filename="../main.qml" line="443"/>
         <source>System Temperature</source>
         <translation>Systemtemperatur</translation>
     </message>

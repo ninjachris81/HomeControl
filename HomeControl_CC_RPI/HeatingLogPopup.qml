@@ -38,6 +38,10 @@ ColumnLayout {
                 id: hcBarSet
                 label: qsTr("Heating Duration")
             }
+            BarSet {
+                id: boilerBarSet
+                label: qsTr("Boiler Duration")
+            }
         }
     }
 
@@ -49,13 +53,16 @@ ColumnLayout {
 
         onTriggered:  {
             DataBridge.dataLogger.heatingPumpModel.refresh();
+            DataBridge.dataLogger.boilerModel.refresh();
 
             DataBridge.dataLogger.heatingPumpModel.updateBarSeries(heatingValAxis, heatingCatAxis, hcBarSet)
+            DataBridge.dataLogger.boilerModel.updateBarSeries(heatingValAxis, heatingCatAxis, boilerBarSet)
             heatingValAxis.applyNiceNumbers()
         }
 
         Component.onCompleted: {
             DataBridge.dataLogger.heatingPumpModel.daysLimit = 7
+            DataBridge.dataLogger.boilerModel.daysLimit = 7
         }
     }
 }

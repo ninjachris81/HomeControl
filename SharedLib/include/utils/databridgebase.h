@@ -15,6 +15,7 @@
 #include "controller/dataloggercontroller.h"
 #include "controller/pvcontroller.h"
 #include "controller/humiditycontroller.h"
+#include "controller/currentcontroller.h"
 
 #include "wrapper/settingswrapper.h"
 #include "wrapper/logwrapper.h"
@@ -40,6 +41,7 @@ public:
     Q_PROPERTY(ControllerListModel* switchControllerModel READ switchListModelController NOTIFY switchControllerModelChanged)
     Q_PROPERTY(ControllerListModel* pvControllerModel READ pvListModelController NOTIFY pvControllerModelChanged)
     Q_PROPERTY(ControllerListModel* humidityControllerModel READ humidityListModelController NOTIFY humidityControllerModelChanged)
+    Q_PROPERTY(ControllerListModel* currentControllerModel READ currentListModelController NOTIFY currentControllerModelChanged)
 
     // wrappers
     Q_PROPERTY(SettingsWrapper* settings READ settingsControllerWrapper NOTIFY settingsControllerChanged)
@@ -60,6 +62,7 @@ public:
     ControllerListModel *switchListModelController();
     ControllerListModel *pvListModelController();
     ControllerListModel *humidityListModelController();
+    ControllerListModel *currentListModelController();
 
     SettingsWrapper *settingsControllerWrapper();
     LogWrapper *logControllerWrapper();
@@ -89,6 +92,7 @@ private:
     DataLoggerController m_dataLoggerController;
     PvController m_pvController;
     HumidityController m_humidityController;
+    CurrentController m_currentController;
 
     ControllerListModel *m_tempListModelController;
     ControllerListModel *m_logListModelController;
@@ -98,6 +102,7 @@ private:
     ControllerListModel *m_switchListModelController;
     ControllerListModel *m_pvListModelController;
     ControllerListModel *m_humidityListModelController;
+    ControllerListModel *m_currentListModelController;
 
     SettingsWrapper *m_settingsControllerWrapper;
     LogWrapper *m_logControllerWrapper;
@@ -120,6 +125,7 @@ signals:
     void switchControllerModelChanged();
     void pvControllerModelChanged();
     void humidityControllerModelChanged();
+    void currentControllerModelChanged();
 
     void settingsControllerChanged();
     void logControllerChanged();

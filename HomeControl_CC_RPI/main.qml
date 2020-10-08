@@ -217,7 +217,7 @@ Window {
                     unit: "%"
                     showTrend: true
                     labelSuffix: ""
-                    conversionFunction: function(v) { if (v && v>0) { return (4096 / (v)).toFixed(0); } else { return 0}};       // 12-bit
+                    conversionFunction: function(v) { if (v && v>0) { return ((v / 4096) * 100).toFixed(0); } else { return 0}};       // 12-bit
                 }
             }
 
@@ -307,22 +307,29 @@ Window {
 
                     model: DataBridge.pvControllerModel
                     modelIndex: Enums.PVS_MAMPS
-                    unit: "mAmps"
+                    unit: "W"
                     unitSpacing: " "
                     showTrend: true
                     labelSuffix: ""
+                    formatAsFloat: true
+                    labelText: "PV"
+                    conversionFunction: function(val) { return val * .230 }
                 }
 
-                HCSimpleLabel {
+                HCValueLabel {
+                    id: basementMamps
+
                     Layout.preferredHeight: root.buttonHeight
                     Layout.fillWidth: true
 
+                    model: DataBridge.currentControllerModel
+                    modelIndex: Enums.CURRENTS_MAIN_BASEMENT
                     unit: "W"
                     unitSpacing: " "
+                    showTrend: true
                     formatAsFloat: true
                     labelSuffix: ""
-                    isValid: true
-                    labelValue: pvMamps.labelValue * 0.230
+                    conversionFunction: function(val) { return val * .230 }
                 }
             }
 

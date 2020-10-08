@@ -70,15 +70,16 @@ void HeatingLogic::onMaintenance() {
 
 bool HeatingLogic::isValidMonth() {
     int from = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_MONTH_FROM).toInt();
-    int to = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_MONTH_TO).toInt();
+    int orgTo = m_settingsController->value(EnumsDeclarations::SETTINGS_HEATING_MONTH_TO).toInt();
+    int to = orgTo;
 
     int currentMonth = QDate::currentDate().month();
     if (to<from) {
         to+=12;
-        currentMonth+=12;
+        if (currentMonth <= orgTo) currentMonth+=12;
     }
 
-    qDebug() << Q_FUNC_INFO << currentMonth << from << to;
+    qDebug() << Q_FUNC_INFO << currentMonth << from << to << orgTo;
 
     return currentMonth>=from && currentMonth<=to;
 }

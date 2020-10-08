@@ -10,6 +10,8 @@
 #include "controller/infocontroller.h"
 #include "controller/dataloggercontroller.h"
 #include "controller/pvcontroller.h"
+#include "controller/humiditycontroller.h"
+#include "controller/currentcontroller.h"
 
 #include "preheatlogic.h"
 #include "heatinglogic.h"
@@ -57,6 +59,12 @@ int main(int argc, char *argv[])
     PvController pvController;
     controllerManager.registerController(&pvController);
 
+    HumidityController humidityController;
+    controllerManager.registerController(&humidityController);
+
+    CurrentController currentController;
+    controllerManager.registerController(&currentController);
+
     controllerManager.init(&appConfig);
 
     PreheatLogic preheatLogic(&controllerManager);
@@ -72,10 +80,21 @@ int main(int argc, char *argv[])
     dataLoggerController.registerValue(&tempController, EnumsDeclarations::TEMPS_WATER);
     dataLoggerController.registerValue(&tempController, EnumsDeclarations::TEMPS_SOLAR_HC);
     dataLoggerController.registerValue(&tempController, EnumsDeclarations::TEMPS_INSIDE);
+    dataLoggerController.registerValue(&tempController, EnumsDeclarations::TEMPS_OUTSIDE);
+
     // relays
     dataLoggerController.registerValue(&relayController, EnumsDeclarations::RELAYS_HC_PUMP);
     dataLoggerController.registerValue(&relayController, EnumsDeclarations::RELAYS_HEATING_PUMP);
     dataLoggerController.registerValue(&relayController, EnumsDeclarations::RELAYS_BOILER);
+
+    // brightnesses
+    dataLoggerController.registerValue(&brightnessController, EnumsDeclarations::BRIGHTNESSES_SOLAR);
+
+    // humidities
+    dataLoggerController.registerValue(&humidityController, EnumsDeclarations::HUMIDITIES_OUTSIDE);
+
+    // currents
+    dataLoggerController.registerValue(&currentController, EnumsDeclarations::CURRENTS_MAIN_BASEMENT);
 
     QObject::connect(&controllerManager, &ControllerManager::mqttConnected, [&logController]() {
         logController.addLog(EnumsDeclarations::LOGS_TYPE_STARTUP, DEV_ID_SERVER);

@@ -34,7 +34,17 @@ ColumnLayout {
         LineSeries {
             id: mampsSeries
 
-            name: qsTr("mAmps")
+            name: qsTr("PV")
+
+            axisX: dateAxis
+            axisY: valueAxis
+            pointsVisible: true
+        }
+
+        LineSeries {
+            id: currentBasementSeries
+
+            name: qsTr("Basement")
 
             axisX: dateAxis
             axisY: valueAxis
@@ -54,11 +64,15 @@ ColumnLayout {
 
         onTriggered:  {
             DataBridge.dataLogger.pvModel.refresh();
+            DataBridge.dataLogger.currentBasementModel.refresh();
+
             DataBridge.dataLogger.pvModel.updateXYSeries(mampsSeries, dateAxis)
+            DataBridge.dataLogger.currentBasementModel.updateXYSeries(currentBasementSeries, null)
         }
     }
 
     Component.onCompleted: {
         DataBridge.dataLogger.pvModel.daysLimit = 3
+        DataBridge.dataLogger.currentBasementModel.daysLimit = 3
     }
 }

@@ -20,7 +20,7 @@ DataBridge::DataBridge(AppConfiguration *appConfig, QObject *parent) : QObject(p
     m_switchListModelController = new ControllerListModel(&m_switchController);
 
     m_settingsControllerWrapper = new SettingsWrapper(&m_settingsController);
-    m_infoControllerWrapper = new InfoWrapper(&m_infoController);
+    m_infoControllerWrapper = new InfoWrapper(&m_infoController, &m_settingsController);
 
     ControllerWrapper::registerTypes();
 }

@@ -17,6 +17,7 @@ HCPage {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.margins: 2
 
         ColumnLayout {
             anchors.fill: parent
@@ -90,6 +91,18 @@ HCPage {
 
                     model: DataBridge.tempControllerModel
                     modelIndex: Enums.TEMPS_INSIDE
+                    unit: "°"
+                    showTrend: true
+                    allowInput: false
+                    formatAsFloat: true
+                }
+
+                HCValueLabel {
+                    Layout.preferredHeight: 30
+                    Layout.fillWidth: true
+
+                    model: DataBridge.tempControllerModel
+                    modelIndex: Enums.TEMPS_OUTSIDE
                     unit: "°"
                     showTrend: true
                     allowInput: false
