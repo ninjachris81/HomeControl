@@ -42,8 +42,11 @@ SOURCES += \
     source/utils/databridgebase.cpp \
     source/utils/fontloader.cpp \
     source/utils/apptranslator.cpp \
+    source/utils/rpianalogreader.cpp \
+    source/utils/rpigpiomanager.cpp \
     source/utils/weatherforecast.cpp \
     source/utils/weatherforecastmanager.cpp \
+    source/utils/wiringpimanager.cpp \
     source/wrapper/dataloggerwrapper.cpp \
     source/wrapper/infowrapper.cpp \
     source/controller/infocontroller.cpp \
@@ -67,6 +70,7 @@ SOURCES += \
     source/utils/forecastutils.cpp
 
 HEADERS += \
+    include/config/rpi_gpio_zero.h \
     include/controller/currentcontroller.h \
     include/controller/dataloggercontroller.h \
     include/controller/humiditycontroller.h \
@@ -89,9 +93,12 @@ HEADERS += \
     include/utils/databasemanager.h \
     include/utils/databridgebase.h \
     include/utils/fontloader.h \
+    include/utils/rpianalogreader.h \
+    include/utils/rpigpiomanager.h \
     include/utils/version.h \
     include/utils/weatherforecast.h \
     include/utils/weatherforecastmanager.h \
+    include/utils/wiringpimanager.h \
         include/wrapper/controllerwrapper.h \
     include/wrapper/dataloggerwrapper.h \
     include/wrapper/infowrapper.h \

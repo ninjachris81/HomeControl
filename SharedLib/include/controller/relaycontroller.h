@@ -3,6 +3,7 @@
 
 #include "controllerbase.h"
 #include <QLoggingCategory>
+#include "utils/rpigpiomanager.h"
 
 Q_DECLARE_LOGGING_CATEGORY(LG_RELAY_CONTROLLER)
 
@@ -28,6 +29,9 @@ public:
     qint64 getValueLifetime(int index = -1);
 
     static QString CONTROLLER_NAME;
+
+private:
+    RPIGpioManager gpioManager;
 
 protected:
     void onInit();

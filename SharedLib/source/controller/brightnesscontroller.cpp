@@ -1,5 +1,6 @@
 #include "include/controller/brightnesscontroller.h"
 #include "include/constants_qt.h"
+#include "include/controller/controllermanager.h"
 
 QString BrightnessController::CONTROLLER_NAME = QStringLiteral("BrightnessController");
 Q_LOGGING_CATEGORY(LG_BRIGHTNESS_CONTROLLER, "BrightnessController");
@@ -40,6 +41,11 @@ qint64 BrightnessController::getValueLifetime(int index) {
 
 void BrightnessController::onInit() {
     qCDebug(LG_BRIGHTNESS_CONTROLLER) << Q_FUNC_INFO;
+
+    if (m_parent->deviceId()==DEV_ID_ZERO) {
+        analogReader.configure(RPI_BRIGHTNESS_ADC, RPI_BRIGHTNESS_GAIN);
+        startScheduler(BRIGHTNESS_UPDATE_VALUE_INTERVAL);
+    }
 }
 
 void BrightnessController::onMqttConnected() {
@@ -52,5 +58,14 @@ void BrightnessController::onValueChanged(int index, QVariant value) {
     switch(index) {
     case MQTT_PATH_BRIGHTNESSES_SOLAR:
         break;
+    }
+}
+
+void BrightnessController::onScheduleUpdate() {
+    if (m_parent->deviceId()==DEV_ID_ZERO) {
+        int brightnessRaw = analogReader.readValue(RPI_BRIGHTNESS_ADC);
+
+        qCDebug(LG_BRIGHTNESS_CONTROLLER) << "Brightness Raw:" << brightnessRaw;
+        setValue(MQTT_PATH_BRIGHTNESSES_OUTSIDE, brightnessRaw, true);
     }
 }

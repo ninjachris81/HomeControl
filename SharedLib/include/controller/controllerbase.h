@@ -228,6 +228,7 @@ protected:
     QStringList m_topicPath;
     QStringList m_labels;
     ControllerManager* m_parent;
+    QTimer m_scheduler;
 
     QList<QVariant::Type> m_TypeCache;
 
@@ -250,6 +251,10 @@ protected:
     virtual void onValueChanged(int index, QVariant value);
 
     virtual void onCmdReceived(EnumsDeclarations::MQTT_CMDS cmd);
+
+    virtual void onScheduleUpdate();
+
+    void startScheduler(quint16 interval);
 
 protected slots:
 
@@ -289,6 +294,8 @@ private slots:
     void onCheckTrend();
 
     void onCheckBroadcasts();
+
+    void onScheduleTimeout();
 
 };
 

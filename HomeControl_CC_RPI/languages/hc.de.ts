@@ -349,7 +349,7 @@
     <message>
         <location filename="../HeatingLogPopup.qml" line="43"/>
         <source>Boiler Duration</source>
-        <translation>Bioler Brenndauer</translation>
+        <translation>Boiler Brenndauer</translation>
     </message>
 </context>
 <context>

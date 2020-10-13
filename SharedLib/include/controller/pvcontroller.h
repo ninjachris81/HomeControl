@@ -6,6 +6,11 @@
 #include <QLoggingCategory>
 #include <QTimer>
 
+/*
+ *  OBSOLETE - REMOVE SOON
+ *
+*/
+
 Q_DECLARE_LOGGING_CATEGORY(LG_PV_CONTROLLER)
 
 class PvController : public ControllerBase

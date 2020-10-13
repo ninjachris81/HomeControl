@@ -1,9 +1,6 @@
-# Server on RPI3
-
 QT -= gui
 QT += mqtt
 QT += sql
-QT += websockets
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
@@ -20,15 +17,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    boilerlogic.cpp \
-        main.cpp \
-    preheatlogic.cpp \
-    heatinglogic.cpp \
-    pvlogic.cpp \
-    thingspeaklogger.cpp \
-    solarlogic.cpp \
-    websocketserver.cpp
-
+    main.cpp \
+    motiondetectorlogic.cpp \
+    zerologic.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -36,18 +27,17 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    boilerlogic.h \
-    preheatlogic.h \
-    heatinglogic.h \
-    pvlogic.h \
-    thingspeaklogger.h \
-    solarlogic.h \
-    websocketserver.h
+    motiondetectorlogic.h \
+    zerologic.h
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SharedLib-Desktop_Qt_5_12_0_MSVC2017_64bit2-Debug/release/ -lSharedLib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SharedLib-Desktop_Qt_5_12_0_MSVC2017_64bit2-Debug/debug/ -lSharedLib
 else:unix: LIBS += -L$$PWD/../build-SharedLib-Desktop_Qt_5_12_0_MSVC2017_64bit2-Debug/ -lSharedLib
+
+unix: DEFINES += USE_WIRING_PI
+
+defined(USE_WIRING_PI) LIBS += -I/usr/local/include -L/usr/local/lib -lwiringPi
 
 INCLUDEPATH += $$PWD/../SharedLib/include
 DEPENDPATH += $$PWD/../SharedLib

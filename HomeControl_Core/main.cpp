@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 
     AppConfiguration appConfig;
 
-    ControllerManager controllerManager(true, &appConfig);
+    ControllerManager controllerManager(DEV_ID_SERVER, &appConfig);
 
     WeatherForecastManager::instance()->setApiKey(appConfig.getString("WFC_API_KEY", ""));
 

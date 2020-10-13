@@ -1,6 +1,8 @@
 #include "include/controller/currentcontroller.h"
 #include "include/constants_qt.h"
 
+#include "include/controller/controllermanager.h"
+
 QString CurrentController::CONTROLLER_NAME = QStringLiteral("CurrentController");
 Q_LOGGING_CATEGORY(LG_CURRENT_CONTROLLER, "CurrentController");
 
@@ -40,6 +42,11 @@ qint64 CurrentController::getValueLifetime(int index) {
 
 void CurrentController::onInit() {
     qCDebug(LG_CURRENT_CONTROLLER) << Q_FUNC_INFO;
+
+    if (m_parent->deviceId()==DEV_ID_ZERO) {
+        analogReader.configure(RPI_CURRENT_ADC, RPI_CURRENT_GAIN);
+        startScheduler(CURRENT_UPDATE_VALUE_INTERVAL);
+    }
 }
 
 void CurrentController::onMqttConnected() {
@@ -52,5 +59,14 @@ void CurrentController::onValueChanged(int index, QVariant value) {
     switch(index) {
     case MQTT_PATH_CURRENTS_MAIN_BASEMENT:
         break;
+    }
+}
+
+void CurrentController::onScheduleUpdate() {
+    if (m_parent->deviceId()==DEV_ID_ZERO) {
+        int currentRaw = analogReader.readValue(RPI_CURRENT_ADC);
+
+        qCDebug(LG_CURRENT_CONTROLLER) << "Current Raw:" << currentRaw;
+        setValue(MQTT_PATH_CURRENTS_PV, currentRaw, true);
     }
 }

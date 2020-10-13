@@ -1,6 +1,9 @@
+# 5" 800x480 Shield on RPI
+
 QT += quick
 QT += mqtt
 QT += sql
+QT += charts
 
 CONFIG += c++11
 

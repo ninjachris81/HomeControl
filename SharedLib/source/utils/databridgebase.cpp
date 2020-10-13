@@ -1,7 +1,7 @@
 #include "utils/databridgebase.h"
 #include <QDebug>
 
-DataBridgeBase::DataBridgeBase(AppConfiguration *appConfig, QObject *parent) : QObject(parent), m_appConfig(appConfig)
+DataBridgeBase::DataBridgeBase(AppConfiguration *appConfig, QString deviceId, QObject *parent) : QObject(parent), m_appConfig(appConfig), m_controllerManager(deviceId)
 {
     connect(&m_controllerManager, &ControllerManager::mqttConnected, this, &DataBridgeBase::onMqttConnected);
 
@@ -43,7 +43,7 @@ bool DataBridgeBase::isConnected() {
 }
 
 void DataBridgeBase::onMqttConnected() {
-    m_logController.addLog(EnumsDeclarations::LOGS_TYPE_STARTUP, DEV_ID_TERMINAL);
+    m_logController.addLog(EnumsDeclarations::LOGS_TYPE_STARTUP, m_controllerManager.deviceId());
     m_isConnected = true;
     Q_EMIT(isConnectedChanged());
 }

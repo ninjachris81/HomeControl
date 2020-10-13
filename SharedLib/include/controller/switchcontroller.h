@@ -5,7 +5,11 @@
 #include "controllerbase.h"
 #include <QLoggingCategory>
 
+#include "utils/rpigpiomanager.h"
+
 Q_DECLARE_LOGGING_CATEGORY(LG_SWITCH_CONTROLLER)
+
+#define SWITCH_UPDATE_VALUE_INTERVAL 1000
 
 class SwitchController : public ControllerBase
 {
@@ -32,10 +36,15 @@ public:
 
     VALUE_BC_INTERVAL getValueBCInterval(int index=-1);
 
+private:
+    RPIGpioManager gpioManager;
+
 protected:
     void onInit();
 
     void onValueChanged(int index, QVariant value);
+
+    void onScheduleUpdate();
 
 };
 

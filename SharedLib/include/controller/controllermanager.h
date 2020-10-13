@@ -25,7 +25,7 @@ public:
         MQTT_BC_RELAYS
     };
 
-    explicit ControllerManager(bool isServer = false, QObject *parent = nullptr);
+    explicit ControllerManager(QString deviceId, QObject *parent = nullptr);
 
     void init(AppConfiguration* appConfig);
 
@@ -48,6 +48,8 @@ public:
 
     bool isServer();
 
+    QString deviceId();
+
     AppConfiguration* appConfig() {
         return m_appConfig;
     }
@@ -61,6 +63,7 @@ private:
     QMqttSubscription* m_cmdSub;
 
     bool m_isServer = false;
+    QString m_deviceId;
 
     void _onMqttConnected();
     void _onMqttDisconnected();

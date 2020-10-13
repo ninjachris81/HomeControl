@@ -6,9 +6,11 @@
 #include <QDebug>
 #include <QTimer>
 
-ControllerManager::ControllerManager(bool isServer, QObject *parent) : QObject(parent), m_isServer(isServer)
+ControllerManager::ControllerManager(QString deviceId, QObject *parent) : QObject(parent), m_isServer(deviceId==DEV_ID_SERVER), m_deviceId(deviceId)
 {
-    qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO << m_deviceId;
+    Q_ASSERT(!m_deviceId.isEmpty());
+
     connect(&m_mqttClient, &QMqttClient::connected, this, &ControllerManager::_onMqttConnected);
     connect(&m_mqttClient, &QMqttClient::disconnected, this, &ControllerManager::_onMqttDisconnected);
 }
@@ -108,6 +110,10 @@ QString ControllerManager::getBroadcastValue(MQTT_BROADCAST_TYPE type) {
 
 bool ControllerManager::isServer() {
     return m_isServer;
+}
+
+QString ControllerManager::deviceId() {
+    return m_deviceId;
 }
 
 void ControllerManager::publishBC(MQTT_BROADCAST_TYPE type) {

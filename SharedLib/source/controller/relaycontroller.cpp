@@ -1,5 +1,7 @@
 #include "include/controller/relaycontroller.h"
 #include "include/constants_qt.h"
+#include "include/controller/controllermanager.h"
+#include "include/config/rpi_gpio_zero.h"
 
 QString RelayController::CONTROLLER_NAME = QStringLiteral("RelayController");
 Q_LOGGING_CATEGORY(LG_RELAY_CONTROLLER, "RelayController");
@@ -42,8 +44,18 @@ qint64 RelayController::getValueLifetime(int index) {
 }
 
 void RelayController::onInit() {
+    if (m_parent->deviceId()==DEV_ID_ZERO) {
+        gpioManager.configureAsOutput(LIGHT_RELAY_GPIO);
+    }
 }
 
 void RelayController::onValueChanged(int index, QVariant value) {
     qCDebug(LG_RELAY_CONTROLLER) << Q_FUNC_INFO << index << value;
+
+    switch(index) {
+    case MQTT_PATH_RELAYS_LIGHT_OUTSIDE:
+        if (m_parent->deviceId()==DEV_ID_ZERO) {
+            gpioManager.write(LIGHT_RELAY_GPIO, value.toBool());
+        }
+    }
 }

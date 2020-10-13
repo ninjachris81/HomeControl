@@ -8,6 +8,7 @@
 ControllerBase::ControllerBase(VALUE_OWNER_MODE valueOwnerMode, QObject *parent) : QObject(parent), m_mode(valueOwnerMode), m_topicValSub(nullptr), m_topicSetSub(nullptr), m_bcSub(nullptr)
 {
     connect(&m_valueUpdateTimer, &QTimer::timeout, this, &ControllerBase::onCheckValue);
+    connect(&m_scheduler, &QTimer::timeout, this, &ControllerBase::onScheduleTimeout);
     m_valueUpdateTimer.setInterval(1000);
     m_valueUpdateTimer.start();
 }
@@ -26,6 +27,15 @@ bool ControllerBase::isValueOwner(int index) {
     }
 
     return false;
+}
+
+void ControllerBase::startScheduler(quint16 interval) {
+    m_scheduler.setInterval(interval);
+    m_scheduler.start();
+}
+
+void ControllerBase::onScheduleTimeout() {
+    onScheduleUpdate();
 }
 
 ControllerBase::VALUE_BC_INTERVAL ControllerBase::getValueBCInterval(int index) {
@@ -438,4 +448,8 @@ void ControllerBase::onCmdReceived(EnumsDeclarations::MQTT_CMDS cmd) {
     Q_UNUSED(cmd);
 
     // DO NOTHING
+}
+
+void ControllerBase::onScheduleUpdate() {
+    // nothing
 }

@@ -1,3 +1,5 @@
+# 7" Display 1024x600 on RPI3
+
 QT += quick
 QT += mqtt virtualkeyboard
 QT += sql

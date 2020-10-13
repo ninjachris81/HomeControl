@@ -20,14 +20,18 @@
 #define MQTT_LOG_SOURCE_DIV "> "
 
 // DEVICE IDS
-#define DEV_ID_SERVER "SERV"
-#define DEV_ID_TERMINAL "TERM"
-#define DEV_ID_4RELAY_BOARD "4RLB"
-#define DEV_ID_WATER_TEMP_BOARD "WTB1"
-#define DEV_ID_INSIDE_TEMP_BOARD "ITB1"
-#define DEV_ID_SHOWER_REMOTE_CTRL "SHRC"
-#define DEV_ID_SOLAR_SENSOR "SSEN"
-#define DEV_ID_CURRENT_BASEMENT "CBAS"
+#define DEV_ID_SERVER "SERV"                // HomeControl_Core
+//#define DEV_ID_TERMINAL "TERM"
+#define DEV_ID_4RELAY_BOARD "4RLB"          // MqttClientESP_Relay -> CONFIG_4_RELAY_BOARD
+#define DEV_ID_WATER_TEMP_BOARD "WTB1"      // MqttClientESP_Relay -> CONFIG_TEMP_BOARD
+#define DEV_ID_INSIDE_TEMP_BOARD "ITB1"     // MqttClientESP_Temp -> DEV_ID_INSIDE_TEMP_BOARD
+#define DEV_ID_SHOWER_REMOTE_CTRL "SHRC"    // PreheatRemoteControl
+#define DEV_ID_SOLAR_SENSOR "SSEN"          // MqttClientESP_Temp -> CONFIG_SOLAR_BOARD
+#define DEV_ID_CURRENT_BASEMENT "CBAS"      // CurrentCounter
+#define DEV_ID_ZERO "ZERO"                  // HomeControl_Zero
+#define DEV_ID_RPI1 "RPI1"                  // HomeControl_RPI
+#define DEV_ID_CC_RPI "CCPI"                // HomeControl_CC_RPI
+#define DEV_ID_ADMIN_RPI "ARPI"             // HomeControl_Admin_RPI
 
 // BROADCASTS
 #define MQTT_PATH_BC "bc"
@@ -57,22 +61,22 @@
 // INFOS
 #define MQTT_PATH_INFOS "infos"
 
-#define MQTT_PATH_INFOS_SYSTEM_TIME 0
+#define MQTT_PATH_INFOS_SYSTEM_TIME 0                                   // DEV_ID_SERVER
 #define INFOS_LABEL_SYSTEM_TIME "System time"
 
-#define MQTT_PATH_INFOS_SYSTEM_TEMP 1
+#define MQTT_PATH_INFOS_SYSTEM_TEMP 1                                   // DEV_ID_SERVER
 #define INFOS_LABEL_SYSTEM_TEMP "System temp"
 
-#define MQTT_PATH_INFOS_BOILER_TARGET_TEMP 2
+#define MQTT_PATH_INFOS_BOILER_TARGET_TEMP 2                            // DEV_ID_SERVER
 #define INFOS_LABEL_BOILER_TARGET_TEMP "Boiler target temp"
 
-#define MQTT_PATH_INFOS_SUN_EXPECTED 3
+#define MQTT_PATH_INFOS_SUN_EXPECTED 3                                  // DEV_ID_SERVER
 #define INFOS_LABEL_SUN_EXPECTED "Sun Expected"
 
-#define MQTT_PATH_INFOS_AVG_TEMP_FORECAST 4
+#define MQTT_PATH_INFOS_AVG_TEMP_FORECAST 4                             // DEV_ID_SERVER
 #define INFOS_LABEL_AVG_TEMP_FORECAST "Average Temp Forecast"
 
-#define MQTT_PATH_INFOS_AVG_CLOUDS_FORECAST 5
+#define MQTT_PATH_INFOS_AVG_CLOUDS_FORECAST 5                           // DEV_ID_SERVER
 #define INFOS_LABEL_AVG_CLOUDS_FORECAST "Average Clouds Forecast"
 
 // SETTINGS
@@ -159,68 +163,78 @@
 // TEMPERATURES
 #define MQTT_PATH_TEMPS "temps"
 
-#define MQTT_PATH_TEMPS_HC 0
+#define MQTT_PATH_TEMPS_HC 0                            // DEV_ID_WATER_TEMP_BOARD
 #define TEMPS_LABEL_HC "Heat Changer"
 
-#define MQTT_PATH_TEMPS_TANK 1
+#define MQTT_PATH_TEMPS_TANK 1                          // DEV_ID_WATER_TEMP_BOARD
 #define TEMPS_LABEL_TANK "Tank"
 
-#define MQTT_PATH_TEMPS_WATER 2
+#define MQTT_PATH_TEMPS_WATER 2                         // DEV_ID_WATER_TEMP_BOARD
 #define TEMPS_LABEL_WATER "Water"
 
-#define MQTT_PATH_TEMPS_SOLAR_HC 3
+#define MQTT_PATH_TEMPS_SOLAR_HC 3                      // DEV_ID_WATER_TEMP_BOARD
 #define TEMPS_LABEL_SOLAR_HC "Solar HC"
 
-#define MQTT_PATH_TEMPS_INSIDE 4
+#define MQTT_PATH_TEMPS_INSIDE 4                        // DEV_ID_INSIDE_TEMP_BOARD
 #define TEMPS_LABEL_INSIDE "Inside"
 
-#define MQTT_PATH_TEMPS_OUTSIDE 5
+#define MQTT_PATH_TEMPS_OUTSIDE 5                       // DEV_ID_SOLAR_SENSOR
 #define TEMPS_LABEL_OUTSIDE "Outside"
 
 // RELAYS
 #define MQTT_PATH_RELAYS "relays"
 
-#define MQTT_PATH_RELAYS_HC_PUMP 0
+#define MQTT_PATH_RELAYS_HC_PUMP 0                      // DEV_ID_4RELAY_BOARD
 #define RELAYS_LABEL_HC_PUMP "HC Pump"
 
-#define MQTT_PATH_RELAYS_WATER_PUMP 1
+#define MQTT_PATH_RELAYS_WATER_PUMP 1                   // DEV_ID_4RELAY_BOARD
 #define RELAYS_LABEL_WATER_PUMP "Water Pump"
 
-#define MQTT_PATH_RELAYS_HEATING_PUMP 2
+#define MQTT_PATH_RELAYS_HEATING_PUMP 2                 // DEV_ID_4RELAY_BOARD
 #define RELAYS_LABEL_HEATING_PUMP "Heating Pump"
 
-#define MQTT_PATH_RELAYS_BOILER 3
+#define MQTT_PATH_RELAYS_BOILER 3                       // DEV_ID_4RELAY_BOARD
 #define RELAYS_LABEL_BOILER "Boiler"
 
-#define MQTT_PATH_RELAYS_SOLAR_PUMP 4
+#define MQTT_PATH_RELAYS_SOLAR_PUMP 4                   // ???
 #define RELAYS_LABEL_SOLAR_PUMP "Solar Pump"
 
+#define MQTT_PATH_RELAYS_LIGHT_OUTSIDE 5                // DEV_ID_ZERO
+#define RELAYS_LABEL_LIGHT_OUTSIDE "Light Outside"
 
 // BRIGHTNESSES
 #define MQTT_PATH_BRIGHTNESSES "brs"
 
-#define MQTT_PATH_BRIGHTNESSES_SOLAR 0
+#define MQTT_PATH_BRIGHTNESSES_SOLAR 0                  // DEV_ID_SOLAR_SENSOR
 #define BRIGHTNESSES_LABEL_SOLAR "Brightness"
 
+#define MQTT_PATH_BRIGHTNESSES_OUTSIDE 1                // DEV_ID_ZERO
+#define BRIGHTNESSES_LABEL_OUTSIDE "Brightness Outside"
 
 // HUMIDITIES
 #define MQTT_PATH_HUMIDITIES "hums"
 
-#define MQTT_PATH_HUMIDITIES_OUTSIDE 0
+#define MQTT_PATH_HUMIDITIES_OUTSIDE 0                  // DEV_ID_SOLAR_SENSOR
 #define HUMIDITIES_LABEL_OUTSIDE "Hum Outside"
 
 
 // SWITCHES
 #define MQTT_PATH_SWITCHES "switches"
 
-#define MQTT_PATH_SWITCHES_WINTERGARDEN 0
+#define MQTT_PATH_SWITCHES_WINTERGARDEN 0               // ???
 #define SWITCHES_LABEL_WINTERGARDEN "Wintergarden"
+
+#define MQTT_PATH_SWITCHES_PIR 1                        // DEV_ID_ZERO
+#define SWITCHES_LABEL_PIR "PIR"
 
 // CURRENTS
 #define MQTT_PATH_CURRENTS "currents"
 
-#define MQTT_PATH_CURRENTS_MAIN_BASEMENT 0
+#define MQTT_PATH_CURRENTS_MAIN_BASEMENT 0              // DEV_ID_CURRENT_BASEMENT
 #define CURRENTS_LABEL_MAIN_BASEMENT "Main Basement"
+
+#define MQTT_PATH_CURRENTS_PV 1                         // DEV_ID_ZERO
+#define CURRENTS_LABEL_PV "PV"
 
 // EXTERNAL PV
 #define MQTT_PATH_PVS "pvs"

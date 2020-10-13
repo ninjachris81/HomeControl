@@ -28,7 +28,7 @@ class DataBridgeBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit DataBridgeBase(AppConfiguration *appConfig, QObject *parent = nullptr);
+    explicit DataBridgeBase(AppConfiguration *appConfig, QString deviceId, QObject *parent = nullptr);
 
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY isConnectedChanged)
 

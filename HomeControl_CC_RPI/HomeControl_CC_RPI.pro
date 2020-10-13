@@ -1,3 +1,5 @@
+# HANNspree HT161HNB 39,6cm (15,6") 1366x768 on RPI3
+
 QT += quick
 QT += mqtt virtualkeyboard
 QT += sql
