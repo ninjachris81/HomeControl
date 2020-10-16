@@ -3,6 +3,10 @@
 
 #include <QObject>
 
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(LG_RPI_GPIO_MANAGER)
+
 class RPIGpioManager : public QObject
 {
     Q_OBJECT

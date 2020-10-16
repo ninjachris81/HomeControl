@@ -2,7 +2,10 @@
 #include "include/controller/settingscontroller.h"
 #include "include/controller/controllermanager.h"
 
+#include "include/controller/humiditycontroller.h"
+
 #include "include/constants_qt.h"
+#include "include/config/rpi_gpio_zero.h"
 
 QString TempController::CONTROLLER_NAME = QStringLiteral("TempController");
 Q_LOGGING_CATEGORY(LG_TEMP_CONTROLLER, "TempController");
@@ -43,6 +46,8 @@ qint64 TempController::getValueLifetime(int index) {
         return LIFETIME_LONG;
     case EnumsDeclarations::TEMPS_OUTSIDE:
         return LIFETIME_LONG;
+    case EnumsDeclarations::TEMPS_OUTSIDE2:
+        return LIFETIME_MID;
     default:
         return LIFETIME_UNLIMITED;
     }
@@ -58,6 +63,8 @@ qint64 TempController::getValueTrendLifetime(int index) {
         return VALUE_TT_MID;
     case EnumsDeclarations::TEMPS_OUTSIDE:
         return VALUE_TT_SLOW;
+    case EnumsDeclarations::TEMPS_OUTSIDE2:
+        return VALUE_TT_MID;
     default:
         return VALUE_TT_NONE;
     }
@@ -65,6 +72,9 @@ qint64 TempController::getValueTrendLifetime(int index) {
 
 void TempController::onInit() {
     qCDebug(LG_TEMP_CONTROLLER) << Q_FUNC_INFO;
+    if (m_parent->deviceId()==DEV_ID_ZERO) {
+        startScheduler(TEMP_UPDATE_VALUE_INTERVAL);
+    }
 }
 
 void TempController::onMqttConnected() {
@@ -89,4 +99,20 @@ void TempController::onValueChanged(int index, QVariant value) {
         break;
     }
     */
+}
+
+void TempController::onScheduleUpdate() {
+    float t = 0.0f;
+    float h = 0.0f;
+
+    int res = dht.readDHT(DhtUtils::AM2302, DHT_TEMP_GPIO, &h, &t);
+
+    if (res==DHT_SUCCESS) {
+        setValue(MQTT_PATH_TEMPS_OUTSIDE2, t, true);
+    } else {
+        qCWarning(LG_TEMP_CONTROLLER) << "Invalid reading from DHT" << res;
+    }
+
+    // a bit inconsistent, but also publish for humidity
+    m_parent->getController(HumidityController::CONTROLLER_NAME)->setValue(MQTT_PATH_HUMIDITIES_OUTSIDE2, h, true);
 }

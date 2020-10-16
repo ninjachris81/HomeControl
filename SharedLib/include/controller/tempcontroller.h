@@ -5,7 +5,11 @@
 #include "controllerbase.h"
 #include <QLoggingCategory>
 
+#include "utils/dht_utils.h"
+
 Q_DECLARE_LOGGING_CATEGORY(LG_TEMP_CONTROLLER)
+
+#define TEMP_UPDATE_VALUE_INTERVAL 5000
 
 class TempController : public ControllerBase
 {
@@ -36,11 +40,15 @@ public:
     QVariant value(int index);
 
 protected:
+    DhtUtils dht;
+
     void onInit();
 
     void onMqttConnected();
 
     void onValueChanged(int index, QVariant value);
+
+    void onScheduleUpdate();
 
 signals:
 

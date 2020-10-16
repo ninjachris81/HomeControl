@@ -40,6 +40,7 @@ SOURCES += \
     source/controller/dataloggercontroller.cpp \
     source/sqllistmodel/dataloggersqllistmodel.cpp \
     source/utils/databridgebase.cpp \
+    source/utils/dht_utils.cpp \
     source/utils/fontloader.cpp \
     source/utils/apptranslator.cpp \
     source/utils/rpianalogreader.cpp \
@@ -114,6 +115,15 @@ HEADERS += \
 unix {
     target.path = $$[QT_INSTALL_LIBS]
     INSTALLS += target
+}
+
+message(Checking WiringPi)
+equals(USE_WIRING_PI, 1) {
+    message(Using wiring pi)
+    DEFINES += USE_WIRING_PI
+    LIBS += -I/usr/local/include -L/usr/local/lib -lwiringPi
+} else {
+    message(Not using wiringPi)
 }
 
 INCLUDEPATH += $$PWD/include

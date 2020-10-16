@@ -181,6 +181,9 @@
 #define MQTT_PATH_TEMPS_OUTSIDE 5                       // DEV_ID_SOLAR_SENSOR
 #define TEMPS_LABEL_OUTSIDE "Outside"
 
+#define MQTT_PATH_TEMPS_OUTSIDE2 6                       // DEV_ID_ZERO
+#define TEMPS_LABEL_OUTSIDE2 "Outside2"
+
 // RELAYS
 #define MQTT_PATH_RELAYS "relays"
 
@@ -217,6 +220,8 @@
 #define MQTT_PATH_HUMIDITIES_OUTSIDE 0                  // DEV_ID_SOLAR_SENSOR
 #define HUMIDITIES_LABEL_OUTSIDE "Hum Outside"
 
+#define MQTT_PATH_HUMIDITIES_OUTSIDE2 1                  // DEV_ID_ZERO
+#define HUMIDITIES_LABEL_OUTSIDE2 "Hum Outside2"
 
 // SWITCHES
 #define MQTT_PATH_SWITCHES "switches"

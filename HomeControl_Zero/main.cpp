@@ -27,15 +27,12 @@ int main(int argc, char *argv[])
     ControllerManager controllerManager(DEV_ID_ZERO, &appConfig);
 
     /*
-    TempController tempController;
-    controllerManager.registerController(&tempController);
-
     PvController pvController;
     controllerManager.registerController(&pvController);
+    */
 
     HumidityController humidityController;
     controllerManager.registerController(&humidityController);
-    */
 
     LogController logController;
     controllerManager.registerController(&logController);
@@ -45,6 +42,9 @@ int main(int argc, char *argv[])
 
     SettingsController settingsController;
     controllerManager.registerController(&settingsController);
+
+    TempController tempController;          // needed for settingscontroller
+    controllerManager.registerController(&tempController);
 
     BrightnessController brightnessController;
     controllerManager.registerController(&brightnessController);

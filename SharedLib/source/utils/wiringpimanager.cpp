@@ -13,7 +13,7 @@ WiringPiManager::WiringPiManager(QObject *parent) : QObject(parent)
 void WiringPiManager::initWiringPi() {
     if (isInitialized) return;
 #ifdef USE_WIRING_PI
-    wiringPiSetup();
+    wiringPiSetupGpio();
 #endif
     isInitialized = true;
 }

@@ -35,9 +35,15 @@ win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-SharedLib-Desktop
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-SharedLib-Desktop_Qt_5_12_0_MSVC2017_64bit2-Debug/debug/ -lSharedLib
 else:unix: LIBS += -L$$PWD/../build-SharedLib-Desktop_Qt_5_12_0_MSVC2017_64bit2-Debug/ -lSharedLib
 
-unix: DEFINES += USE_WIRING_PI
+message(Checking WiringPi)
+equals(USE_WIRING_PI, 1) {
+    message(Using wiring pi)
+    DEFINES += USE_WIRING_PI
+    LIBS += -I/usr/local/include -L/usr/local/lib -lwiringPi
+} else {
+    message(Not using wiringPi)
+}
 
-defined(USE_WIRING_PI) LIBS += -I/usr/local/include -L/usr/local/lib -lwiringPi
 
 INCLUDEPATH += $$PWD/../SharedLib/include
 DEPENDPATH += $$PWD/../SharedLib
