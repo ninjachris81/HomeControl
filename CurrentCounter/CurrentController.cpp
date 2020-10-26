@@ -21,7 +21,7 @@ void CurrentController::init() {
 
   emon.current(PIN_EMON, currCalibration);
 
-  smoothCurrent.init(20, 0.0);
+  smoothCurrent.init(20, -999.0);
   
   taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->registerHandler(this);
 }
