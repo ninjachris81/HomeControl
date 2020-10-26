@@ -15,21 +15,21 @@ void CommController::update() {
   LOG_PRINTLN("}");
 }
 
-void CommController::sendVoltage(uint16_t mamps) {
+void CommController::sendCurrent(uint16_t mamps) {
   LOG_PRINT("{\"mamps\":");
   LOG_PRINT(mamps);
   LOG_PRINTLN("}");
 }
 
-void CommController::sendTemp(uint8_t temp) {
+void CommController::sendTemp(float temp) {
   LOG_PRINT("{\"temp\":");
-  LOG_PRINT(temp);
+  LOG_PRINTF(temp, 1);
   LOG_PRINTLN("}");
 }
 
-void CommController::sendHumidity(uint8_t humidity) {
+void CommController::sendHumidity(float humidity) {
   LOG_PRINT("{\"hum\":");
-  LOG_PRINT(humidity);
+  LOG_PRINTF(humidity, 1);
   LOG_PRINTLN("}");
 }
 

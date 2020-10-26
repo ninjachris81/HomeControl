@@ -4,16 +4,18 @@
 #include <AbstractIntervalTask.h>
 #include <Property.h>
 
-#define SEND_INTERVAL_MS 5000
+#define CURRENT_UPDATE_INTERVAL_MS 5000
 
 #define PROP_MAMPS 0
 
 #define MIN_VALUE 0
 #define MAX_VALUE 1500
 
-class VoltageController : public AbstractIntervalTask, public Property<uint16_t>::ValueChangeListener {
+#define CURRENT_CONTROLLER_BROADCAST_INTERVAL_MS 30000
+
+class CurrentController : public AbstractIntervalTask, public Property<uint16_t>::ValueChangeListener {
 public:
-  VoltageController();
+  CurrentController();
 
   void init();
 
@@ -22,6 +24,9 @@ public:
   void onPropertyValueChange(uint8_t id, uint16_t newValue, uint16_t oldValue);
 
 private:
+  uint64_t lastCurr = CURRENT_CONTROLLER_BROADCAST_INTERVAL_MS;
+  bool currIsValid = false;
+
   Property<uint16_t> mamps;
   float getVPP();
 };

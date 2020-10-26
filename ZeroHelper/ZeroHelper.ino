@@ -1,17 +1,19 @@
+// Arduino Nano
+
 #include "TaskManager.h"
 #include "CommController.h"
-#include "VoltageController.h"
+#include "CurrentController.h"
 #include "TempController.h"
 
 CommController commController;
-VoltageController voltageController;
+CurrentController currentController;
 TempController tempController;
 
 TaskManager taskManager;
 
 void setup() {
   taskManager.registerTask(&commController);
-  taskManager.registerTask(&voltageController);
+  taskManager.registerTask(&currentController);
   taskManager.registerTask(&tempController);
 
   taskManager.init();

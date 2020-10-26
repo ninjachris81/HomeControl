@@ -1,25 +1,26 @@
-#include "VoltageController.h"
+#include "CurrentController.h"
 #include "Pins.h"
 #include "TaskIDs.h"
 
 #include "CommController.h"
 
-VoltageController::VoltageController() : AbstractIntervalTask(SEND_INTERVAL_MS) {
+CurrentController::CurrentController() : AbstractIntervalTask(CURRENT_UPDATE_INTERVAL_MS) {
   
 }
 
-void VoltageController::init() {
+void CurrentController::init() {
   pinMode(PIN_VOLTAGE_IN, INPUT);
 
   mamps.init(PROP_MAMPS, 0);
   mamps.registerValueChangeListener(this);
 }
 
-void VoltageController::onPropertyValueChange(uint8_t id, uint16_t newValue, uint16_t oldValue) {
-  taskManager->getTask<CommController*>(COMM_CONTROLLER)->sendVoltage(newValue);
+void CurrentController::onPropertyValueChange(uint8_t id, uint16_t newValue, uint16_t oldValue) {
+  taskManager->getTask<CommController*>(COMM_CONTROLLER)->sendCurrent(newValue);
+  lastCurr = millis();
 }
 
-void VoltageController::update() {
+void CurrentController::update() {
 
 
   float nVPP;   // Voltage measured across resistor
@@ -74,8 +75,15 @@ void VoltageController::update() {
 
    if (nCurrentThruWire>=MIN_VALUE && nCurrentThruWire<=MAX_VALUE) {
      mamps.setValue(nCurrentThruWire);
+     currIsValid = true;
    } else {
     // read sensor error
+    currIsValid = false;
+   }
+
+   if (currIsValid && millis() - lastCurr > CURRENT_CONTROLLER_BROADCAST_INTERVAL_MS) {
+    taskManager->getTask<CommController*>(COMM_CONTROLLER)->sendCurrent(mamps.getValue());
+    lastCurr = millis();
    }
     
 }
@@ -92,7 +100,7 @@ and returns the peak value that is measured
  *************************************/
  
  
-float VoltageController::getVPP()
+float CurrentController::getVPP()
 {
   float result;
   int readValue;             //value read from the sensor

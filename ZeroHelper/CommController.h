@@ -13,10 +13,10 @@ class CommController : public AbstractIntervalTask {
 
     void update();
 
-    void sendVoltage(uint16_t mamps);
+    void sendCurrent(uint16_t mamps);
 
-    void sendTemp(uint8_t temp);
-    void sendHumidity(uint8_t humidity);
+    void sendTemp(float temp);
+    void sendHumidity(float humidity);
 
     void sendError(String error);
 
