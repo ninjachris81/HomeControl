@@ -9,8 +9,6 @@
 
 #define MOTION_DETECTOR_LOGIC_INTERVAL 1000
 
-#define BRIGHTNESS_THRESHOLD 10000
-
 Q_DECLARE_LOGGING_CATEGORY(LG_MOTION_DETECTOR_LOGIC)
 
 class MotionDetectorLogic : public LogicController
@@ -21,6 +19,8 @@ public:
 
 private:
     RPIGpioManager gpioManager;
+    bool lightOutsideOn = false;
+    bool firstRun = true;
 
 signals:
 

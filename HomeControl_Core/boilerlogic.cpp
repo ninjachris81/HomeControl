@@ -5,6 +5,7 @@ Q_LOGGING_CATEGORY(LG_BOILER_LOGIC, "BoilerLogic");
 
 BoilerLogic::BoilerLogic(ControllerManager *controllerManager, AppConfiguration *appConfig, QObject *parent) : LogicController(controllerManager, BOILER_LOGIC_INTERVAL, parent)
 {
+    Q_UNUSED(appConfig)
     m_tempController = static_cast<TempController*>(controllerManager->getController(TempController::CONTROLLER_NAME));
     m_relayController = static_cast<RelayController*>(controllerManager->getController(RelayController::CONTROLLER_NAME));
     m_settingsController = static_cast<SettingsController*>(controllerManager->getController(SettingsController::CONTROLLER_NAME));
@@ -70,7 +71,7 @@ void BoilerLogic::onMaintenance() {
     m_infoController->setValue(EnumsDeclarations::INFOS_BOILER_TARGET_TEMP, targetTemp);
     m_infoController->setValue(EnumsDeclarations::INFOS_SUN_EXPECTED, sunExpectedVB);
 
-    m_relayController->setValue(EnumsDeclarations::RELAYS_BOILER, boilerOn, true);
+    m_relayController->setValue(EnumsDeclarations::RELAYS_BOILER, boilerOn, true, true);
 }
 
 

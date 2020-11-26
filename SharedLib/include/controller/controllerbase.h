@@ -29,7 +29,8 @@ public:
         DATA_LOG_CONTROLLER,
         HUMIDITY_CONTROLLER,
         CURRENT_CONTROLLER,
-        EXTERNAL_PV_CONTROLLER = 100        // starting from 100
+        POWER_CONTROLLER,
+        PV_CONTROLLER
     };
 
     enum VALUE_OWNER_MODE {
@@ -122,7 +123,7 @@ public:
                 _value =  0;
                 break;
             case QVariant::Double:
-                _value = (double)0.0;
+                _value = 0.0;
                 break;
             case QVariant::Bool:
                 _value = false;
@@ -212,7 +213,7 @@ public:
 
     QVariant::Type getValueType(int index = -1);
 
-    void setValue(int index, QVariant value, bool sendSet = false, bool ignoreCompare = false);
+    bool setValue(int index, QVariant value, bool sendSet = false, bool ignoreCompare = false);
 
     QString getLabel(int index);
 

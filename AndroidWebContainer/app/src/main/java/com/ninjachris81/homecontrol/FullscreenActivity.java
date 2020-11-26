@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -48,6 +49,8 @@ public class FullscreenActivity extends AppCompatActivity {
         webSettings.setAppCacheEnabled(false);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setDefaultTextEncodingName("utf-8");
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         /*
         mMainWebView.setWebChromeClient(new WebChromeClient() {

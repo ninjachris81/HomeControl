@@ -22,7 +22,6 @@ public:
     Q_PROPERTY(DataLoggerSqlListModel* insideTempModel READ insideTempModel NOTIFY insideTempModelChanged)
     Q_PROPERTY(DataLoggerSqlListModel* solarTempModel READ solarTempModel NOTIFY solarTempModelChanged)
 
-    Q_PROPERTY(DataLoggerSqlListModel* pvModel READ pvModel NOTIFY pvModelChanged)
     Q_PROPERTY(DataLoggerSqlListModel* currentBasementModel READ currentBasementModel NOTIFY currentBasementModelChanged)
 
     Q_PROPERTY(DataLoggerSqlListModel* hcPumpModel READ hcPumpModel NOTIFY hcPumpModelChanged)
@@ -34,7 +33,6 @@ public:
     DataLoggerSqlListModel* insideTempModel();
     DataLoggerSqlListModel* solarTempModel();
 
-    DataLoggerSqlListModel* pvModel();
     DataLoggerSqlListModel* currentBasementModel();
 
     DataLoggerSqlListModel* hcPumpModel();
@@ -47,7 +45,6 @@ protected:
     DataLoggerSqlListModel* m_insideTempModel;
     DataLoggerSqlListModel* m_solarTempModel;
 
-    DataLoggerSqlListModel* m_pvModel;
     DataLoggerSqlListModel* m_currentBasementModel;
 
     DataLoggerSqlListModel* m_hcPumpModel;
@@ -59,7 +56,6 @@ signals:
     void hcTempModelChanged();
     void insideTempModelChanged();
     void solarTempModelChanged();
-    void pvModelChanged();
     void currentBasementModelChanged();
     void hcPumpModelChanged();
     void heatingPumpModelChanged();

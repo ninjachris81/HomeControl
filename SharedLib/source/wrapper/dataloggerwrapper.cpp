@@ -8,7 +8,6 @@ DataLoggerWrapper::DataLoggerWrapper(DataLoggerController *controller) : Control
     m_insideTempModel = new DataLoggerSqlListModel(controller, DatabaseManager::instance()->db(), "controller=" + QString::number(ControllerBase::TEMP_CONTROLLER) + " AND value_index=" + QString::number(MQTT_PATH_TEMPS_INSIDE) + " AND is_valid=true");
     m_solarTempModel = new DataLoggerSqlListModel(controller, DatabaseManager::instance()->db(), "controller=" + QString::number(ControllerBase::TEMP_CONTROLLER) + " AND value_index=" + QString::number(MQTT_PATH_TEMPS_SOLAR_HC) + " AND is_valid=true");
 
-    m_pvModel = new DataLoggerSqlListModel(controller, DatabaseManager::instance()->db(), "controller=" + QString::number(ControllerBase::EXTERNAL_PV_CONTROLLER) + " AND value_index=" + QString::number(MQTT_PATH_PVS_MAMPS) + " AND is_valid=true", 0, Qt::DescendingOrder, 3000);
     m_currentBasementModel = new DataLoggerSqlListModel(controller, DatabaseManager::instance()->db(), "controller=" + QString::number(ControllerBase::CURRENT_CONTROLLER) + " AND value_index=" + QString::number(MQTT_PATH_CURRENTS_MAIN_BASEMENT) + " AND is_valid=true", 0, Qt::DescendingOrder, 600);
 
     m_hcPumpModel = new DataLoggerSqlListModel(controller, DatabaseManager::instance()->db(), "controller=" + QString::number(ControllerBase::RELAY_CONTROLLER) + " AND value_index=" + QString::number(MQTT_PATH_RELAYS_HC_PUMP) + " AND is_valid=true", 0, Qt::AscendingOrder);
@@ -22,7 +21,6 @@ DataLoggerWrapper::~DataLoggerWrapper() {
     delete m_insideTempModel;
     delete m_solarTempModel;
 
-    delete m_pvModel;
     delete m_currentBasementModel;
 
     delete m_hcPumpModel;
@@ -44,10 +42,6 @@ DataLoggerSqlListModel* DataLoggerWrapper::insideTempModel() {
 
 DataLoggerSqlListModel* DataLoggerWrapper::solarTempModel() {
     return m_solarTempModel;
-}
-
-DataLoggerSqlListModel* DataLoggerWrapper::pvModel() {
-    return m_pvModel;
 }
 
 DataLoggerSqlListModel* DataLoggerWrapper::currentBasementModel() {

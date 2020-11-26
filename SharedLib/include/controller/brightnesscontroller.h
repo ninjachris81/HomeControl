@@ -9,7 +9,7 @@
 
 Q_DECLARE_LOGGING_CATEGORY(LG_BRIGHTNESS_CONTROLLER)
 
-#define BRIGHTNESS_UPDATE_VALUE_INTERVAL 5000
+#define BRIGHTNESS_UPDATE_VALUE_INTERVAL 20000
 
 #define RPI_BRIGHTNESS_ADC 0
 #define RPI_BRIGHTNESS_GAIN 0
@@ -37,6 +37,9 @@ public:
     qint64 getValueLifetime(int index = -1);
 
     static QString CONTROLLER_NAME;
+
+    bool isValueOwner(int index = -1);
+
 
 private:
     RPIAnalogReader analogReader;

@@ -71,22 +71,23 @@ class TempController extends ControllerBase {
 	}
 	
 	getValueNames() {
-		return ["hc", "tank", "water", "solarHc", "inside", "tankReal"];
+		return ["hc", "tank", "water", "solarHc", "inside", "outside", "outside2", "tankReal"];
 	}
 	
 	getValueUnits() {
-		return ["°", "°", "°", "°", "°", "°"];
+		return ["°", "°", "°", "°", "°", "°", "°", "°"];
 	}
 	
 	getValueLabels() {
-		return ["HeatChanger", "Tank", "Water", "Solar HC", "Inside", "Tank"];
+		return ["HeatChanger", "Tank", "Water", "Solar HC", "Inside", "Outside", "Outside", "Tank"];
 	}
 	
 	getValueDefaults() {
-		return [0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+		return [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 	}
 }
 
+/*
 class PvController extends ControllerBase {
 	postInit() {
 		this.values["power"].value = ko.computed(function() {
@@ -109,23 +110,113 @@ class PvController extends ControllerBase {
 	getValueDefaults() {
 		return [0, 0, 0, 0];
 	}
+}*/
+
+class CurrentController extends ControllerBase {
+	getValueNames() {
+		return ["main_basement", "pv"];
+	}
+	
+	getValueUnits() {
+		return ["mAmp", "mAmp"];
+	}
+	
+	getValueLabels() {
+		return ["Basement", "PV"];
+	}
+	
+	getValueDefaults() {
+		return [0, 0];
+	}
+}
+
+class HumidityController extends ControllerBase {
+	getValueNames() {
+		return ["outside", "outside2"];
+	}
+	
+	getValueUnits() {
+		return ["%", "%"];
+	}
+	
+	getValueLabels() {
+		return ["Solar", "Outside"];
+	}
+	
+	getValueDefaults() {
+		return [0.0, 0.0];
+	}
+}
+
+class BrightnessController extends ControllerBase {
+	getValueNames() {
+		return ["solar", "outside"];
+	}
+	
+	getValueUnits() {
+		return ["", ""];
+	}
+	
+	getValueLabels() {
+		return ["Solar", "Outside"];
+	}
+	
+	getValueDefaults() {
+		return [0, 0];
+	}
+}
+
+class PowerController extends ControllerBase {
+	getValueNames() {
+		return ["main", "pv", "mainBasement"];
+	}
+	
+	getValueUnits() {
+		return ["W", "W", "W"];
+	}
+	
+	getValueLabels() {
+		return ["Total", "PV", "Basement"];
+	}
+	
+	getValueDefaults() {
+		return [0, 0, 0];
+	}
 }
 
 class RelayController extends ControllerBase {
 	getValueNames() {
-		return ["hcPump", "waterPump", "heatingPump", "boiler", "solarPump"];
+		return ["hcPump", "waterPump", "heatingPump", "boiler", "solarPump", "lightOutside"];
 	}
 	
 	getValueUnits() {
-		return ["", "", "", "", ""];
+		return ["", "", "", "", "", ""];
 	}
 	
 	getValueLabels() {
-		return ["HC Pump", "Water Pump", "Heating Pump", "Boiler", "Solar Pump"];
+		return ["HC Pump", "Water Pump", "Heating Pump", "Boiler", "Solar Pump", "Light Outside"];
 	}
 	
 	getValueDefaults() {
-		return [false, false, false, false, false];
+		return [false, false, false, false, false, false];
+	}
+}
+
+class SwitchController extends ControllerBase {
+	getValueNames() {
+		return ["wintergarden", "pir"];
+	}
+	
+	getValueUnits() {
+		return ["", ""];
+	}
+	
+	getValueLabels() {
+		return ["Wintergarden", "PIR"];
+	}
+	
+	getValueDefaults() {
+		return [false, false];
 	}
 }
 
@@ -155,7 +246,8 @@ class SettingsController extends ControllerBase {
 			"coreHost", 
 			"preheatHcStandbyTemp", "preheatStandbyFrom", "preheatStandbyTo",
 			"heatingMonthFrom", "heatingMonthTo", "heatingToggleOnDuration", "heatingHourFrom", "heatingHourTo", "heatingMinTempTank",
-			"tankOffset", "tempExpThreshold", "cloudsExpThreshold", "tankMinTemp", "boilerSchedule", "subExpSubstract"		
+			"tankOffset", "tempExpThreshold", "cloudsExpThreshold", "tankMinTemp", "boilerSchedule", "subExpSubstract",
+			"motionSensorBrightnessThreshold"
 		];
 	}
 	
@@ -166,7 +258,8 @@ class SettingsController extends ControllerBase {
 			"", 
 			"°", "", "",
 			"", "", "", "", "", "°",
-			"", "°", "%", "°", "", "°" 
+			"", "°", "%", "°", "", "°",
+			""
 		];
 	}
 	
@@ -177,18 +270,20 @@ class SettingsController extends ControllerBase {
 			"Core Host",
 			"HC Standby Temp", "Standby From", "Standby To",
 			"Month from", "Month to", "Toggle duration", "Heating from", "Heating to", "Min Tank Temp",
-			"Tank Temp Offset", ,"Temp Expected Threshold", "Clouds Expected Threshold", "Tank Min Temp", "Boiler Schedule", "Substract target temp if sun expected"
+			"Tank Temp Offset", "Temp Expected Threshold", "Clouds Expected Threshold", "Tank Min Temp", "Boiler Schedule", "Substract target temp if sun expected",
+			"Brightness Threshold"
 		];
 	}
 	
 	getValueDefaults() {
 		return [
-			7, 9, 26.0, 24.0, 0,600,
+			7, 9, 26.0, 24.0, 0, 600,
 			22, true, 0, false,
 			"",
 			26.0, 9, 21,
 			9, 5, 60000, 6, 21, 30,
-			0, 10, 50, 45, "-15 -15 -15 -15 -5 0 5 5 5 5 -5 -5 -5 -5 -5 -5 0 0 0 0 0 -5 -15 -15", 10
+			0, 10, 50, 45, "-15 -15 -15 -15 -5 0 5 5 5 5 -5 -5 -5 -5 -5 -5 0 0 0 0 0 -5 -15 -15", 10,
+			10000
 		];
 	}
 }

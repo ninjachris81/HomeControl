@@ -54,6 +54,15 @@ void SwitchController::onInit() {
     }
 }
 
+bool SwitchController::isValueOwner(int index) {
+    switch (index) {
+    case EnumsDeclarations::SWITCHES_PIR:
+        return m_parent->deviceId()==DEV_ID_ZERO;
+    default:
+        return ControllerBase::isValueOwner(index);
+    }
+}
+
 void SwitchController::onValueChanged(int index, QVariant value) {
     qDebug() << Q_FUNC_INFO << index << value;
 }
@@ -63,6 +72,8 @@ void SwitchController::onScheduleUpdate() {
         bool pirOn = gpioManager.read(PIR_SENSOR_GPIO);
 
         qCDebug(LG_SWITCH_CONTROLLER) << "PIR:" << pirOn;
-        setValue(MQTT_PATH_CURRENTS_PV, pirOn, true);
+        if (setValue(EnumsDeclarations::SWITCHES_PIR, pirOn)) {
+            publishValue(EnumsDeclarations::SWITCHES_PIR);
+        }
     }
 }

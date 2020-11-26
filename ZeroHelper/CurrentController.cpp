@@ -79,6 +79,7 @@ void CurrentController::update() {
    } else {
     // read sensor error
     currIsValid = false;
+    taskManager->getTask<CommController*>(COMM_CONTROLLER)->sendError(F("Error while reading current"));
    }
 
    if (currIsValid && millis() - lastCurr > CURRENT_CONTROLLER_BROADCAST_INTERVAL_MS) {

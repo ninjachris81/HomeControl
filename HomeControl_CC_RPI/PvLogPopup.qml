@@ -63,11 +63,14 @@ ColumnLayout {
         triggeredOnStart: true
 
         onTriggered:  {
+            // TODO: this has changed
+            /*
             DataBridge.dataLogger.pvModel.refresh();
             DataBridge.dataLogger.currentBasementModel.refresh();
 
             DataBridge.dataLogger.pvModel.updateXYSeries(mampsSeries, dateAxis)
             DataBridge.dataLogger.currentBasementModel.updateXYSeries(currentBasementSeries, null)
+            */
         }
     }
 

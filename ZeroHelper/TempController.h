@@ -4,7 +4,7 @@
 #include <AbstractIntervalTask.h>
 #include "Pins.h"
 #include "DHT.h"
-#include <Property.h>
+#include <BroadcastProperty.h>
 
 #define TEMP_UPDATE_INTERVAL_MS 10000
 
@@ -28,16 +28,10 @@ public:
 
 
 private:
-  uint64_t lastTemp = TEMP_CONTROLLER_BROADCAST_INTERVAL_MS;
-  uint64_t lastHum = TEMP_CONTROLLER_BROADCAST_INTERVAL_MS;
-
-  bool tempIsValid = false;
-  bool humIsValid = false;
-
   DHT* dht;
 
-  Property<float> temp;
-  Property<float> humidity;
+  BroadcastProperty<float> temp;
+  BroadcastProperty<float> humidity;
 
 };
 

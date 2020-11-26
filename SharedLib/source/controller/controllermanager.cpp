@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <QTimer>
 
-ControllerManager::ControllerManager(QString deviceId, QObject *parent) : QObject(parent), m_isServer(deviceId==DEV_ID_SERVER), m_deviceId(deviceId)
+ControllerManager::ControllerManager(QString deviceId, QObject *parent) : QObject(parent), m_deviceId(deviceId)
 {
     qDebug() << Q_FUNC_INFO << m_deviceId;
     Q_ASSERT(!m_deviceId.isEmpty());
@@ -21,7 +21,7 @@ void ControllerManager::init(AppConfiguration *appConfig) {
     m_appConfig = appConfig;
 
     m_mqttClient.setHostname(m_appConfig->getString(AppConfiguration::MQTT_HOST, "localhost"));
-    m_mqttClient.setPort(m_appConfig->getInt(AppConfiguration::MQTT_PORT, 1883));
+    m_mqttClient.setPort(static_cast<quint16>(m_appConfig->getInt(AppConfiguration::MQTT_PORT, 1883)));
 
     connect(&m_mqttClient, &QMqttClient::errorChanged, this, &ControllerManager::_onMqttError);
     connect(&m_mqttClient, &QMqttClient::stateChanged, this, &ControllerManager::_onMqttStateChanged);
@@ -67,8 +67,10 @@ void ControllerManager::_onMqttConnected() {
     m_cmdSub = m_mqttClient.subscribe(QMqttTopicFilter(buildPath(QStringList() << MQTT_PATH_CMD).join(MQTT_PATH_SEP)));
     connect(m_cmdSub, &QMqttSubscription::messageReceived, this, &ControllerManager::_onMqttCmdReceived);
 
-    qDebug() << "Sending broadcast all";
-    publishBC(ControllerManager::MQTT_BC_ALL);
+    if (isServer()) {
+        qDebug() << "Sending broadcast all";
+        publishBC(ControllerManager::MQTT_BC_ALL);
+    }
 
     Q_EMIT(mqttConnected());
 }
@@ -109,7 +111,7 @@ QString ControllerManager::getBroadcastValue(MQTT_BROADCAST_TYPE type) {
 }
 
 bool ControllerManager::isServer() {
-    return m_isServer;
+    return m_deviceId==DEV_ID_SERVER;
 }
 
 QString ControllerManager::deviceId() {
@@ -117,11 +119,11 @@ QString ControllerManager::deviceId() {
 }
 
 void ControllerManager::publishBC(MQTT_BROADCAST_TYPE type) {
-    publish(buildPath(QStringList() << MQTT_PATH_BC), getBroadcastValue(type));
+    publish(buildPath(QStringList() << MQTT_PATH_BC),  getBroadcastValue(type));
 }
 
 void ControllerManager::publishCmd(EnumsDeclarations::MQTT_CMDS cmd) {
-    publish(buildPath(QStringList() << MQTT_PATH_CMD), (int)cmd);
+    publish(buildPath(QStringList() << MQTT_PATH_CMD), static_cast<int>(cmd));
 }
 
 void ControllerManager::publish(QStringList path, QVariant value) {

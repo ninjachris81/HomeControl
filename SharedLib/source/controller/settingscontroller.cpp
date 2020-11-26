@@ -88,6 +88,8 @@ void SettingsController::onInit() {
         publishSettingsValue(EnumsDeclarations::SETTINGS_TANK_MIN_TEMP, 45);
         publishSettingsValue(EnumsDeclarations::SETTINGS_BOILER_SCHEDULE, "-15 -15 -15 -15 -5 0 5 5 5 5 -5 -5 -5 -5 -5 -5 0 0 0 0 0 -5 -15 -15");
         publishSettingsValue(EnumsDeclarations::SETTINGS_SUN_EXP_SUBSTRACT, 10);
+
+        publishSettingsValue(EnumsDeclarations::SETTINGS_MOTION_SENSOR_BRIGHTNESS_THRESHOLD, 10000);
     }
 }
 

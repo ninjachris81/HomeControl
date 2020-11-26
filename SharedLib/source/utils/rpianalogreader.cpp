@@ -7,13 +7,18 @@
     #include <ads1115.h>
 #endif
 
+bool RPIAnalogReader::isInitialized = false;
+
 RPIAnalogReader::RPIAnalogReader(QObject *parent) : QObject(parent)
 {
     WiringPiManager::initWiringPi();
 
+    if (!isInitialized) {
 #ifdef USE_WIRING_PI
     ads1115Setup(AD_BASE,0x48);
 #endif
+        isInitialized = true;
+    }
 
 }
 

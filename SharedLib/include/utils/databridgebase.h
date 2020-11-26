@@ -16,6 +16,7 @@
 #include "controller/pvcontroller.h"
 #include "controller/humiditycontroller.h"
 #include "controller/currentcontroller.h"
+#include "controller/powercontroller.h"
 
 #include "wrapper/settingswrapper.h"
 #include "wrapper/logwrapper.h"
@@ -42,6 +43,7 @@ public:
     Q_PROPERTY(ControllerListModel* pvControllerModel READ pvListModelController NOTIFY pvControllerModelChanged)
     Q_PROPERTY(ControllerListModel* humidityControllerModel READ humidityListModelController NOTIFY humidityControllerModelChanged)
     Q_PROPERTY(ControllerListModel* currentControllerModel READ currentListModelController NOTIFY currentControllerModelChanged)
+    Q_PROPERTY(ControllerListModel* powerControllerModel READ powerListModelController NOTIFY powerControllerModelChanged)
 
     // wrappers
     Q_PROPERTY(SettingsWrapper* settings READ settingsControllerWrapper NOTIFY settingsControllerChanged)
@@ -63,6 +65,7 @@ public:
     ControllerListModel *pvListModelController();
     ControllerListModel *humidityListModelController();
     ControllerListModel *currentListModelController();
+    ControllerListModel *powerListModelController();
 
     SettingsWrapper *settingsControllerWrapper();
     LogWrapper *logControllerWrapper();
@@ -93,6 +96,7 @@ private:
     PvController m_pvController;
     HumidityController m_humidityController;
     CurrentController m_currentController;
+    PowerController m_powerController;
 
     ControllerListModel *m_tempListModelController;
     ControllerListModel *m_logListModelController;
@@ -103,6 +107,7 @@ private:
     ControllerListModel *m_pvListModelController;
     ControllerListModel *m_humidityListModelController;
     ControllerListModel *m_currentListModelController;
+    ControllerListModel *m_powerListModelController;
 
     SettingsWrapper *m_settingsControllerWrapper;
     LogWrapper *m_logControllerWrapper;
@@ -126,6 +131,7 @@ signals:
     void pvControllerModelChanged();
     void humidityControllerModelChanged();
     void currentControllerModelChanged();
+    void powerControllerModelChanged();
 
     void settingsControllerChanged();
     void logControllerChanged();

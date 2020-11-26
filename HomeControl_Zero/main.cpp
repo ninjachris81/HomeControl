@@ -26,10 +26,8 @@ int main(int argc, char *argv[])
 
     ControllerManager controllerManager(DEV_ID_ZERO, &appConfig);
 
-    /*
     PvController pvController;
     controllerManager.registerController(&pvController);
-    */
 
     HumidityController humidityController;
     controllerManager.registerController(&humidityController);

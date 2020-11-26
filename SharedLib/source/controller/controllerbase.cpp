@@ -64,7 +64,9 @@ void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig
     }
 
     m_topicPath = getTopicPath();
-    m_topicName = m_topicPath.last();
+    if (!m_topicPath.isEmpty()) {
+        m_topicName = m_topicPath.last();
+    }
 
     m_parent = parent;
     m_appConfig = appConfig;
@@ -159,7 +161,7 @@ QList<ControllerBase::ValueStruct> ControllerBase::values() {
     return m_values;
 }
 
-void ControllerBase::setValue(int index, QVariant value, bool sendSet, bool ignoreCompare) {
+bool ControllerBase::setValue(int index, QVariant value, bool sendSet, bool ignoreCompare) {
     QMutexLocker locker(&m_setValueMutex);
 
     qDebug() << Q_FUNC_INFO << index << value << sendSet << ignoreCompare;
@@ -170,7 +172,7 @@ void ControllerBase::setValue(int index, QVariant value, bool sendSet, bool igno
             if (m_values[index].compareTo(value)) {
                 //qDebug() << "Same value - ignoring set";
                 m_values[index].updateValue(value, m_parent->isServer());
-                return;
+                return false;
             }
         }
 
@@ -199,8 +201,10 @@ void ControllerBase::setValue(int index, QVariant value, bool sendSet, bool igno
             onValueChanged(index, m_values[index]._value);
             Q_EMIT(valueChanged(index, m_values[index]._value));
         }
+        return true;
     } else {
         qWarning() << "Invalid index" << m_values.count() << index;
+        return false;
     }
 }
 

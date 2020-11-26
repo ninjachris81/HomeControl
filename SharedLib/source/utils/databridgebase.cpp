@@ -16,6 +16,7 @@ DataBridgeBase::DataBridgeBase(AppConfiguration *appConfig, QString deviceId, QO
     m_controllerManager.registerController(&m_pvController);
     m_controllerManager.registerController(&m_humidityController);
     m_controllerManager.registerController(&m_currentController);
+    m_controllerManager.registerController(&m_powerController);
     m_controllerManager.init(appConfig);
 
     m_tempListModelController = new ControllerListModel(&m_tempController);
@@ -27,6 +28,7 @@ DataBridgeBase::DataBridgeBase(AppConfiguration *appConfig, QString deviceId, QO
     m_pvListModelController = new ControllerListModel(&m_pvController);
     m_humidityListModelController = new ControllerListModel(&m_humidityController);
     m_currentListModelController = new ControllerListModel(&m_currentController);
+    m_powerListModelController = new ControllerListModel(&m_powerController);
 
     m_settingsControllerWrapper = new SettingsWrapper(&m_settingsController);
     m_logControllerWrapper = new LogWrapper(&m_logController);
@@ -43,7 +45,7 @@ bool DataBridgeBase::isConnected() {
 }
 
 void DataBridgeBase::onMqttConnected() {
-    m_logController.addLog(EnumsDeclarations::LOGS_TYPE_STARTUP, m_controllerManager.deviceId());
+    //m_logController.addLog(EnumsDeclarations::LOGS_TYPE_STARTUP, m_controllerManager.deviceId());
     m_isConnected = true;
     Q_EMIT(isConnectedChanged());
 }
@@ -82,6 +84,10 @@ ControllerListModel* DataBridgeBase::humidityListModelController() {
 
 ControllerListModel* DataBridgeBase::currentListModelController() {
     return m_currentListModelController;
+}
+
+ControllerListModel* DataBridgeBase::powerListModelController() {
+    return m_powerListModelController;
 }
 
 SettingsWrapper *DataBridgeBase::settingsControllerWrapper() {

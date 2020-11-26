@@ -9,7 +9,7 @@
 
 Q_DECLARE_LOGGING_CATEGORY(LG_TEMP_CONTROLLER)
 
-#define TEMP_UPDATE_VALUE_INTERVAL 5000
+#define TEMP_UPDATE_VALUE_INTERVAL 20000
 
 class TempController : public ControllerBase
 {
@@ -39,6 +39,8 @@ public:
 
     QVariant value(int index);
 
+    bool isValueOwner(int index = -1);
+
 protected:
     DhtUtils dht;
 
@@ -48,7 +50,7 @@ protected:
 
     void onValueChanged(int index, QVariant value);
 
-    void onScheduleUpdate();
+    //void onScheduleUpdate();
 
 signals:
 

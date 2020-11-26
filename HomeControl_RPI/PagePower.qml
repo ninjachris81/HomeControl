@@ -13,7 +13,7 @@ import SharedComponents 1.0
 HCPage {
     id: root
 
-    title: qsTr("PV")
+    title: qsTr("Power")
 
     ColumnLayout {
         anchors.fill: parent
@@ -30,12 +30,36 @@ HCPage {
         }
 
         HCSimpleLabel {
+            id: pvPower
             Layout.preferredHeight: 30
             Layout.fillWidth: true
 
             isValid: mamps.isValid
-            labelText: "Current Power"
+            labelText: "PV Current Power"
             labelValue: mamps.labelValue * 0.230
+            unit: "Watt"
+            formatAsFloat: true
+        }
+
+        HCValueLabel {
+            id: mainPower
+            Layout.preferredHeight: 30
+            Layout.fillWidth: true
+
+            model: DataBridge.powerControllerModel
+            modelIndex: Enums.POWERS_MAIN
+            formatAsFloat: true
+            unit: "Watt"
+        }
+
+        HCSimpleLabel {
+            id: totalPower
+            Layout.preferredHeight: 30
+            Layout.fillWidth: true
+
+            isValid: mamps.isValid
+            labelText: "Total Consumption"
+            labelValue: pvPower.labelValue + mainPower.labelValue
             unit: "Watt"
             formatAsFloat: true
         }

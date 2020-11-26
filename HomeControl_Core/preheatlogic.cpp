@@ -87,8 +87,8 @@ void PreheatLogic::onMaintenance() {
         break;
     }
 
-    m_relayController->setValue(EnumsDeclarations::RELAYS_HC_PUMP, hcOn, true);
-    m_relayController->setValue(EnumsDeclarations::RELAYS_WATER_PUMP, waterOn, true);
+    m_relayController->setValue(EnumsDeclarations::RELAYS_HC_PUMP, hcOn, true, true);
+    m_relayController->setValue(EnumsDeclarations::RELAYS_WATER_PUMP, waterOn, true, true);
 }
 
 void PreheatLogic::startPreheat(qint64 duration) {

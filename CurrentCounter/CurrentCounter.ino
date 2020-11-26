@@ -8,6 +8,7 @@
 #include "DisplayController.h"
 #include "PulsePowerController.h"
 #include "IRController.h"
+#include "ButtonController.h"
 #include <LogHelper.h>
 
 TaskManager taskManager;
@@ -17,6 +18,7 @@ CurrentController currentController;
 DisplayController displayController;
 PulsePowerController pulsePowerController;
 IRController irController;
+ButtonController buttonController;
 
 void onConnectionEstablished() {}   // legacy
 
@@ -32,6 +34,8 @@ void setup() {
   taskManager.registerTask(&pulsePowerController);
 
   taskManager.registerTask(&irController);
+
+  taskManager.registerTask(&buttonController);
 
   taskManager.init();
   

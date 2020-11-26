@@ -9,3 +9,4 @@
 *.qm
 /MqttClientESP_Temp/credentials.h
 /CurrentCounter/credentials.h
+/workspace

@@ -4,12 +4,7 @@
 #include <QObject>
 #include "controllerbase.h"
 #include <QLoggingCategory>
-#include <QTimer>
-
-/*
- *  OBSOLETE - REMOVE SOON
- *
-*/
+#include "utils/serialportreader.h"
 
 Q_DECLARE_LOGGING_CATEGORY(LG_PV_CONTROLLER)
 
@@ -22,7 +17,7 @@ public:
     QString getName();
 
     CONTROLLER_TYPE getType() {
-        return EXTERNAL_PV_CONTROLLER;
+        return PV_CONTROLLER;
     }
 
     QStringList getTopicPath();
@@ -41,14 +36,14 @@ public:
 
     //QVariant value(int index);
 
-private:
-    QTimer mCheckTimer;
-
-protected slots:
-    void onCheckDatabase();
-
 protected:
     void onInit();
+
+private:
+    SerialPortReader m_SerialPortReader;
+
+public slots:
+    void onLineReceived(QByteArray data);
 
 signals:
 

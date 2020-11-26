@@ -49,11 +49,20 @@ void RelayController::onInit() {
     }
 }
 
+bool RelayController::isValueOwner(int index) {
+    switch (index) {
+    case EnumsDeclarations::RELAYS_LIGHT_OUTSIDE:
+        return m_parent->deviceId()==DEV_ID_ZERO;
+    default:
+        return ControllerBase::isValueOwner(index);
+    }
+}
+
 void RelayController::onValueChanged(int index, QVariant value) {
     qCDebug(LG_RELAY_CONTROLLER) << Q_FUNC_INFO << index << value;
 
     switch(index) {
-    case MQTT_PATH_RELAYS_LIGHT_OUTSIDE:
+    case EnumsDeclarations::RELAYS_LIGHT_OUTSIDE:
         if (m_parent->deviceId()==DEV_ID_ZERO) {
             gpioManager.write(LIGHT_RELAY_GPIO, value.toBool());
         }

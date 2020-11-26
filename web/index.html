@@ -69,6 +69,9 @@
 			  <ul class="list-group list-group-flush">
 				<li class="list-group-item" data-bind="template: { name: 'value-template-bool', data: hcPump }"></li>
 			  </ul>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-bool', data: boiler }"></li>
+			  </ul>
 			</div>		  
 		  
 		  </div>
@@ -114,13 +117,11 @@
 
 
 
-
-
 	  <div class="card">
 		<div class="card-header" id="heading3">
 		  <h2 class="mb-0">
 			<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#tab3" aria-expanded="false" aria-controls="tab3">
-			  Photo Voltaics
+			  Power Consumption
 			</button>
 		  </h2>
 		</div>
@@ -128,19 +129,27 @@
 		<div id="tab3" class="collapse" aria-labelledby="heading3" data-parent="#main_accordion">
 		  <div class="card-body">
 		  
-			<div id="basicPv" class="card" class="d-block w-100">
+			<div id="powers" class="card" class="d-block w-100">
 			  <div class="card-header">
-				Basic
+				General
 			  </div>
 			  <ul class="list-group list-group-flush">
-				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: mamps }"></li>
-				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: power }"></li>
-				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: temp }"></li>
-				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: hum }"></li>
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: main }"></li>
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: pv }"></li>
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: mainBasement }"></li>
 			  </ul>
 			</div>  
-		  
-		  </div>
+			
+			<div id="currents" class="card" class="d-block w-100">
+			  <div class="card-header">
+				Currents
+			  </div>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: main_basement }"></li>
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: pv }"></li>
+			  </ul>
+			</div>  
+
 		</div>
 	  </div>
 
@@ -171,6 +180,126 @@
 		  </div>
 		</div>
 	  </div>	
+	  
+	  
+	  
+	  
+	  <div class="card">
+		<div class="card-header" id="heading5">
+		  <h2 class="mb-0">
+			<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#tab5" aria-expanded="false" aria-controls="tab5">
+			  Motion Sensor
+			</button>
+		  </h2>
+		</div>
+
+		<div id="tab5" class="collapse" aria-labelledby="heading5" data-parent="#main_accordion">
+		  <div class="card-body">
+		  
+			<div id="brightnessOutside" class="card" class="d-block w-100">
+			  <div class="card-header">
+				Brightness
+			  </div>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: outside }"></li>
+			  </ul>
+			</div>
+			
+			<div id="brightnessThreshold" class="card" class="d-block w-100">
+			  <div class="card-header">
+				Brightness Threshold
+			  </div>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: motionSensorBrightnessThreshold }"></li>
+			  </ul>
+			</div>
+
+			<div id="switchPIR" class="card" class="d-block w-100">
+			  <div class="card-header">
+				PIR
+			  </div>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-bool', data: pir }"></li>
+			  </ul>
+			</div>	  
+
+			<div id="relayLightOutside" class="card" class="d-block w-100">
+			  <div class="card-header">
+				Light Outside
+			  </div>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-bool', data: lightOutside }"></li>
+			  </ul>
+			</div>	  
+
+		  
+		  </div>
+		</div>
+	  </div>	
+	  
+	  <div class="card">
+		<div class="card-header" id="heading6">
+		  <h2 class="mb-0">
+			<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#tab6" aria-expanded="false" aria-controls="tab4">
+			  Environment
+			</button>
+		  </h2>
+		</div>
+
+		<div id="tab6" class="collapse" aria-labelledby="heading6" data-parent="#main_accordion">
+		  <div class="card-body">
+		  
+			<div id="tempOutside" class="card" class="d-block w-100">
+			  <div class="card-header">
+				Temperature
+			  </div>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: outside2 }"></li>
+			  </ul>
+			</div>
+		  
+			<div id="humidityOutside" class="card" class="d-block w-100">
+			  <div class="card-header">
+				Humidity
+			  </div>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: outside2 }"></li>
+			  </ul>
+			</div>
+
+		  </div>
+		</div>
+	  </div>	
+	  
+
+<!--	  
+	  <div class="card">
+		<div class="card-header" id="heading6">
+		  <h2 class="mb-0">
+			<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#tab6" aria-expanded="false" aria-controls="tab6">
+			  Settings
+			</button>
+		  </h2>
+		</div>
+
+		<div id="tab6" class="collapse" aria-labelledby="heading6" data-parent="#main_accordion">
+		  <div class="card-body">
+		  
+			<div id="brightnessOutside" class="card" class="d-block w-100">
+			  <div class="card-header">
+				Brightness
+			  </div>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: outside }"></li>
+			  </ul>
+			</div>
+
+		  
+		  </div>
+		</div>
+	  </div>	
+-->	  
+	  
 	  
 	  <!--
 	  <a class="carousel-control-prev" href="#main_carousel" role="button" data-slide="prev">
@@ -206,10 +335,15 @@
 	const MQTT_ID_BOOL = 'b';
 	
 	var controllers = {	"temps": new TempController("temps"), 
-						"pvs": new PvController("pvs"), 
+						//"pvs": new PvController("pvs"), 
 						"relays": new RelayController("relays"),
 						"infos": new InfoController("infos"),
-						"settings": new SettingsController("settings")
+						"settings": new SettingsController("settings"),
+						"currents": new CurrentController("currents"),
+						"powers": new PowerController("powers"),
+						"switches": new SwitchController("switches"),
+						"brs": new BrightnessController("brs"),
+						"hums": new HumidityController("hums")
 						};
 
 	// Create a client instance
@@ -235,10 +369,20 @@
 	ko.applyBindings(controllers["temps"].values, document.getElementById("basicHeating"));
 	ko.applyBindings(controllers["relays"].values, document.getElementById("relayHeating"));
 	
-	ko.applyBindings(controllers["pvs"].values, document.getElementById("basicPv"));
+	ko.applyBindings(controllers["powers"].values, document.getElementById("powers"));
+	ko.applyBindings(controllers["currents"].values, document.getElementById("currents"));
 	
 	ko.applyBindings(controllers["temps"].values, document.getElementById("basicSolar"));
 	
+	ko.applyBindings(controllers["brs"].values, document.getElementById("brightnessOutside"));
+	ko.applyBindings(controllers["settings"].values, document.getElementById("brightnessThreshold"));
+	ko.applyBindings(controllers["switches"].values, document.getElementById("switchPIR"));
+	ko.applyBindings(controllers["relays"].values, document.getElementById("relayLightOutside"));
+	
+	ko.applyBindings(controllers["temps"].values, document.getElementById("tempOutside"));
+	ko.applyBindings(controllers["hums"].values, document.getElementById("humidityOutside"));
+	
+
 	reconnect();
 	
 	function reconnect() {

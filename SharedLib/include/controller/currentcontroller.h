@@ -5,14 +5,14 @@
 #include "controllerbase.h"
 #include <QLoggingCategory>
 
-#include "utils/rpianalogreader.h"
+//#include "utils/rpianalogreader.h"
 
 Q_DECLARE_LOGGING_CATEGORY(LG_CURRENT_CONTROLLER)
 
-#define CURRENT_UPDATE_VALUE_INTERVAL 5000
+//#define CURRENT_UPDATE_VALUE_INTERVAL 5000
 
-#define RPI_CURRENT_ADC 1
-#define RPI_CURRENT_GAIN 0
+//#define RPI_CURRENT_ADC 1
+//#define RPI_CURRENT_GAIN 0
 
 class CurrentController : public ControllerBase
 {
@@ -39,7 +39,7 @@ public:
     static QString CONTROLLER_NAME;
 
 private:
-    RPIAnalogReader analogReader;
+    //RPIAnalogReader analogReader;
 
 protected:
     void onInit();
@@ -48,7 +48,7 @@ protected:
 
     void onValueChanged(int index, QVariant value);
 
-    void onScheduleUpdate();
+    //void onScheduleUpdate();
 
 
 signals:

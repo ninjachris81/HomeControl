@@ -17,6 +17,8 @@ public:
 
 private:
     int m_gains[4] = {0, 0, 0, 0};
+    static bool isInitialized;
+
 
 signals:
 

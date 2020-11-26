@@ -1,4 +1,5 @@
 #include "include/controller/humiditycontroller.h"
+#include "include/controller/controllermanager.h"
 #include "include/constants_qt.h"
 
 QString HumidityController::CONTROLLER_NAME = QStringLiteral("HumidityController");
@@ -42,6 +43,15 @@ void HumidityController::onInit() {
     qCDebug(LG_HUMIDITY_CONTROLLER) << Q_FUNC_INFO;
 }
 
+bool HumidityController::isValueOwner(int index) {
+    switch (index) {
+    case EnumsDeclarations::HUMIDITIES_OUTSIDE2:         // even though this is managed in TempController
+        return m_parent->deviceId()==DEV_ID_ZERO;
+    default:
+        return ControllerBase::isValueOwner(index);
+    }
+}
+
 void HumidityController::onMqttConnected() {
     qCDebug(LG_HUMIDITY_CONTROLLER) << Q_FUNC_INFO;
 }
@@ -50,7 +60,7 @@ void HumidityController::onValueChanged(int index, QVariant value) {
     qCDebug(LG_HUMIDITY_CONTROLLER) << Q_FUNC_INFO << index << value;
 
     switch(index) {
-    case MQTT_PATH_HUMIDITIES_OUTSIDE:
+    case EnumsDeclarations::HUMIDITIES_OUTSIDE2:
         break;
     }
 }

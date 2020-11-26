@@ -4,6 +4,7 @@ QT -= gui
 QT += mqtt
 QT += sql
 QT += websockets
+QT += serialport
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
@@ -21,10 +22,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     boilerlogic.cpp \
+    datastatisticsanalyzerlogic.cpp \
         main.cpp \
+    powerlogic.cpp \
     preheatlogic.cpp \
     heatinglogic.cpp \
-    pvlogic.cpp \
     thingspeaklogger.cpp \
     solarlogic.cpp \
     websocketserver.cpp
@@ -37,9 +39,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     boilerlogic.h \
+    datastatisticsanalyzerlogic.h \
+    powerlogic.h \
     preheatlogic.h \
     heatinglogic.h \
-    pvlogic.h \
     thingspeaklogger.h \
     solarlogic.h \
     websocketserver.h

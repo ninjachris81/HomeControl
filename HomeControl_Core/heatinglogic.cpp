@@ -65,7 +65,7 @@ void HeatingLogic::onMaintenance() {
         break;
     }
 
-    m_relayController->setValue(EnumsDeclarations::RELAYS_HEATING_PUMP, heatingPumpOn, true);
+    m_relayController->setValue(EnumsDeclarations::RELAYS_HEATING_PUMP, heatingPumpOn, true, true);
 }
 
 bool HeatingLogic::isValidMonth() {

@@ -62,7 +62,6 @@ private:
 
     QMqttSubscription* m_cmdSub;
 
-    bool m_isServer = false;
     QString m_deviceId;
 
     void _onMqttConnected();

@@ -4,6 +4,7 @@
 #include <Wire.h>  // Only needed for Arduino 1.6.5 and earlier
 #include "SSD1306Wire.h" // legacy include: `#include "SSD1306.h"`
 #include "OLEDDisplayUi.h"
+#include "ButtonController.h"
 
 #include <AbstractIntervalTask.h>
 
@@ -12,7 +13,9 @@
 
 #define DISPLAY_UPDATE_INTERVAL 500
 
-class DisplayController : public AbstractIntervalTask {
+#define DISPLAY_TIMEOUT_MS 120000
+
+class DisplayController : public AbstractIntervalTask, public ButtonController::TouchHandler {
 public:
   DisplayController();
   ~DisplayController();
@@ -29,7 +32,11 @@ public:
 
   void increaseSentCount();
 
+  void onPressed();
+
 private:
+  uint64_t lastClick = 0;
+  bool displayIsOn = true;
   
 };
 

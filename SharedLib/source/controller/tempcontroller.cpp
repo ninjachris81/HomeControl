@@ -72,8 +72,14 @@ qint64 TempController::getValueTrendLifetime(int index) {
 
 void TempController::onInit() {
     qCDebug(LG_TEMP_CONTROLLER) << Q_FUNC_INFO;
-    if (m_parent->deviceId()==DEV_ID_ZERO) {
-        startScheduler(TEMP_UPDATE_VALUE_INTERVAL);
+}
+
+bool TempController::isValueOwner(int index) {
+    switch (index) {
+    case EnumsDeclarations::TEMPS_OUTSIDE2:
+        return m_parent->deviceId()==DEV_ID_ZERO;
+    default:
+        return ControllerBase::isValueOwner(index);
     }
 }
 
@@ -101,18 +107,24 @@ void TempController::onValueChanged(int index, QVariant value) {
     */
 }
 
+/*
 void TempController::onScheduleUpdate() {
+    qCDebug(LG_TEMP_CONTROLLER) << Q_FUNC_INFO;
+
     float t = 0.0f;
     float h = 0.0f;
 
     int res = dht.readDHT(DhtUtils::AM2302, DHT_TEMP_GPIO, &h, &t);
 
     if (res==DHT_SUCCESS) {
-        setValue(MQTT_PATH_TEMPS_OUTSIDE2, t, true);
+        setValue(MQTT_PATH_TEMPS_OUTSIDE2, t);
+        publishValue(MQTT_PATH_TEMPS_OUTSIDE2);
     } else {
         qCWarning(LG_TEMP_CONTROLLER) << "Invalid reading from DHT" << res;
     }
 
     // a bit inconsistent, but also publish for humidity
-    m_parent->getController(HumidityController::CONTROLLER_NAME)->setValue(MQTT_PATH_HUMIDITIES_OUTSIDE2, h, true);
+    m_parent->getController(HumidityController::CONTROLLER_NAME)->setValue(MQTT_PATH_HUMIDITIES_OUTSIDE2, h);
+    m_parent->getController(HumidityController::CONTROLLER_NAME)->publishValue(MQTT_PATH_HUMIDITIES_OUTSIDE2);
 }
+*/

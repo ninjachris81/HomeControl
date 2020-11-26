@@ -48,6 +48,16 @@ void BrightnessController::onInit() {
     }
 }
 
+bool BrightnessController::isValueOwner(int index) {
+    switch (index) {
+    case EnumsDeclarations::BRIGHTNESSES_OUTSIDE:
+        return m_parent->deviceId()==DEV_ID_ZERO;
+    default:
+        return ControllerBase::isValueOwner(index);
+    }
+}
+
+
 void BrightnessController::onMqttConnected() {
     qCDebug(LG_BRIGHTNESS_CONTROLLER) << Q_FUNC_INFO;
 }
@@ -66,6 +76,7 @@ void BrightnessController::onScheduleUpdate() {
         int brightnessRaw = analogReader.readValue(RPI_BRIGHTNESS_ADC);
 
         qCDebug(LG_BRIGHTNESS_CONTROLLER) << "Brightness Raw:" << brightnessRaw;
-        setValue(MQTT_PATH_BRIGHTNESSES_OUTSIDE, brightnessRaw, true);
+        setValue(EnumsDeclarations::BRIGHTNESSES_OUTSIDE, brightnessRaw);
+        publishValue(EnumsDeclarations::BRIGHTNESSES_OUTSIDE);
     }
 }

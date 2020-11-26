@@ -160,6 +160,10 @@
 #define MQTT_PATH_SETTINGS_SUN_EXP_SUBSTRACT 25
 #define SETTINGS_LABEL_SUN_EXP_SUBSTRACT "Substract target temp if sun expected"
 
+#define MQTT_PATH_SETTINGS_MOTION_SENSOR_BRIGHTNESS_THRESHOLD 26
+#define SETTINGS_LABEL_MOTION_SENSOR_BRIGHTNESS_THRESHOLD "Motion sensor brightness threshold"
+
+
 // TEMPERATURES
 #define MQTT_PATH_TEMPS "temps"
 
@@ -241,17 +245,17 @@
 #define MQTT_PATH_CURRENTS_PV 1                         // DEV_ID_ZERO
 #define CURRENTS_LABEL_PV "PV"
 
-// EXTERNAL PV
-#define MQTT_PATH_PVS "pvs"
+// POWERS
+#define MQTT_PATH_POWERS "powers"
 
-#define MQTT_PATH_PVS_MAMPS 0
-#define PVS_LABEL_MAMPS "PV"
+#define MQTT_PATH_POWERS_MAIN 0                         // DEV_ID_CURRENT_BASEMENT
+#define POWERS_LABEL_MAIN "Main Power"
 
-#define MQTT_PATH_PVS_TEMP 1
-#define PVS_LABEL_TEMP "Temp"
+#define MQTT_PATH_POWERS_PV 1                           // DEV_ID_SERVER @ PvLogic
+#define POWERS_LABEL_PV "PV"
 
-#define MQTT_PATH_PVS_HUM 2
-#define PVS_LABEL_HUM "Humidity"
+#define MQTT_PATH_POWERS_MAIN_BASEMENT 2                // DEV_ID_SERVER @ PvLogic
+#define POWERS_LABEL_MAIN_BASEMENT "Main Basement"
 
 // TYPES
 #define MQTT_ID_DOUBLE 'd'

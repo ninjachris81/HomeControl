@@ -31,6 +31,8 @@ public:
 
     static QString CONTROLLER_NAME;
 
+    bool isValueOwner(int index = -1);
+
 protected:
     void onInit();
 

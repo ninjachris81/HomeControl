@@ -9,6 +9,7 @@ QT += mqtt
 QT += sql
 QT += quick
 QT += charts
+QT += serialport
 
 #QT       -= gui
 
@@ -34,6 +35,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     source/controller/currentcontroller.cpp \
     source/controller/humiditycontroller.cpp \
+    source/controller/powercontroller.cpp \
     source/controller/pvcontroller.cpp \
     source/sqllistmodel/hcsqlquerymodel.cpp \
     source/utils/databasemanager.cpp \
@@ -45,6 +47,7 @@ SOURCES += \
     source/utils/apptranslator.cpp \
     source/utils/rpianalogreader.cpp \
     source/utils/rpigpiomanager.cpp \
+    source/utils/serialportreader.cpp \
     source/utils/weatherforecast.cpp \
     source/utils/weatherforecastmanager.cpp \
     source/utils/wiringpimanager.cpp \
@@ -76,6 +79,7 @@ HEADERS += \
     include/controller/dataloggercontroller.h \
     include/controller/humiditycontroller.h \
     include/controller/infocontroller.h \
+    include/controller/powercontroller.h \
     include/controller/pvcontroller.h \
     include/controller/switchcontroller.h \
     include/sqllistmodel/dataloggersqllistmodel.h \
@@ -96,6 +100,7 @@ HEADERS += \
     include/utils/fontloader.h \
     include/utils/rpianalogreader.h \
     include/utils/rpigpiomanager.h \
+    include/utils/serialportreader.h \
     include/utils/version.h \
     include/utils/weatherforecast.h \
     include/utils/weatherforecastmanager.h \

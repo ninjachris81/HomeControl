@@ -9,7 +9,7 @@
 
 Q_DECLARE_LOGGING_CATEGORY(LG_SWITCH_CONTROLLER)
 
-#define SWITCH_UPDATE_VALUE_INTERVAL 1000
+#define SWITCH_UPDATE_VALUE_INTERVAL 2000
 
 class SwitchController : public ControllerBase
 {
@@ -35,6 +35,8 @@ public:
     static QString CONTROLLER_NAME;
 
     VALUE_BC_INTERVAL getValueBCInterval(int index=-1);
+
+    bool isValueOwner(int index = -1);
 
 private:
     RPIGpioManager gpioManager;

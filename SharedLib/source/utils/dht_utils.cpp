@@ -38,7 +38,7 @@
 
 int DhtUtils::readDHT(DHT_SENSOR sensor, int pin, float *humidity, float *temperature) {
   // Validate humidity and temperature arguments and set them to zero.
-  if (humidity == NULL || temperature == NULL) {
+  if (humidity == nullptr || temperature == nullptr) {
     return DHT_ERROR_ARGUMENT;
   }
   *temperature = 0.0f;
@@ -53,7 +53,7 @@ int DhtUtils::readDHT(DHT_SENSOR sensor, int pin, float *humidity, float *temper
 
   // Set pin high for ~500 milliseconds.
   gpioManager.write(pin, true);
-  QThread::currentThread()->sleep(500);
+  QThread::currentThread()->msleep(500);
   //sleep_milliseconds(500);
 
   // The next calls are timing critical and care should be taken
@@ -61,7 +61,7 @@ int DhtUtils::readDHT(DHT_SENSOR sensor, int pin, float *humidity, float *temper
 
   // Set pin low for ~20 milliseconds.
   gpioManager.write(pin, false);
-  QThread::currentThread()->sleep(20);
+  QThread::currentThread()->msleep(20);
   //busy_wait_milliseconds(20);
 
   // Set pin at input.
@@ -99,7 +99,7 @@ int DhtUtils::readDHT(DHT_SENSOR sensor, int pin, float *humidity, float *temper
 
   // Compute the average low pulse width to use as a 50 microsecond reference threshold.
   // Ignore the first two readings because they are a constant 80 microsecond pulse.
-  uint32_t threshold = 0;
+  int threshold = 0;
   for (int i=2; i < DHT_PULSES*2; i+=2) {
     threshold += pulseCounts[i];
   }
@@ -126,8 +126,8 @@ int DhtUtils::readDHT(DHT_SENSOR sensor, int pin, float *humidity, float *temper
   if (data[4] == ((data[0] + data[1] + data[2] + data[3]) & 0xFF)) {
     if (sensor == DHT11) {
       // Get humidity and temp for DHT11 sensor.
-      *humidity = (float)data[0];
-      *temperature = (float)data[2];
+      *humidity = static_cast<float>(data[0]);
+      *temperature = static_cast<float>(data[2]);
     }
     else if (sensor == DHT22) {
       // Calculate humidity and temp for DHT22 sensor.

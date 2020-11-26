@@ -12,11 +12,14 @@
 #include "controller/pvcontroller.h"
 #include "controller/humiditycontroller.h"
 #include "controller/currentcontroller.h"
+#include "controller/powercontroller.h"
 
 #include "preheatlogic.h"
 #include "heatinglogic.h"
 #include "boilerlogic.h"
+#include "powerlogic.h"
 #include "thingspeaklogger.h"
+#include "datastatisticsanalyzerlogic.h"
 
 #include "utils/version.h"
 
@@ -65,11 +68,16 @@ int main(int argc, char *argv[])
     CurrentController currentController;
     controllerManager.registerController(&currentController);
 
+    PowerController powerController;
+    controllerManager.registerController(&powerController);
+
     controllerManager.init(&appConfig);
 
     PreheatLogic preheatLogic(&controllerManager);
     HeatingLogic heatLogic(&controllerManager);
     BoilerLogic boilerLogic(&controllerManager, &appConfig);
+    DataStatisticsAnalyzerLogic dataStatisticsAnalyzerLogic(&controllerManager);
+    PowerLogic powerLogic(&controllerManager);
 
     ThingSpeakLogger thingspeakLogger(&controllerManager, &appConfig);
 
@@ -95,6 +103,9 @@ int main(int argc, char *argv[])
 
     // currents
     dataLoggerController.registerValue(&currentController, EnumsDeclarations::CURRENTS_MAIN_BASEMENT);
+
+    // powers
+    dataLoggerController.registerValue(&powerController, EnumsDeclarations::POWERS_MAIN);
 
     QObject::connect(&controllerManager, &ControllerManager::mqttConnected, [&logController]() {
         logController.addLog(EnumsDeclarations::LOGS_TYPE_STARTUP, DEV_ID_SERVER);

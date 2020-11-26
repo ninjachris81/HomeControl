@@ -4,6 +4,7 @@ QT += quick
 QT += mqtt
 QT += sql
 QT += charts
+QT += serialport
 
 CONFIG += c++11
 

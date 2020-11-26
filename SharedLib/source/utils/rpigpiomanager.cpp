@@ -32,7 +32,7 @@ void RPIGpioManager::configureAsOutput(int channel) {
 
 bool RPIGpioManager::read(int channel) {
 #ifdef USE_WIRING_PI
-    qCDebug(LG_RPI_GPIO_MANAGER) << "Read" << channel;
+    //qCDebug(LG_RPI_GPIO_MANAGER) << "Read" << channel;
     return digitalRead(channel);
 #else
     qCDebug(LG_RPI_GPIO_MANAGER) << "Ignoring read" << channel;
@@ -43,7 +43,7 @@ bool RPIGpioManager::read(int channel) {
 
 void RPIGpioManager::write(int channel, bool value) {
 #ifdef USE_WIRING_PI
-    qCDebug(LG_RPI_GPIO_MANAGER) << "Write" << channel;
+    //qCDebug(LG_RPI_GPIO_MANAGER) << "Write" << channel;
     digitalWrite(channel, value);
 #else
     qCDebug(LG_RPI_GPIO_MANAGER) << "Ignoring write" << channel;

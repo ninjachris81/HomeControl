@@ -1,5 +1,5 @@
 #ifndef PULSE_POWER_CONTROLLER_H
-#define PULSE_POWER_CONTROLLER_HONTROLLER_H
+#define PULSE_POWER_CONTROLLER_H
 
 #include <AbstractTask.h>
 

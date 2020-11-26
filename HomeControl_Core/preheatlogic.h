@@ -11,7 +11,7 @@
 #include "controller/logiccontroller.h"
 #include "controller/logcontroller.h"
 
-#define PREHEAT_LOGIC_INTERVAL 1000
+#define PREHEAT_LOGIC_INTERVAL 5000
 
 Q_DECLARE_LOGGING_CATEGORY(LG_PREHEAT_LOGIC)
 
