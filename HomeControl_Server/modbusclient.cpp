@@ -16,6 +16,11 @@ ModbusClient::ModbusClient(AppConfiguration &appConfig, QObject *parent) : QObje
     m_client.connectDevice();
 }
 
+ModbusClient::~ModbusClient() {
+    qCDebug(LG_MODBUS_CLIENT) << Q_FUNC_INFO;
+    m_client.disconnectDevice();
+}
+
 void ModbusClient::onErrorOccurred(QModbusDevice::Error error) {
     qCDebug(LG_MODBUS_CLIENT) << Q_FUNC_INFO << error;
 }
@@ -30,4 +35,16 @@ void ModbusClient::onStateOccurred(QModbusDevice::State state) {
     } else if (state==QModbusDevice::ConnectedState) {
         Q_EMIT(clientConnected());
     }
+}
+
+QModbusReply *ModbusClient::sendReadRequest(const QModbusDataUnit &read, int serverAddress) {
+    return m_client.sendReadRequest(read, serverAddress);
+}
+
+QModbusReply *ModbusClient::sendRawRequest(const QModbusRequest &request, int serverAddress) {
+    return m_client.sendRawRequest(request, serverAddress);
+}
+
+QString ModbusClient::lastError() {
+    return m_client.errorString();
 }

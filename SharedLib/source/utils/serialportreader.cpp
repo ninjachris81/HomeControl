@@ -1,4 +1,5 @@
 #include "utils/serialportreader.h"
+#include <QThread>
 
 Q_LOGGING_CATEGORY(LG_SERIAL_PORT_READER, "SerialPortReader");
 
@@ -62,9 +63,14 @@ void SerialPortReader::handleError(QSerialPort::SerialPortError serialPortError)
 }
 
 void SerialPortReader::startRestart() {
+    qCDebug(LG_SERIAL_PORT_READER) << QThread::currentThreadId();
+
+    if (m_isRestarting) return;
+
     qCDebug(LG_SERIAL_PORT_READER) << Q_FUNC_INFO;
     m_isRestarting = true;
 
+    m_timer.stop();
     m_serialPort.close();
 
     QTimer::singleShot(5000, [this]() {

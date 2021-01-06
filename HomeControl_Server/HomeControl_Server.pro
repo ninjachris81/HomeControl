@@ -21,13 +21,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+#DEFINES += QT_NO_SSL
+#DEFINES += SUPERVERBOSE
+include(httpserver/httpserver.pri)
+
 SOURCES += \
     datastatisticsanalyzerlogic.cpp \
+    doorbelllogic.cpp \
+    httpserver.cpp \
         main.cpp \
     modbusclient.cpp \
     powerlogic.cpp \
+    serialextensionclient.cpp \
+    systasmartcclient.cpp \
     thingspeaklogger.cpp \
-    solarlogic.cpp
+    solarlogic.cpp \
 
 
 # Default rules for deployment.
@@ -37,8 +45,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     datastatisticsanalyzerlogic.h \
+    doorbelllogic.h \
+    httpserver.h \
     modbusclient.h \
     powerlogic.h \
+    serialextensionclient.h \
+    systasmartcclient.h \
     thingspeaklogger.h \
     solarlogic.h
 

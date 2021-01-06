@@ -30,7 +30,8 @@ public:
         HUMIDITY_CONTROLLER,
         CURRENT_CONTROLLER,
         POWER_CONTROLLER,
-        PV_CONTROLLER
+        PV_CONTROLLER,
+        EVENT_CONTROLLER
     };
 
     enum VALUE_OWNER_MODE {
@@ -257,6 +258,8 @@ protected:
 
     void startScheduler(quint16 interval);
 
+    bool checkIndex(int index);
+
 protected slots:
 
 private:
@@ -272,8 +275,6 @@ private:
     QTimer m_valueBCTimer;
 
     QMutex m_setValueMutex;
-
-    bool _checkIndex(int index);
 
 signals:
     void valueChanged(int index, QVariant value);

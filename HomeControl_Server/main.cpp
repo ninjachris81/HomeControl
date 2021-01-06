@@ -1,4 +1,6 @@
 #include <QCoreApplication>
+#include <QDebug>
+
 #include "controller/controllermanager.h"
 #include "utils/appconfiguration.h"
 #include "controller/tempcontroller.h"
@@ -13,11 +15,15 @@
 #include "controller/humiditycontroller.h"
 #include "controller/currentcontroller.h"
 #include "controller/powercontroller.h"
+#include "controller/eventcontroller.h"
 
 #include "powerlogic.h"
-#include "thingspeaklogger.h"
-#include "datastatisticsanalyzerlogic.h"
-#include "modbusclient.h"
+//include "thingspeaklogger.h"
+//#include "datastatisticsanalyzerlogic.h"
+//#include "systasmartcclient.h"
+#include "serialextensionclient.h"
+#include "doorbelllogic.h"
+#include "httpserver.h"
 
 #include "utils/version.h"
 
@@ -31,50 +37,23 @@ int main(int argc, char *argv[])
 
     ControllerManager controllerManager(DEV_ID_SERVER, &appConfig);
 
+    /*
     TempController tempController;
     controllerManager.registerController(&tempController);
-
-    LogController logController;
-    controllerManager.registerController(&logController);
 
     RelayController relayController;
     controllerManager.registerController(&relayController);
 
-    SettingsController settingsController;
-    controllerManager.registerController(&settingsController);
-
-    BrightnessController brightnessController;
-    controllerManager.registerController(&brightnessController);
-
     SwitchController switchController;
     controllerManager.registerController(&switchController);
-
-    InfoController infoController;
-    controllerManager.registerController(&infoController);
-
-    DataLoggerController dataLoggerController;
-    controllerManager.registerController(&dataLoggerController);
 
     PvController pvController;
     controllerManager.registerController(&pvController);
 
-    HumidityController humidityController;
-    controllerManager.registerController(&humidityController);
-
-    CurrentController currentController;
-    controllerManager.registerController(&currentController);
-
-    PowerController powerController;
-    controllerManager.registerController(&powerController);
-
-    controllerManager.init(&appConfig);
-
     DataStatisticsAnalyzerLogic dataStatisticsAnalyzerLogic(&controllerManager);
-    PowerLogic powerLogic(&controllerManager);
 
     ThingSpeakLogger thingspeakLogger(&controllerManager, &appConfig);
 
-    // Register values for dl
     // temps
     dataLoggerController.registerValue(&tempController, EnumsDeclarations::TEMPS_HC);
     dataLoggerController.registerValue(&tempController, EnumsDeclarations::TEMPS_TANK);
@@ -88,6 +67,36 @@ int main(int argc, char *argv[])
     dataLoggerController.registerValue(&relayController, EnumsDeclarations::RELAYS_HEATING_PUMP);
     dataLoggerController.registerValue(&relayController, EnumsDeclarations::RELAYS_BOILER);
 
+    */
+
+    DataLoggerController dataLoggerController;
+    controllerManager.registerController(&dataLoggerController);
+
+    LogController logController;
+    controllerManager.registerController(&logController);
+
+    SettingsController settingsController;
+    controllerManager.registerController(&settingsController);
+
+    InfoController infoController;
+    controllerManager.registerController(&infoController);
+
+    BrightnessController brightnessController;
+    controllerManager.registerController(&brightnessController);
+
+    HumidityController humidityController;
+    controllerManager.registerController(&humidityController);
+
+    EventController eventController;
+    controllerManager.registerController(&eventController);
+
+    CurrentController currentController;
+    controllerManager.registerController(&currentController);
+
+    PowerController powerController;
+    controllerManager.registerController(&powerController);
+
+    // Register values for dl
     // brightnesses
     dataLoggerController.registerValue(&brightnessController, EnumsDeclarations::BRIGHTNESSES_SOLAR);
 
@@ -100,7 +109,17 @@ int main(int argc, char *argv[])
     // powers
     dataLoggerController.registerValue(&powerController, EnumsDeclarations::POWERS_MAIN);
 
-    ModbusClient systaSmartCClient(appConfig);
+    controllerManager.init(&appConfig);
+
+    //SystaSmartCClient systaSmartCClient(appConfig);
+
+    PowerLogic powerLogic(&controllerManager);
+
+    DoorBellLogic doorBellLogic(&controllerManager);
+
+    SerialExtensionClient serialExtensionClient(&controllerManager, appConfig);
+
+    HttpServer httpServer(&controllerManager, appConfig, &a);
 
     QObject::connect(&controllerManager, &ControllerManager::mqttConnected, [&logController]() {
         logController.addLog(EnumsDeclarations::LOGS_TYPE_STARTUP, DEV_ID_SERVER);

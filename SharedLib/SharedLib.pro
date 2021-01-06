@@ -34,6 +34,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     source/controller/currentcontroller.cpp \
+    source/controller/eventcontroller.cpp \
     source/controller/humiditycontroller.cpp \
     source/controller/powercontroller.cpp \
     source/controller/pvcontroller.cpp \
@@ -115,7 +116,8 @@ HEADERS += \
     include/wrapper/logwrapper.h \
     include/controller/brightnesscontroller.h \
     include/utils/apptranslator.h \
-    include/utils/forecastutils.h
+    include/utils/forecastutils.h \
+    include/controller/eventcontroller.h
 
 unix {
     target.path = $$[QT_INSTALL_LIBS]

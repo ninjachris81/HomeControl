@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "282918045527",
+    "project_id": "homecontrol-5dbdf",
+    "storage_bucket": "homecontrol-5dbdf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282918045527:android:82046b22a7c2ca85242012",
+        "android_client_info": {
+          "package_name": "com.ninjachris81.doorbell"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "282918045527-f7srua52l4lj2fdhch7elrad73g8v329.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKkhWer2bJEtDN6rX2j-5phWaXcFJ10rs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "282918045527-f7srua52l4lj2fdhch7elrad73g8v329.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

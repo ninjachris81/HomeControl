@@ -1,0 +1,59 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="@string/general_settings_header">
+
+        <EditTextPreference
+            app:key="settings_mqtt_host"
+            app:title="MQTT Host"
+            android:defaultValue="rpi-server.fritz.box"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="settings_rest_host"
+            app:title="REST Host"
+            android:defaultValue="rpi-server.fritz.box"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:digits="0123456789"
+            android:inputType="numberDecimal"
+            app:key="settings_rest_port"
+            app:title="REST Port"
+            android:defaultValue="9090"
+            app:useSimpleSummaryProvider="true" />
+
+        <!--
+        <ListPreference
+            app:defaultValue="reply"
+            app:entries="@array/reply_entries"
+            app:entryValues="@array/reply_values"
+            app:key="reply"
+            app:title="@string/reply_title"
+            app:useSimpleSummaryProvider="true" />
+            -->
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/sync_header">
+
+        <SwitchPreference
+            android:key="settings_enable_sync"
+            android:defaultValue="true"
+            android:title="@string/settings_enable_sync" />
+
+        <SwitchPreference
+            android:key="settings_silent_mode"
+            android:defaultValue="false"
+            android:title="@string/settings_silent_mode" />
+
+        <EditTextPreference
+            android:key="settings_max_entries"
+            android:singleLine="true"
+            android:defaultValue="50"
+            app:useSimpleSummaryProvider="true"
+            android:title="@string/settings_max_entries" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

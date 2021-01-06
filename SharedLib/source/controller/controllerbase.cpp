@@ -128,7 +128,7 @@ QVariant::Type ControllerBase::getValueType(int index) {
 }
 
 QString ControllerBase::getLabel(int index) {
-    if (_checkIndex(index)) {
+    if (checkIndex(index)) {
         return m_labels.at(index);
     } else {
         return "Item " + QString::number(index);
@@ -140,7 +140,7 @@ void ControllerBase::clearValue(int index) {
 }
 
 QVariant ControllerBase::value(int index) {
-    if (_checkIndex(index)) {
+    if (checkIndex(index)) {
         return m_values[index]._value;
     } else {
         qWarning() << Q_FUNC_INFO << "Invalid index" << m_values.count() << index;
@@ -149,7 +149,7 @@ QVariant ControllerBase::value(int index) {
 }
 
 bool ControllerBase::valueIsValid(int index) {
-    if (_checkIndex(index)) {
+    if (checkIndex(index)) {
         return m_values[index].isValid();
     } else {
         qWarning() << Q_FUNC_INFO << "Invalid index" << m_values.count() << index;
@@ -166,7 +166,7 @@ bool ControllerBase::setValue(int index, QVariant value, bool sendSet, bool igno
 
     qDebug() << Q_FUNC_INFO << index << value << sendSet << ignoreCompare;
 
-    if (_checkIndex(index)) {
+    if (checkIndex(index)) {
         //qDebug() << m_values.at(index) << value;
         if (!ignoreCompare) {
             if (m_values[index].compareTo(value)) {
@@ -283,7 +283,7 @@ void ControllerBase::onInit() {
 void ControllerBase::publishValue(int index) {
     qDebug() << Q_FUNC_INFO << index << m_values.at(index)._value;
 
-    if (_checkIndex(index)) {
+    if (checkIndex(index)) {
         m_parent->publish(ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_VAL, index), m_values[index]._value);
     } else {
         qWarning() << "Invalid index" << m_values.count() << index;
@@ -293,7 +293,7 @@ void ControllerBase::publishValue(int index) {
 void ControllerBase::publishTrend(int index) {
     qDebug() << Q_FUNC_INFO << index << m_values[index].calculateValueTrend();
 
-    if (_checkIndex(index)) {
+    if (checkIndex(index)) {
         m_parent->publish(ControllerManager::buildPath(m_topicPath, ControllerManager::MQTT_MODE_TRE, index), m_values[index].calculateValueTrend());
     } else {
         qWarning() << "Invalid index" << m_values.count() << index;
@@ -325,14 +325,14 @@ void ControllerBase::_onMqttMessageReceived(QMqttMessage msg) {
         } else if (valSetMode==MQTT_SET && !hasSetSupport()) {
             qWarning() << "Set request received, but no support";
         } else if (valSetMode==MQTT_VAL) {
-            if (_checkIndex(index)) {
+            if (checkIndex(index)) {
                 setValue(index, value);
             } else {
                 onUnmappedMqttValueReceived(topicPath, value);
             }
         } else if (valSetMode==MQTT_TRE) {
             if (!m_parent->isServer()) {
-                if (_checkIndex(index)) {
+                if (checkIndex(index)) {
                     if (m_values[index].valueTrendReceived(value.toInt())) {
                         qDebug() << Q_FUNC_INFO << "Trend changed" << index << m_values[index]._trend;
                         Q_EMIT(valueTrendChanged(index));
@@ -435,7 +435,7 @@ void ControllerBase::onCheckBroadcasts() {
     }
 }
 
-bool ControllerBase::_checkIndex(int index) {
+bool ControllerBase::checkIndex(int index) {
     if (index<m_values.count()) {
         return true;
     } else {

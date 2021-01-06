@@ -13,6 +13,12 @@ class ModbusClient : public QObject
     Q_OBJECT
 public:
     explicit ModbusClient(AppConfiguration &appConfig, QObject *parent = nullptr);
+    ~ModbusClient();
+
+    QModbusReply *sendRawRequest(const QModbusRequest &request, int serverAddress);
+    QModbusReply *sendReadRequest(const QModbusDataUnit &read, int serverAddress);
+
+    QString lastError();
 
 protected:
     QModbusTcpClient m_client;

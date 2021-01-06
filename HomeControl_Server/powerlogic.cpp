@@ -23,13 +23,5 @@ void PowerLogic::onCurrentValueChanged(int index, QVariant value) {
 
         m_powerController->setValue(EnumsDeclarations::POWERS_PV, pvPower);
         m_powerController->publishValue(EnumsDeclarations::POWERS_PV);
-    } else if (index==EnumsDeclarations::CURRENTS_MAIN_BASEMENT) {
-        // publish power
-        double basementPower = value.toInt() * 0.230;
-
-        qCDebug(LG_POWER_LOGIC) << Q_FUNC_INFO << basementPower;
-
-        m_powerController->setValue(EnumsDeclarations::POWERS_MAIN_BASEMENT, basementPower);
-        m_powerController->publishValue(EnumsDeclarations::POWERS_MAIN_BASEMENT);
     }
 }
