@@ -5,11 +5,13 @@
 #include "TaskManager.h"
 #include "MqttController.h"
 #include "DoorBellController.h"
+#include "SettingsController.h"
 #include <LogHelper.h>
 
 TaskManager taskManager;
 MqttController mqttController(false, true);
 DoorBellController doorBellController;
+SettingsController settingsController;
 
 void onConnectionEstablished() {}   // legacy
 
@@ -20,6 +22,8 @@ void setup() {
   taskManager.registerTask(&mqttController);
   
   taskManager.registerTask(&doorBellController);
+
+  taskManager.registerTask(&settingsController);
 
   taskManager.init();
   

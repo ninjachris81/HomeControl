@@ -33,5 +33,6 @@
     <string name="settings_enable_sync">Enable Sync</string>
     <string name="settings_silent_mode">Silent Mode</string>
     <string name="settings_max_entries">Max Entries</string>
+    <string name="settings_bell_duration">Bell Duration (sec)</string>
 
 </resources>

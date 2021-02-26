@@ -32,5 +32,6 @@
     <string name="sync_header">Sync</string>
     <string name="settings_enable_sync">Sync aktivieren</string>
     <string name="settings_silent_mode">Ruhemodus</string>
+    <string name="settings_bell_duration">Klingeldauer (sek)</string>
 
 </resources>

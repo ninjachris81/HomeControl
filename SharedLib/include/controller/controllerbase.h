@@ -31,7 +31,8 @@ public:
         CURRENT_CONTROLLER,
         POWER_CONTROLLER,
         PV_CONTROLLER,
-        EVENT_CONTROLLER
+        EVENT_CONTROLLER,
+        SSC_CONTROLLER
     };
 
     enum VALUE_OWNER_MODE {
@@ -231,6 +232,7 @@ protected:
     QStringList m_labels;
     ControllerManager* m_parent;
     QTimer m_scheduler;
+    qint64 m_bcIndicator = 0;
 
     QList<QVariant::Type> m_TypeCache;
 

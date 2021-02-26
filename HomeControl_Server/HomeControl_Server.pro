@@ -34,6 +34,7 @@ SOURCES += \
     powerlogic.cpp \
     serialextensionclient.cpp \
     systasmartcclient.cpp \
+    systasmartclogic.cpp \
     thingspeaklogger.cpp \
     solarlogic.cpp \
 
@@ -51,6 +52,7 @@ HEADERS += \
     powerlogic.h \
     serialextensionclient.h \
     systasmartcclient.h \
+    systasmartclogic.h \
     thingspeaklogger.h \
     solarlogic.h
 

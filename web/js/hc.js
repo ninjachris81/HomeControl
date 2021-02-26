@@ -287,3 +287,21 @@ class SettingsController extends ControllerBase {
 		];
 	}
 }
+
+class SSCController extends ControllerBase {
+	getValueNames() {
+		return ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "sscStatusHk1", "", "", "", "", "sscStatusBoiler", "", "", "", ""];
+	}
+	
+	getValueUnits() {
+		return ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+	}
+	
+	getValueLabels() {
+		return ["SmartHome Type", "4", "5", "6", "7", "Error Code", "HK1 Target Temp", "HK2 Target Temp", "11", "Water Target Temp", "HK1 Max Temp", "MK2 Max Temp", "Error Code Controller", "Error Code Solar", "Error Code Mod2", "Error Code Mod3", "Error Code PMI", "Error Code Pellet TI3", "Error Code Pellet Touch", "Solar Power Current", "Solar Power Day", "Solar Power Total", "22", "Water Power", "24", "Circulation Power", "26", "Boiler Lifetime", "28", "Boiler Starts", "30", "Pellets Lifetime", "32", "Pellets Consumption", "Status Water", "Status Circulation", "Status HK1", "Status HK2", "38", "Status Solar", "Status Swimming Pool", "Status Boiler", "Status Pellet", "Status Wood", "Buffer Target Temp Top", "Tank Target Temp"];
+	}
+	
+	getValueDefaults() {
+		return [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	}
+}

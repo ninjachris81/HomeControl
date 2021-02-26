@@ -9,6 +9,8 @@
 #include "DFRobotDFPlayerMini.h"
 #include <HardwareSerial.h>
 
+#define LAST_PLAY_TIMEOUT_MS 4000
+
 class DoorBellController : public AbstractIdleTask, public MqttController::MqttEventCallbackHandler {
 public:
   DoorBellController();
@@ -19,6 +21,8 @@ public:
   void onConnected();
 
   void onBroadcast();
+
+  void setVolume(uint8_t volume);
   
   String getBroadcastPath() {
     return MQTT_PATH_EVENTS;
@@ -35,6 +39,8 @@ public:
 
 private:
   uint64_t lastMqttUpdate = 0;
+  uint64_t lastPlayStarted = 0;
+  uint8_t currentVolume = 25;
 
   DFRobotDFPlayerMini myDFPlayer;
 

@@ -55,6 +55,7 @@ void ControllerBase::init(ControllerManager* parent, AppConfiguration *appConfig
     if (!getEnumName().isEmpty()) {
         int enumId = EnumsDeclarations::staticMetaObject.indexOfEnumerator(getEnumName().toStdString().c_str());
         Q_ASSERT(enumId>=0);
+        qDebug() << EnumsDeclarations::staticMetaObject.enumerator(enumId).keyCount();
         Q_ASSERT(EnumsDeclarations::staticMetaObject.enumerator(enumId).keyCount()==getLabelList().count());
     }
     if (!getValueTypes().isEmpty()) {
@@ -430,9 +431,13 @@ void ControllerBase::onCheckTrend() {
 void ControllerBase::onCheckBroadcasts() {
     for (uint8_t i=0;i<m_values.count();i++) {
         if (isValueOwner(i) && m_values[i].isValid() && getValueBCInterval(i)!=VALUE_BC_NONE) {
-            publishValue(i);
+            if (m_bcIndicator % getValueBCInterval(i) == 0) {
+                publishValue(i);
+            }
         }
     }
+
+    m_bcIndicator+=VALUE_BC_FASTEST;
 }
 
 bool ControllerBase::checkIndex(int index) {

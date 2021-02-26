@@ -13,7 +13,6 @@ import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.IBinder;
@@ -31,15 +30,17 @@ import com.ninjachris81.doorbell.mqtt.ActionListener;
 import com.ninjachris81.doorbell.mqtt.Connection;
 import com.ninjachris81.doorbell.mqtt.Connections;
 import com.ninjachris81.doorbell.mqtt.IReceivedMessageListener;
-import com.ninjachris81.doorbell.mqtt.MqttCallbackHandler;
+import com.ninjachris81.doorbell.mqtt.MqttTraceCallback;
 import com.ninjachris81.doorbell.mqtt.ReceivedMessage;
 import com.ninjachris81.doorbell.mqtt.Subscription;
 
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
@@ -58,6 +59,8 @@ import androidx.room.Room;
 import static com.ninjachris81.doorbell.MainActivity.INTENT_ACTION_CANCEL;
 
 public class BackgroundService extends Service {
+
+    public static final String BROADCAST_CONNECTION_INFO = "com.ninjachris81.doorbell.connectionInfo";
 
     public static final String BROADCAST_DATA = "com.ninjachris81.doorbell.data";
 
@@ -132,8 +135,6 @@ public class BackgroundService extends Service {
 
         db = Room.databaseBuilder(getApplicationContext(), EventDatabase.class, "door-bell-events").build();
 
-        syncData();
-
         IntentFilter filter = new IntentFilter();
         filter.addAction(BackgroundService.BROADCAST_RING_EVENT_CANCEL);
         filter.addAction(BackgroundService.BROADCAST_RING_EVENT_RAISE);
@@ -142,11 +143,31 @@ public class BackgroundService extends Service {
 
         knockMediaPlayer = MediaPlayer.create(this, R.raw.knock);
 
+        setupNewMqttConnection();
+
+        createNotificationChannel();
+
+        syncData();
+
+        return START_REDELIVER_INTENT;
+    }
+
+    private void setupNewMqttConnection() {
         final String clientHandle = "clientId" + System.currentTimeMillis();
         connection = Connection.createConnection(clientHandle, clientId, prefs.getString("settings_mqtt_host", "rpi-server.fritz.box"), 1883, this, false);
+
+        Log.i(TAG, "Connecting to " + connection.getHostName() + ":" + connection.getPort());
+
         connection.addConnectionOptions(new MqttConnectOptions());
         connection.getConnectionOptions().setCleanSession(true);
+        connection.getConnectionOptions().setKeepAliveInterval(30);
+        connection.getConnectionOptions().setAutomaticReconnect(true);
+        connection.getConnectionOptions().setConnectionTimeout(5);
         Connections.getInstance(this).addConnection(connection);
+        connection.getClient().setTraceCallback(new MqttTraceCallback() {
+
+        });
+        connection.getClient().setTraceEnabled(true);
 
         connection.addReceivedMessageListener(new IReceivedMessageListener() {
             @Override
@@ -166,6 +187,8 @@ public class BackgroundService extends Service {
             }
         });
 
+        final Context context = this;
+
         String[] actionArgs = new String[1];
         actionArgs[0] = connection.getId();
         final ActionListener callback = new ActionListener(this,
@@ -173,6 +196,10 @@ public class BackgroundService extends Service {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
                 Log.i(TAG, "Connected");
+
+                Intent intent = new Intent(BROADCAST_CONNECTION_INFO);
+                intent.putExtra("connected", false);
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
                 subscription = new Subscription(subscriptionTopic, 1, clientHandle, false);
                 try {
@@ -185,7 +212,51 @@ public class BackgroundService extends Service {
                 super.onSuccess(asyncActionToken);
             }
         };
-        connection.getClient().setCallback(new MqttCallbackHandler(this, connection.handle()));
+
+        connection.getClient().setCallback(new MqttCallback() {
+
+            @Override
+            public void connectionLost(Throwable cause) {
+                Log.i(TAG, "Connection lost");
+                Intent intent = new Intent(BROADCAST_CONNECTION_INFO);
+                intent.putExtra("connected", false);
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
+                try {
+                    connection.unsubscribe(subscription);
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    connection.getClient().disconnect();
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+                connection.getClient().unregisterResources();
+                connection.getClient().setCallback(null);
+            }
+
+            @Override
+            public void messageArrived(String topic, MqttMessage message) throws Exception {
+                Log.i(TAG, "Message arrived");
+
+                Connection c = Connections.getInstance(context).getConnection(clientHandle);
+                c.messageArrived(topic, message);
+                //get the string from strings.xml and format
+                String messageString = context.getString(R.string.messageRecieved, new String(message.getPayload()), topic+";qos:"+message.getQos()+";retained:"+message.isRetained());
+
+                Log.i(TAG, messageString);
+
+                //update client history
+                c.addAction(messageString);
+            }
+
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken token) {
+                Log.i(TAG, "Delivery complete");
+            }
+        });
         try {
             connection.getClient().connect(connection.getConnectionOptions(), null, callback);
         }
@@ -193,10 +264,15 @@ public class BackgroundService extends Service {
             Log.e(this.getClass().getCanonicalName(),
                     "MqttException occurred", e);
         }
+    }
 
-        createNotificationChannel();
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
-        return START_REDELIVER_INTENT;
+        Log.i(TAG, "Service destroy");
+        connection.getClient().unregisterResources();
+        connection.getClient().close();
     }
 
     private void newRingEvent() {
@@ -213,7 +289,7 @@ public class BackgroundService extends Service {
                 currentRingtone.play();
             }
 
-            currentRingTimer = new CountDownTimer(10000, 5000) {
+            currentRingTimer = new CountDownTimer(Integer.parseInt(prefs.getString("settings_bell_duration", "20")) * 1000, 5000) {
 
                 @Override
                 public void onTick(long l) {
@@ -242,7 +318,9 @@ public class BackgroundService extends Service {
                     .setContentText(getResources().getString(R.string.ring_title))
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
+                    .setTimeoutAfter(10 * 60 * 1000)        // 10 minutes
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
             int notificationId = 1111;

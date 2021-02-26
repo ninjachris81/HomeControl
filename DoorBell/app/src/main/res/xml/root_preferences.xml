@@ -6,12 +6,16 @@
         <EditTextPreference
             app:key="settings_mqtt_host"
             app:title="MQTT Host"
+            android:inputType="textUri"
+            android:singleLine="true"
             android:defaultValue="rpi-server.fritz.box"
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
             app:key="settings_rest_host"
             app:title="REST Host"
+            android:inputType="textUri"
+            android:singleLine="true"
             android:defaultValue="rpi-server.fritz.box"
             app:useSimpleSummaryProvider="true" />
 
@@ -20,6 +24,7 @@
             android:inputType="numberDecimal"
             app:key="settings_rest_port"
             app:title="REST Port"
+            android:singleLine="true"
             android:defaultValue="9090"
             app:useSimpleSummaryProvider="true" />
 
@@ -49,10 +54,18 @@
 
         <EditTextPreference
             android:key="settings_max_entries"
-            android:singleLine="true"
             android:defaultValue="50"
             app:useSimpleSummaryProvider="true"
+            android:singleLine="true"
             android:title="@string/settings_max_entries" />
+        <EditTextPreference
+            android:defaultValue="20"
+            android:key="settings_bell_duration"
+            android:selectAllOnFocus="true"
+            android:inputType="numberDecimal"
+            app:useSimpleSummaryProvider="true"
+            android:singleLine="true"
+            android:title="@string/settings_bell_duration" />
 
     </PreferenceCategory>
 

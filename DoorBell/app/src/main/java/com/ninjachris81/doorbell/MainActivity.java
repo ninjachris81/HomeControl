@@ -87,7 +87,13 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(BackgroundService.BROADCAST_DATA);
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, filter);
 
-        startService(new Intent(getApplicationContext(), BackgroundService.class));
+        /*
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(getApplicationContext(), BackgroundService.class));
+        } else {
+        */
+            startService(new Intent(getApplicationContext(), BackgroundService.class));
+        //}
 
         myArrayAdapter =
                 new DoorBellEventAdapter(

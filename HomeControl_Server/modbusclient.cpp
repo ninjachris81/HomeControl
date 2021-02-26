@@ -32,6 +32,7 @@ void ModbusClient::onStateOccurred(QModbusDevice::State state) {
         QTimer::singleShot(1000, [this]() {
             m_client.connectDevice();
         });
+        Q_EMIT(clientDisonnected());
     } else if (state==QModbusDevice::ConnectedState) {
         Q_EMIT(clientConnected());
     }

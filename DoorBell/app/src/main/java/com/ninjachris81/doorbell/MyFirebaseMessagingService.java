@@ -1,3 +1,4 @@
+/*
 package com.ninjachris81.doorbell;
 
 import android.content.Intent;
@@ -34,3 +35,4 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 }
+ */

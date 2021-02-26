@@ -2,7 +2,15 @@
 #include <LogHelper.h>
 #include "constants.h"
 
-PulsePowerController::PulsePowerController() : AbstractTask() {
+volatile uint16_t peakCount = 0;
+volatile uint64_t totalPulseCount = 0;
+
+void increasePulseCount() {
+  peakCount++;
+  totalPulseCount++;
+}
+
+PulsePowerController::PulsePowerController() : AbstractIntervalTask(PULSE_CALCULATION_INTERVAL_MS) {
   
 }
 
@@ -10,35 +18,27 @@ PulsePowerController::~PulsePowerController() {
 }
 
 void PulsePowerController::init() {
-  pinMode(PIN_PULSE, INPUT);
+  pinMode(PIN_PULSE, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(PIN_PULSE), increasePulseCount, RISING);
 
   smoothPower.init(10, -999.0);
   smoothPeakCount.init(5, -999.0);
+
+  /*
+  Pulses / KHW  10000
+  Pulse in KWH  0,00010
+  Pulse in WH 0,1
+  Pulse in WS 360
+*/
+
+  WATT_SEC_PER_PULSE = 360.0;      // WATT_SEC_PER_5SEC / PULSE_PER_KWH;
 }
 
 void PulsePowerController::update() {
-  adcRate++;
   
-  bool isPeak = !digitalRead(PIN_PULSE);
-  if (lastPeak!=isPeak) {
-    if (!isPeak) {
-      // changed, calculate on lower peak
-      peakCount++;
-    }
-    
-    lastPeak = isPeak;
-  }
-
-  if (lastCalculation==0 || millis() - lastCalculation >= PULSE_CALCULATION_INTERVAL_MS) {
-    lastCalculation = millis();
-
-    smoothPeakCount.pushValue(peakCount);
-    smoothPower.pushValue(WATT_SEC_PER_PULSE * smoothPeakCount.getValue());
-    totalPulseCount+=peakCount;
-    
-    peakCount = 0;
-    adcRate = 0;
-  }
+  smoothPeakCount.pushValue(peakCount);
+  peakCount = 0;
+  smoothPower.pushValue(WATT_SEC_PER_PULSE * smoothPeakCount.getValue());
 
   if (lastMqttUpdate==0 || millis() - lastMqttUpdate > MQTT_UPDATE_INTERVAL_MS) {
     lastMqttUpdate = millis();

@@ -11,6 +11,8 @@
 
 #define DOOR_SEND_INTERVAL_MS 500
 
+#define SENSOR_COUNT_THRESHOLD 600
+
 class DoorBellController : public AbstractTask {
 public:
   DoorBellController();
@@ -21,12 +23,12 @@ public:
   void update();
   
 private:
-  void sendState();
+  void sendState(uint8_t state);
+  int sensorCount = 0;
 
   unsigned long lastSend = 0;
   uint8_t sendValue = DOOR_STATE_FALSE;
 
 };
-
 
 #endif

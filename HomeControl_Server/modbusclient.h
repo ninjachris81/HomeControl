@@ -25,6 +25,7 @@ protected:
 
 signals:
     void clientConnected();
+    void clientDisonnected();
 
 private slots:
     void onErrorOccurred(QModbusDevice::Error error);

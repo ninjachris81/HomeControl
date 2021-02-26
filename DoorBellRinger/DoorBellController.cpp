@@ -24,7 +24,6 @@ void DoorBellController::init() {
     myDFPlayer.outputDevice(DFPLAYER_DEVICE_SD);
     myDFPlayer.setTimeOut(500);
     myDFPlayer.EQ(DFPLAYER_EQ_NORMAL);
-    myDFPlayer.volume(25);  //Set volume value. From 0 to 30
 
     LOG_PRINT("MP3 Files:");
     LOG_PRINTLN(myDFPlayer.readFileCounts());
@@ -34,7 +33,14 @@ void DoorBellController::init() {
 void DoorBellController::onConnected() {
   LOG_PRINTLN(F("MQTT connected"));
   taskManager->getTask<MqttController*>(MQTT_CONTROLLER)->subscribePath(getID(), MQTT_PATH_EVENTS_DOOR_BELL, BUILD_PATH(MQTT_PATH_EVENTS + String(MQTT_PATH_SEP) + MQTT_VAL + String(MQTT_PATH_SEP) + String(MQTT_PATH_EVENTS_DOOR_BELL)));
+  myDFPlayer.volume(12);
   myDFPlayer.play(1);
+}
+
+void DoorBellController::setVolume(uint8_t volume) {
+  currentVolume = constrain(volume, 0, 30);
+  LOG_PRINT(F("Volume: "));
+  LOG_PRINTLN(currentVolume);
 }
 
 void DoorBellController::onBroadcast() {
@@ -51,7 +57,11 @@ void DoorBellController::onBoolReceived(int index, bool value) {
 void DoorBellController::onIntReceived(int index, int value) {
   if (index==MQTT_PATH_EVENTS_DOOR_BELL) {
     LOG_PRINTLN(F("New door bell event"));
-    myDFPlayer.play(3);
+    if (lastPlayStarted==0 || millis() - lastPlayStarted > LAST_PLAY_TIMEOUT_MS) {
+      lastPlayStarted = millis();
+      myDFPlayer.volume(currentVolume);
+      myDFPlayer.play(3);
+    }
   }
 }
 

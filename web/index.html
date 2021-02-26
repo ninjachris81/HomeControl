@@ -240,7 +240,7 @@
 	  <div class="card">
 		<div class="card-header" id="heading6">
 		  <h2 class="mb-0">
-			<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#tab6" aria-expanded="false" aria-controls="tab4">
+			<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#tab6" aria-expanded="false" aria-controls="tab6">
 			  Environment
 			</button>
 		  </h2>
@@ -266,6 +266,43 @@
 				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: outside2 }"></li>
 			  </ul>
 			</div>
+
+		  </div>
+		</div>
+	  </div>
+	  
+	  
+	  <div class="card">
+		<div class="card-header" id="heading7">
+		  <h2 class="mb-0">
+			<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#tab7" aria-expanded="false" aria-controls="tab7">
+			  SSC
+			</button>
+		  </h2>
+		</div>
+
+		<div id="tab7" class="collapse" aria-labelledby="heading7" data-parent="#main_accordion">
+		  <div class="card-body">
+		  
+			<div id="sscValue" class="card" class="d-block w-100">
+			  <div class="card-header">
+				Status Boiler
+			  </div>
+			  <ul class="list-group list-group-flush">
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: sscStatusBoiler }"></li>
+				<li class="list-group-item" data-bind="template: { name: 'value-template-text', data: sscStatusHk1 }"></li>
+			  </ul>
+			</div>
+
+<!--		  
+			<div id="sscStatusHk1" class="card" class="d-block w-100">
+			  <div class="card-header">
+				Status HK1
+			  </div>
+			  <ul class="list-group list-group-flush">
+			  </ul>
+			</div>
+			-->
 
 		  </div>
 		</div>
@@ -343,7 +380,8 @@
 						"powers": new PowerController("powers"),
 						"switches": new SwitchController("switches"),
 						"brs": new BrightnessController("brs"),
-						"hums": new HumidityController("hums")
+						"hums": new HumidityController("hums"),
+						"ssc": new SSCController("ssc")
 						};
 
 	// Create a client instance
@@ -382,6 +420,7 @@
 	ko.applyBindings(controllers["temps"].values, document.getElementById("tempOutside"));
 	ko.applyBindings(controllers["hums"].values, document.getElementById("humidityOutside"));
 	
+	ko.applyBindings(controllers["ssc"].values, document.getElementById("sscValue"));
 
 	reconnect();
 	

@@ -16,11 +16,13 @@
 #include "controller/currentcontroller.h"
 #include "controller/powercontroller.h"
 #include "controller/eventcontroller.h"
+#include "controller/ssccontroller.h"
 
 #include "powerlogic.h"
 //include "thingspeaklogger.h"
 //#include "datastatisticsanalyzerlogic.h"
-//#include "systasmartcclient.h"
+#include "systasmartclogic.h"
+#include "systasmartcclient.h"
 #include "serialextensionclient.h"
 #include "doorbelllogic.h"
 #include "httpserver.h"
@@ -96,6 +98,9 @@ int main(int argc, char *argv[])
     PowerController powerController;
     controllerManager.registerController(&powerController);
 
+    SSCController sscController;
+    controllerManager.registerController(&sscController);
+
     // Register values for dl
     // brightnesses
     dataLoggerController.registerValue(&brightnessController, EnumsDeclarations::BRIGHTNESSES_SOLAR);
@@ -111,7 +116,8 @@ int main(int argc, char *argv[])
 
     controllerManager.init(&appConfig);
 
-    //SystaSmartCClient systaSmartCClient(appConfig);
+    SystaSmartCClient systaSmartCClient(appConfig);
+    SystaSmartCLogic systaSmartCLogic(&controllerManager, &systaSmartCClient, appConfig);
 
     PowerLogic powerLogic(&controllerManager);
 
