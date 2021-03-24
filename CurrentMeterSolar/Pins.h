@@ -1,0 +1,1 @@
+#define PIN_VOLTAGE_IN A0   // TA12-100
